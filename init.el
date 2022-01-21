@@ -11,6 +11,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(leuven))
  '(fido-mode t)
+ '(tab-bar-mode t)
  '(winner-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
