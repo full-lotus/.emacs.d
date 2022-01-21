@@ -3,6 +3,7 @@
  ("melpa" . "http://melpa.org/packages/")))
 
 (global-set-key (kbd "M-o") 'other-window)
+(windmove-default-keybindings)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
