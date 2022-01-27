@@ -11,6 +11,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(leuven))
+ '(desktop-save t)
+ '(desktop-save-mode t)
  '(fido-mode t)
  '(tab-bar-mode t)
  '(winner-mode t))
