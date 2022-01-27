@@ -5,6 +5,9 @@
 (global-set-key (kbd "M-o") 'other-window)
 (windmove-default-keybindings)
 
+(global-set-key (kbd "M-[") 'tab-bar-history-back)
+(global-set-key (kbd "M-]") 'tab-bar-history-forward)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -14,6 +17,7 @@
  '(desktop-save t)
  '(desktop-save-mode t)
  '(fido-mode t)
+ '(tab-bar-history-mode t)
  '(tab-bar-mode t)
  '(winner-mode t))
 (custom-set-faces
