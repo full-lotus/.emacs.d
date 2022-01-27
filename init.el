@@ -17,6 +17,7 @@
  '(desktop-save t)
  '(desktop-save-mode t)
  '(fido-mode t)
+ '(global-tab-line-mode t)
  '(tab-bar-history-mode t)
  '(tab-bar-mode t)
  '(winner-mode t))
