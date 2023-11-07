@@ -4,3 +4,4 @@ auto-save-list
 elpa
 .emacs.desktop*
 **/*.code-workspace
+*.eln
