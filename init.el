@@ -38,7 +38,7 @@
  '(ansi-color-names-vector
    ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
  '(blink-cursor-mode nil)
- '(custom-enabled-themes '(whiteboard))
+ '(custom-enabled-themes '(leuven))
  '(desktop-save t)
  '(desktop-save-mode t)
  '(display-fill-column-indicator-column 80)
