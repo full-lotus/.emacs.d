@@ -5,3 +5,7 @@ elpa
 .emacs.desktop*
 **/*.code-workspace
 *.eln
+**history.el
+**/lock
+.lsp
+session.*
