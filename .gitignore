@@ -9,3 +9,4 @@ elpa
 **/lock
 .lsp
 session.*
+.clj-kondo/**
