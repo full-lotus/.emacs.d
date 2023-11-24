@@ -47,7 +47,7 @@
  '(global-tab-line-mode t)
  '(ispell-dictionary nil)
  '(org-startup-indented t)
- '(package-selected-packages '(clojure-mode magit))
+ '(package-selected-packages '(treemacs-all-the-icons treemacs clojure-mode magit))
  '(tab-bar-history-mode t)
  '(tab-bar-mode t)
  '(winner-mode t))
