@@ -27,6 +27,34 @@
 (setq org-src-preserve-indentation t)
 
 
+(defun my/org-add-ids-to-headlines-in-file ()
+  "Add ID properties to all headlines in the current file which
+do not already have one."
+  (interactive)
+  (org-map-entries 'org-id-get-create))
+
+(add-hook 'org-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook 'my/org-add-ids-to-headlines-in-file
+		      nil 'local)))
+
+(defun my/copy-id-to-clipboard() "Copy the ID property value to killring,
+if no ID is there then create a new unique ID. 
+This function works only in org-mode buffers.
+
+The purpose of this function is to easily construct id:-links to 
+org-mode items. If its assigned to a key it saves you marking the
+text and copying to the killring."
+       (interactive)
+       (when (eq major-mode 'org-mode) ; do this only in org-mode buffers
+     (setq mytmpid (funcall 'org-id-get-create))
+     (kill-new mytmpid)
+     (message "Copied %s to killring (clipboard)" mytmpid)
+       ))
+
+(global-set-key (kbd "<f5>") 'my/copy-id-to-clipboard)
+
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
