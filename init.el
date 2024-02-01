@@ -14,6 +14,8 @@
 (global-set-key (kbd "M-[") 'tab-bar-history-back)
 (global-set-key (kbd "M-]") 'tab-bar-history-forward)
 
+;; open treemacs when emacs starts
+(add-hook 'emacs-startup-hook 'treemacs)
 
 
 ;; --------------- org mode ---------------
