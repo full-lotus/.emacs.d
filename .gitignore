@@ -10,3 +10,4 @@ elpa
 .lsp
 session.*
 .clj-kondo/**
+.cache
