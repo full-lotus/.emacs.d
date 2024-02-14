@@ -9,13 +9,14 @@
 
 ;; --------------- window/tab navigation ---------------
 (global-set-key (kbd "M-o") 'other-window)
-(windmove-default-keybindings)
 
 (global-set-key (kbd "M-[") 'tab-bar-history-back)
 (global-set-key (kbd "M-]") 'tab-bar-history-forward)
 
 ;; open treemacs when emacs starts
 (add-hook 'emacs-startup-hook 'treemacs)
+;; -----------------------------------------------------------------------------
+
 
 
 ;; --------------- org mode ---------------
@@ -29,6 +30,16 @@
 (setq org-src-preserve-indentation t)
 
 
+
+;; make the windmove function active in locations where Org mode does not have
+;; special functionality on S-<cursor>
+(add-hook 'org-shiftup-final-hook 'windmove-up)
+(add-hook 'org-shiftleft-final-hook 'windmove-left)
+(add-hook 'org-shiftdown-final-hook 'windmove-down)
+(add-hook 'org-shiftright-final-hook 'windmove-right)
+
+
+
 (defun my/org-add-ids-to-headlines-in-file ()
   "Add ID properties to all headlines in the current file which
 do not already have one."
@@ -40,7 +51,8 @@ do not already have one."
             (add-hook 'before-save-hook 'my/org-add-ids-to-headlines-in-file
 		      nil 'local)))
 
-(defun my/copy-id-to-clipboard() "Copy the ID property value to killring,
+(defun my/copy-id-to-clipboard()
+  "Copy the ID property value to killring,
 if no ID is there then create a new unique ID. 
 This function works only in org-mode buffers.
 
@@ -55,7 +67,7 @@ text and copying to the killring."
        ))
 
 (global-set-key (kbd "<f5>") 'my/copy-id-to-clipboard)
-
+;; -----------------------------------------------------------------------------
 
 
 (custom-set-variables
