@@ -11,3 +11,5 @@ elpa
 session.*
 .clj-kondo/**
 .cache
+eln-cache
+tramp
