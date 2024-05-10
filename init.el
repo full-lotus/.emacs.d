@@ -30,7 +30,6 @@
 (setq org-src-preserve-indentation t)
 
 
-
 ;; make the windmove function active in locations where Org mode does not have
 ;; special functionality on S-<cursor>
 (add-hook 'org-shiftup-final-hook 'windmove-up)
@@ -81,6 +80,14 @@ do not already have one."
             (add-hook 'before-save-hook 'my/org-add-ids-to-headlines-in-file
 		      nil 'local)))
 
+;; package for hiding :PROPERTIES: and other drawers
+;; since I add :ID: to every header automatically, org-mode is cluttered
+;; without this package
+(use-package org-tidy
+  :ensure t
+  :hook
+  (org-mode . org-tidy-mode))
+
 (defun my/copy-id-to-clipboard()
   "Copy the ID property value to killring,
 if no ID is there then create a new unique ID. 
@@ -119,8 +126,13 @@ text and copying to the killring."
  '(global-tab-line-mode t)
  '(ispell-dictionary nil)
  '(org-cycle-inline-images-display nil)
- '(org-startup-indented t)
- '(package-selected-packages '(cider treemacs-all-the-icons treemacs clojure-mode magit))
+ '(org-modules
+   '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus ol-info ol-irc ol-mhe ol-rmail org-tempo ol-w3m))
+ '(org-startup-indented nil)
+ '(org-tidy-protect-overlay nil)
+ '(package-selected-packages
+   '(org-tidy cider treemacs-all-the-icons treemacs clojure-mode magit))
+ '(save-interprogram-paste-before-kill t)
  '(tab-bar-history-mode t)
  '(tab-bar-mode t)
  '(winner-mode t))
