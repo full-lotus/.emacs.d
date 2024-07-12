@@ -7,6 +7,66 @@
 
 
 
+;; --------------- general global settings  ---------------
+;; taken from Adam James' guide:
+;; https://gist.github.com/adam-james-v/7a61612ce0649afc78513f54b337d8c9
+;; Changing a few things around to make emacs feel and act more like I want it to.
+;; The auto-revert setting is enabled because tangle / detangle for literate
+;; programming will change contents of files. If the file is open in a buffer,
+;; I want it to automatically show the change without asking me every time.
+
+(global-auto-revert-mode t)
+(tool-bar-mode 0)
+(scroll-bar-mode 0)
+(cua-mode 1)
+
+;; supposedly good defaults from here:
+;; https://github.com/angrybacon/dotemacs/blob/master/dotemacs.org#use-better-defaults
+;; (load-theme 'nord t)
+
+(setq-default
+ ad-redefinition-action 'accept                   ; Silence warnings for redefinition
+ auto-window-vscroll nil                          ; Lighten vertical scroll
+ confirm-kill-emacs 'yes-or-no-p                  ; Confirm before exiting Emacs
+ display-time-default-load-average nil            ; Don't display load average
+ display-time-mode 0                              ; Display time in frames
+ display-time-format "%H:%M"                      ; Format the time string
+ fill-column 80                                   ; Set width for automatic line breaks
+ scroll-bar-mode nil
+ display-line-numbers-type nil
+ help-window-select t                             ; Focus new help windows when opened
+ indent-tabs-mode nil                             ; Stop using tabs to indent
+ inhibit-startup-screen t                         ; Disable start-up screen
+ initial-scratch-message ""                       ; Empty the initial *scratch* buffer
+ left-margin-width 1 right-margin-width 1         ; Add left and right margins
+ mouse-yank-at-point t                            ; Yank at point rather than pointer
+ ns-use-srgb-colorspace nil                       ; Don't use sRGB colors
+ select-enable-clipboard t                        ; Merge system's and Emacs' clipboard
+ sentence-end-double-space nil                    ; End a sentence after a dot and a space
+ show-trailing-whitespace nil                     ; Display trailing whitespaces
+ split-height-threshold nil                       ; Disable vertical window splitting
+ split-width-threshold 1                          ; Disable horizontal window splitting
+ tab-width 4                                      ; Set width for tabs
+ uniquify-buffer-name-style 'forward              ; Uniquify buffer names
+ window-combination-resize t                      ; Resize windows proportionally
+ x-stretch-cursor t                               ; Stretch cursor to the glyph width
+ scroll-step 1
+ scroll-conservatively 10000)
+
+(delete-selection-mode 1)                         ; Replace region when inserting text
+(display-time-mode 0)                             ; Enable time in the mode-line
+(fset 'yes-or-no-p 'y-or-n-p)                     ; Replace yes/no prompts with y/n
+(menu-bar-mode 0)                                 ; Disable the menu bar
+(put 'downcase-region 'disabled nil)              ; Enable downcase-region
+(put 'upcase-region 'disabled nil)                ; Enable upcase-region
+(set-default-coding-systems 'utf-8)               ; Default to utf-8 encoding
+
+;; Apparently Garbage Collecting when out of focus can make emacs feel faster. I’ll try that.
+(add-hook 'focus-out-hook #'garbage-collect)
+;; -----------------------------------------------------------------------------
+
+
+
 ;; --------------- file management  ---------------
 (require 'openwith)
 (openwith-mode t)
@@ -97,10 +157,10 @@ do not already have one."
 
 (defun my/copy-id-to-clipboard()
   "Copy the ID property value to killring,
-if no ID is there then create a new unique ID. 
+if no ID is there then create a new unique ID.
 This function works only in org-mode buffers.
 
-The purpose of this function is to easily construct id:-links to 
+The purpose of this function is to easily construct id:-links to
 org-mode items. If its assigned to a key it saves you marking the
 text and copying to the killring."
        (interactive)
