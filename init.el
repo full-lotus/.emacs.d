@@ -7,6 +7,13 @@
 
 
 
+;; --------------- file management  ---------------
+(require 'openwith)
+(openwith-mode t)
+;; -----------------------------------------------------------------------------
+
+
+
 ;; --------------- window/tab navigation ---------------
 (global-set-key (kbd "M-o") 'other-window)
 
@@ -125,6 +132,17 @@ text and copying to the killring."
  '(global-display-fill-column-indicator-mode t)
  '(global-tab-line-mode t)
  '(ispell-dictionary nil)
+ '(openwith-associations
+   '(("\\.\\(doc\\|docx\\)\\'" "libreoffice.writer"
+      (file))
+     ("\\.pdf\\'" "acroread"
+      (file))
+     ("\\.mp3\\'" "xmms"
+      (file))
+     ("\\.\\(?:mpe?g\\|avi\\|wmv\\)\\'" "mplayer"
+      ("-idx" file))
+     ("\\.\\(?:jp?g\\|png\\)\\'" "display"
+      (file))))
  '(org-cycle-inline-images-display nil)
  '(org-link-frame-setup
    '((vm . vm-visit-folder-other-frame)
@@ -137,7 +155,7 @@ text and copying to the killring."
  '(org-startup-indented nil)
  '(org-tidy-protect-overlay nil)
  '(package-selected-packages
-   '(org-tidy cider treemacs-all-the-icons treemacs clojure-mode magit))
+   '(openwith org-tidy cider treemacs-all-the-icons treemacs clojure-mode magit))
  '(save-interprogram-paste-before-kill t)
  '(tab-bar-history-mode t)
  '(tab-bar-mode t)
