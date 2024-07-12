@@ -22,7 +22,7 @@
 
 ;; supposedly good defaults from here:
 ;; https://github.com/angrybacon/dotemacs/blob/master/dotemacs.org#use-better-defaults
-;; (load-theme 'nord t)
+(load-theme 'modus-operandi-deuteranopia t)
 
 (setq-default
  ad-redefinition-action 'accept                   ; Silence warnings for redefinition
@@ -184,7 +184,6 @@ text and copying to the killring."
  '(ansi-color-names-vector
    ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
  '(blink-cursor-mode nil)
- '(custom-enabled-themes '(leuven))
  '(desktop-save t)
  '(desktop-save-mode t)
  '(display-fill-column-indicator-column 80)
@@ -215,7 +214,7 @@ text and copying to the killring."
  '(org-startup-indented nil)
  '(org-tidy-protect-overlay nil)
  '(package-selected-packages
-   '(openwith org-tidy cider treemacs-all-the-icons treemacs clojure-mode magit))
+   '(modus-themes openwith org-tidy cider treemacs-all-the-icons treemacs clojure-mode magit))
  '(save-interprogram-paste-before-kill t)
  '(tab-bar-history-mode t)
  '(tab-bar-mode t)
