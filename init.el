@@ -126,6 +126,12 @@ text and copying to the killring."
  '(global-tab-line-mode t)
  '(ispell-dictionary nil)
  '(org-cycle-inline-images-display nil)
+ '(org-link-frame-setup
+   '((vm . vm-visit-folder-other-frame)
+     (vm-imap . vm-visit-imap-folder-other-frame)
+     (gnus . org-gnus-no-new-news)
+     (file . find-file-other-frame)
+     (wl . wl-other-frame)))
  '(org-modules
    '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus ol-info ol-irc ol-mhe ol-rmail org-tempo ol-w3m))
  '(org-startup-indented nil)
