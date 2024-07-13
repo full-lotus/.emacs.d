@@ -7,7 +7,7 @@
 ; activate all the packages
 (package-initialize)
 
-; fetch the list of packages available 
+; fetch the list of packages available
 (unless package-archive-contents
   (package-refresh-contents))
 
@@ -16,15 +16,43 @@
 ;; --------------- general global settings  ---------------
 ;; taken from Adam James' guide:
 ;; https://gist.github.com/adam-james-v/7a61612ce0649afc78513f54b337d8c9
-;; Changing a few things around to make emacs feel and act more like I want it to.
+
+;; separate custom-file because it's a mess, with everything in one place
+(setq custom-file (concat user-emacs-directory "custom.el"))
+;; we are loading at the top of init.el, to set custom variables nice and
+;; separate, grouping relevant settings together
+(load custom-file 'noerror)
+
+(custom-set-variables
+ ;; blinking cursor is annoying
+ '(blink-cursor-mode nil)
+
+ ;; save Emacs frame configuration on exit
+ '(desktop-save t)
+ '(desktop-save-mode t)
+
+ ;; to see when a line is longer than 80 symbols
+ '(display-fill-column-indicator-column 80)
+ '(global-display-fill-column-indicator-mode t))
+
+(defun setq-and-tell-customize (&rest var-val-pairs)
+  "Set variable value and make sure Customize registers this change. Use
+instead of setq, to avoid confusion in Customize interface"
+  (message "%s" var-val-pairs)
+  (while var-val-pairs
+    (let ((var (pop var-val-pairs))
+          (val (pop var-val-pairs)))
+      (set var val)
+      (put var 'customized-value
+           (list (custom-quote (symbol-value var)))))))
+
+(setq-and-tell-customize 'make-backup-files nil) ; stop creating backup~ files
+(setq-and-tell-customize 'auto-save-default nil) ; stop creating #autosave# files
+(setq-and-tell-customize 'create-lockfiles nil) ; no lockfiles
+
 ;; The auto-revert setting is enabled because tangle / detangle for literate
 ;; programming will change contents of files. If the file is open in a buffer,
 ;; I want it to automatically show the change without asking me every time.
-
-(setq make-backup-files nil) ; stop creating backup~ files
-(setq auto-save-default nil) ; stop creating #autosave# files
-(setq create-lockfiles nil) ; no lockfiles
-
 (global-auto-revert-mode t)
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
@@ -77,6 +105,11 @@
 
 
 
+;; --------------- general global settings  ---------------
+;; -----------------------------------------------------------------------------
+
+
+
 ;; --------------- file management  ---------------
 (require 'openwith)
 (openwith-mode t)
@@ -102,9 +135,9 @@
   '((emacs-lisp . t)
     (clojure . t)))
 ;; Show syntax highlighting per language native mode in *.org
-(setq org-src-fontify-natively t)
+(setq-and-tell-customize 'org-src-fontify-natively t)
 ;; For languages with significant whitespace like Python:
-(setq org-src-preserve-indentation t)
+(setq-and-tell-customize 'org-src-preserve-indentation t)
 
 
 ;; make the windmove function active in locations where Org mode does not have
@@ -123,9 +156,9 @@ to TODO otherwise"
     (unless (not todo-state)
       (save-excursion
     (org-back-to-heading t)
-    (setq beg (point))
+    (setq-and-tell-customize 'beg (point))
     (end-of-line)
-    (setq end (point))
+    (setq-and-tell-customize 'end (point))
     (goto-char beg)
     (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
                    end t)
@@ -175,63 +208,10 @@ org-mode items. If its assigned to a key it saves you marking the
 text and copying to the killring."
        (interactive)
        (when (eq major-mode 'org-mode) ; do this only in org-mode buffers
-     (setq mytmpid (funcall 'org-id-get-create))
+     (setq-and-tell-customize 'mytmpid (funcall 'org-id-get-create))
      (kill-new mytmpid)
      (message "Copied %s to killring (clipboard)" mytmpid)
        ))
 
 (global-set-key (kbd "<f5>") 'my/copy-id-to-clipboard)
 ;; -----------------------------------------------------------------------------
-
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector
-   [default default default italic underline success warning error])
- '(ansi-color-names-vector
-   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
- '(blink-cursor-mode nil)
- '(desktop-save t)
- '(desktop-save-mode t)
- '(display-fill-column-indicator-column 80)
- '(fido-mode t)
- '(global-display-fill-column-indicator-mode t)
- '(global-tab-line-mode t)
- '(ispell-dictionary nil)
- '(openwith-associations
-   '(("\\.\\(doc\\|docx\\)\\'" "libreoffice.writer"
-      (file))
-     ("\\.pdf\\'" "acroread"
-      (file))
-     ("\\.mp3\\'" "xmms"
-      (file))
-     ("\\.\\(?:mpe?g\\|avi\\|wmv\\)\\'" "mplayer"
-      ("-idx" file))
-     ("\\.\\(?:jp?g\\|png\\)\\'" "display"
-      (file))))
- '(org-cycle-inline-images-display nil)
- '(org-link-frame-setup
-   '((vm . vm-visit-folder-other-frame)
-     (vm-imap . vm-visit-imap-folder-other-frame)
-     (gnus . org-gnus-no-new-news)
-     (file . find-file-other-frame)
-     (wl . wl-other-frame)))
- '(org-modules
-   '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus ol-info ol-irc ol-mhe ol-rmail org-tempo ol-w3m))
- '(org-startup-indented nil)
- '(org-tidy-protect-overlay nil)
- '(package-selected-packages
-   '(org-babel-eval-in-repl ob-clojurescript ob-async async paredit modus-themes openwith org-tidy cider treemacs-all-the-icons treemacs clojure-mode magit))
- '(save-interprogram-paste-before-kill t)
- '(tab-bar-history-mode t)
- '(tab-bar-mode t)
- '(winner-mode t))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
