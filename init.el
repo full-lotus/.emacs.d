@@ -3,7 +3,13 @@
  '(("gnu" . "http://elpa.gnu.org/packages/")
    ("non-gnu" . "https://elpa.nongnu.org/nongnu/")
    ("melpa" . "http://melpa.org/packages/")))
+
+; activate all the packages
 (package-initialize)
+
+; fetch the list of packages available 
+(unless package-archive-contents
+  (package-refresh-contents))
 
 
 
@@ -214,7 +220,7 @@ text and copying to the killring."
  '(org-startup-indented nil)
  '(org-tidy-protect-overlay nil)
  '(package-selected-packages
-   '(modus-themes openwith org-tidy cider treemacs-all-the-icons treemacs clojure-mode magit))
+   '(org-babel-eval-in-repl ob-clojurescript ob-async async paredit modus-themes openwith org-tidy cider treemacs-all-the-icons treemacs clojure-mode magit))
  '(save-interprogram-paste-before-kill t)
  '(tab-bar-history-mode t)
  '(tab-bar-mode t)
