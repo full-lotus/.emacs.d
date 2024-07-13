@@ -21,6 +21,10 @@
 ;; programming will change contents of files. If the file is open in a buffer,
 ;; I want it to automatically show the change without asking me every time.
 
+(setq make-backup-files nil) ; stop creating backup~ files
+(setq auto-save-default nil) ; stop creating #autosave# files
+(setq create-lockfiles nil) ; no lockfiles
+
 (global-auto-revert-mode t)
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
