@@ -14,7 +14,7 @@ instead of setq, to avoid confusion in Customize interface"
 
 
 ;; --------------- package management ---------------
-(setq-and-tell-customize package-archives
+(setq package-archives
  '(("gnu" . "http://elpa.gnu.org/packages/")
    ("non-gnu" . "https://elpa.nongnu.org/nongnu/")
    ("melpa" . "http://melpa.org/packages/")))
@@ -41,7 +41,7 @@ instead of setq, to avoid confusion in Customize interface"
 ;; https://gist.github.com/adam-james-v/7a61612ce0649afc78513f54b337d8c9
 
 ;; separate custom-file because it's a mess, with everything in one place
-(setq-and-tell-customize custom-file (concat user-emacs-directory "custom.el"))
+(setq-and-tell-customize 'custom-file (concat user-emacs-directory "custom.el"))
 ;; we are loading at the top of init.el, to set custom variables nice and
 ;; separate, grouping relevant settings together
 (load custom-file 'noerror)
@@ -396,9 +396,9 @@ to TODO otherwise"
     (unless (not todo-state)
       (save-excursion
     (org-back-to-heading t)
-    (setq 'beg (point))
+    (setq beg (point))
     (end-of-line)
-    (setq 'end (point))
+    (setq end (point))
     (goto-char beg)
     (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
                    end t)
@@ -448,7 +448,7 @@ org-mode items. If its assigned to a key it saves you marking the
 text and copying to the killring."
        (interactive)
        (when (eq major-mode 'org-mode) ; do this only in org-mode buffers
-     (setq 'mytmpid (funcall 'org-id-get-create))
+     (setq mytmpid (funcall 'org-id-get-create))
      (kill-new mytmpid)
      (message "Copied %s to killring (clipboard)" mytmpid)
        ))
