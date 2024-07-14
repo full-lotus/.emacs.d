@@ -74,7 +74,7 @@ instead of setq, to avoid confusion in Customize interface"
 ;; I want it to automatically show the change without asking me every time.
 (global-auto-revert-mode t)
 (tool-bar-mode 0)
-(scroll-bar-mode 0)
+(scroll-bar-mode 1)
 (cua-mode 1)
 
 ;; supposedly good defaults from here:
