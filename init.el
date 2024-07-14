@@ -11,7 +11,12 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-
+(custom-set-variables
+ '(package-selected-packages
+   '(org-babel-eval-in-repl
+     ob-clojurescript ob-async async paredit
+     modus-themes openwith org-tidy cider treemacs-all-the-icons treemacs
+     clojure-mode magit)))
 
 ;; --------------- general global settings  ---------------
 ;; taken from Adam James' guide:
@@ -33,7 +38,13 @@
 
  ;; to see when a line is longer than 80 symbols
  '(display-fill-column-indicator-column 80)
- '(global-display-fill-column-indicator-mode t))
+ '(global-display-fill-column-indicator-mode t)
+
+ ;; continiously display completions in minibuffer while typing
+ '(fido-mode t)
+
+ ;; copy kill ring entries to OS clipboard
+ '(save-interprogram-paste-before-kill t))
 
 (defun setq-and-tell-customize (&rest var-val-pairs)
   "Set variable value and make sure Customize registers this change. Use
@@ -105,14 +116,30 @@ instead of setq, to avoid confusion in Customize interface"
 
 
 
-;; --------------- general global settings  ---------------
+;; --------------- programming settings  ---------------
 ;; -----------------------------------------------------------------------------
 
 
 
 ;; --------------- file management  ---------------
+;; mode that enables choosing program-to-open-with based on file extensions
 (require 'openwith)
 (openwith-mode t)
+
+(custom-set-variables
+  ;; associate file extensions (regex) to program-to-open-with
+  '(openwith-associations
+    '(("\\.\\(doc\\|docx\\)\\'" "libreoffice.writer"
+        (file))
+      ;; ("\\.pdf\\'" "acroread"
+      ;;  (file))
+      ;; ("\\.mp3\\'" "xmms"
+      ;;  (file))
+      ;; ("\\.\\(?:mpe?g\\|avi\\|wmv\\)\\'" "mplayer"
+      ;;  ("-idx" file))
+      ;; ("\\.\\(?:jp?g\\|png\\)\\'" "display"
+      ;;  (file))
+      )))
 ;; -----------------------------------------------------------------------------
 
 
@@ -120,8 +147,20 @@ instead of setq, to avoid confusion in Customize interface"
 ;; --------------- window/tab navigation ---------------
 (global-set-key (kbd "M-o") 'other-window)
 
+(custom-set-variables
+  ;; enable tab-bar-mode
+  '(tab-bar-mode t)
+  ;; enable tabs globally
+  '(global-tab-line-mode t)
+  ;; enable tab history
+  '(tab-bar-history-mode t)
+  ;; records window configuration changes, allowing to undo/redo the changes
+  '(winner-mode t))
+
+;; hotkeys to navigate tab history
 (global-set-key (kbd "M-[") 'tab-bar-history-back)
 (global-set-key (kbd "M-]") 'tab-bar-history-forward)
+
 
 ;; open treemacs when emacs starts
 (add-hook 'emacs-startup-hook 'treemacs)
@@ -139,6 +178,25 @@ instead of setq, to avoid confusion in Customize interface"
 ;; For languages with significant whitespace like Python:
 (setq-and-tell-customize 'org-src-preserve-indentation t)
 
+(custom-set-variables
+ ;; do not display inline images when doing org-cycle
+ '(org-cycle-inline-images-display nil)
+
+ ;; open file links in another frame
+ '(org-link-frame-setup
+   '((vm . vm-visit-folder-other-frame)
+     (vm-imap . vm-visit-imap-folder-other-frame)
+     (gnus . org-gnus-no-new-news)
+     (file . find-file-other-frame)
+     (wl . wl-other-frame)))
+
+ ;; disable org-mode indentation, to keep lines under 80 characters
+ '(org-startup-indented nil)
+
+ ;; not sure how this variable was set, decided not to mess with it
+ '(org-modules
+   '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus
+             ol-info ol-irc ol-mhe ol-rmail org-tempo ol-w3m)))
 
 ;; make the windmove function active in locations where Org mode does not have
 ;; special functionality on S-<cursor>
@@ -146,7 +204,6 @@ instead of setq, to avoid confusion in Customize interface"
 (add-hook 'org-shiftleft-final-hook 'windmove-left)
 (add-hook 'org-shiftdown-final-hook 'windmove-down)
 (add-hook 'org-shiftright-final-hook 'windmove-right)
-
 
 
 (defun my/org-checkbox-todo ()
