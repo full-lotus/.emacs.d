@@ -81,34 +81,48 @@ instead of setq, to avoid confusion in Customize interface"
 ;; https://github.com/angrybacon/dotemacs/blob/master/dotemacs.org#use-better-defaults
 (load-theme 'modus-operandi-deuteranopia t)
 
-(setq-default
- ad-redefinition-action 'accept                   ; Silence warnings for redefinition
- auto-window-vscroll nil                          ; Lighten vertical scroll
- confirm-kill-emacs 'yes-or-no-p                  ; Confirm before exiting Emacs
- display-time-default-load-average nil            ; Don't display load average
- display-time-mode 0                              ; Display time in frames
- display-time-format "%H:%M"                      ; Format the time string
- fill-column 80                                   ; Set width for automatic line breaks
- scroll-bar-mode nil
- display-line-numbers-type nil
- help-window-select t                             ; Focus new help windows when opened
- indent-tabs-mode nil                             ; Stop using tabs to indent
- inhibit-startup-screen t                         ; Disable start-up screen
- initial-scratch-message ""                       ; Empty the initial *scratch* buffer
- left-margin-width 1 right-margin-width 1         ; Add left and right margins
- mouse-yank-at-point t                            ; Yank at point rather than pointer
- ns-use-srgb-colorspace nil                       ; Don't use sRGB colors
- select-enable-clipboard t                        ; Merge system's and Emacs' clipboard
- sentence-end-double-space nil                    ; End a sentence after a dot and a space
- show-trailing-whitespace nil                     ; Display trailing whitespaces
- split-height-threshold nil                       ; Disable vertical window splitting
- split-width-threshold 1                          ; Disable horizontal window splitting
- tab-width 4                                      ; Set width for tabs
- uniquify-buffer-name-style 'forward              ; Uniquify buffer names
- window-combination-resize t                      ; Resize windows proportionally
- x-stretch-cursor t                               ; Stretch cursor to the glyph width
- scroll-step 1
- scroll-conservatively 10000)
+(setq-and-tell-customize
+ 'ad-redefinition-action 'accept                   ; Silence warnings for redefinition
+ 'auto-window-vscroll nil                          ; Lighten vertical scroll
+ 'confirm-kill-emacs 'yes-or-no-p                  ; Confirm before exiting Emacs
+ 'display-time-default-load-average nil            ; Don't display load average
+ 'display-time-mode 0                              ; Display time in frames
+ 'display-time-format "%H:%M"                      ; Format the time string
+ 'fill-column 80                                   ; Set width for automatic line breaks
+ 'scroll-bar-mode nil
+ 'display-line-numbers-type nil
+ 'help-window-select t                             ; Focus new help windows when opened
+ 'indent-tabs-mode nil                             ; Stop using tabs to indent
+ 'inhibit-startup-screen t                         ; Disable start-up screen
+ 'initial-scratch-message ""                       ; Empty the initial *scratch* buffer
+ 'left-margin-width 1 'right-margin-width 1        ; Add left and right margins
+ 'mouse-yank-at-point t                            ; Yank at point rather than pointer
+ 'ns-use-srgb-colorspace nil                       ; Don't use sRGB colors
+ 'select-enable-clipboard t                        ; Merge system's and Emacs' clipboard
+ 'sentence-end-double-space nil
+ ;; try to reuse existing window for opening buffers              ; End a sentence after a dot and a space
+ 'show-trailing-whitespace nil                     ; Display trailing whitespaces
+ 'split-height-threshold nil                       ; Disable vertical window splitting
+ 'split-width-threshold 1                          ; Disable horizontal window splitting
+ 'tab-width 4                                      ; Set width for tabs
+ 'uniquify-buffer-name-style 'forward              ; Uniquify buffer names
+ 'window-combination-resize t                      ; Resize windows proportionally
+ 'x-stretch-cursor t                               ; Stretch cursor to the glyph width
+ 'scroll-step 1
+ 'scroll-conservatively 10000
+
+ 'display-buffer-alist
+ '(
+    ;; treemacs is a file navigator, typically glued to the left screen side
+    ("*Treemacs-.*?" (display-buffer-in-direction) (direction . left))
+
+    ;; Try to open a buffer in not-selected window first, to not lose focus on
+    ;; the current buffer
+    (".*" (display-buffer-use-least-recent-window
+          display-buffer-same-window
+          display-buffer-pop-up-window
+          display-buffer-pop-up-frame)))
+ )
 
 (delete-selection-mode 1)                         ; Replace region when inserting text
 (display-time-mode 0)                             ; Enable time in the mode-line
