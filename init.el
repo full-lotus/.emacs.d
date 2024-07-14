@@ -124,9 +124,37 @@ instead of setq, to avoid confusion in Customize interface"
 
 
 
-;; --------------- programming settings  ---------------
+;; --------------- programming  ---------------
+;; --------------- Clojure  ---------------
+(setq-and-tell-customize nrepl-hide-special-buffers t
+      cider-repl-clear-help-banner t
+      cider-font-lock-dynamically nil
+      cider-popup-stacktraces nil
+      cider-repl-popup-stacktraces t
+      cider-repl-use-pretty-printing t
+      cider-repl-pop-to-buffer-on-connect t
+      cider-repl-display-help-banner nil)
+
+;; Allow cider-repl to be cleared with shortcut
+(add-hook 'cider-repl-mode-hook
+      '(lambda () (define-key cider-repl-mode-map (kbd "C-c M-b")
+            'cider-repl-clear-buffer)))
+
+(add-hook 'clojure-mode-hook #'cider-mode)
+
+(add-hook 'cider-mode-hook (lambda () (show-paren-mode 1)))
+(add-hook 'cider-mode-hook #'eldoc-mode)
+(add-hook 'cider-mode-hook #'enable-paredit-mode)
+(add-hook 'cider-repl-mode-hook #'enable-paredit-mode)
+(add-hook 'cider-mode-hook #'imenu-add-menubar-index)
 ;; -----------------------------------------------------------------------------
 
+
+
+;; --------------- ClojureScript ---------------
+(add-hook 'clojurescript-mode #'enable-paredit-mode)
+;; -----------------------------------------------------------------------------
+;; -----------------------------------------------------------------------------
 
 
 ;; --------------- file management  ---------------
