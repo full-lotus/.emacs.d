@@ -126,14 +126,15 @@ instead of setq, to avoid confusion in Customize interface"
 
 ;; --------------- programming  ---------------
 ;; --------------- Clojure  ---------------
-(setq-and-tell-customize nrepl-hide-special-buffers t
-      cider-repl-clear-help-banner t
-      cider-font-lock-dynamically nil
-      cider-popup-stacktraces nil
-      cider-repl-popup-stacktraces t
-      cider-repl-use-pretty-printing t
-      cider-repl-pop-to-buffer-on-connect t
-      cider-repl-display-help-banner nil)
+(setq-and-tell-customize
+      'nrepl-hide-special-buffers t
+      'cider-repl-clear-help-banner t
+      'cider-font-lock-dynamically nil
+      'cider-popup-stacktraces nil
+      'cider-repl-popup-stacktraces t
+      'cider-repl-use-pretty-printing t
+      'cider-repl-pop-to-buffer-on-connect t
+      'cider-repl-display-help-banner nil)
 
 ;; Allow cider-repl to be cleared with shortcut
 (add-hook 'cider-repl-mode-hook
@@ -218,22 +219,22 @@ instead of setq, to avoid confusion in Customize interface"
 
 ;; Some backends for code execution need to be set.
 (setq-and-tell-customize
-      org-babel-clojure-backend 'cider
-      org-babel-clojure-sync-nrepl-timeout nil)
+      'org-babel-clojure-backend 'cider
+      'org-babel-clojure-sync-nrepl-timeout nil)
 
 
 
 (setq-and-tell-customize
-      org-startup-folded nil
-      org-hide-emphasis-markers nil
-      org-edit-src-content-indentation 0
-      org-src-tab-acts-natively t
+      'org-startup-folded nil
+      'org-hide-emphasis-markers nil
+      'org-edit-src-content-indentation 0
+      'org-src-tab-acts-natively t
       ;; Show syntax highlighting per language native mode in *.org
-      org-src-fontify-natively t
+      'org-src-fontify-natively t
       ;; For languages with significant whitespace like Python:
-      (setq-and-tell-customize 'org-src-preserve-indentation t)
-      org-confirm-babel-evaluate nil
-      org-support-shift-select 'always)
+      'org-src-preserve-indentation t
+      'org-confirm-babel-evaluate nil
+      'org-support-shift-select 'always)
 
 (add-hook 'org-mode-hook 'show-paren-mode)
 (add-hook 'org-mode-hook 'turn-on-visual-line-mode)
@@ -395,9 +396,9 @@ to TODO otherwise"
     (unless (not todo-state)
       (save-excursion
     (org-back-to-heading t)
-    (setq-and-tell-customize 'beg (point))
+    (setq 'beg (point))
     (end-of-line)
-    (setq-and-tell-customize 'end (point))
+    (setq 'end (point))
     (goto-char beg)
     (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
                    end t)
@@ -447,7 +448,7 @@ org-mode items. If its assigned to a key it saves you marking the
 text and copying to the killring."
        (interactive)
        (when (eq major-mode 'org-mode) ; do this only in org-mode buffers
-     (setq-and-tell-customize 'mytmpid (funcall 'org-id-get-create))
+     (setq 'mytmpid (funcall 'org-id-get-create))
      (kill-new mytmpid)
      (message "Copied %s to killring (clipboard)" mytmpid)
        ))
