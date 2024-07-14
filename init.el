@@ -146,6 +146,7 @@ instead of setq, to avoid confusion in Customize interface"
 
 ;; --------------- window/tab navigation ---------------
 (global-set-key (kbd "M-o") 'other-window)
+(global-set-key (kbd "C-b") 'treemacs)
 
 (custom-set-variables
   ;; enable tab-bar-mode
