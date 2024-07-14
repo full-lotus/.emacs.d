@@ -1,5 +1,20 @@
+;; --------------- emacs customization ---------------
+(defun setq-and-tell-customize (&rest var-val-pairs)
+  "Set variable value and make sure Customize registers this change. Use
+instead of setq, to avoid confusion in Customize interface"
+  (message "%s" var-val-pairs)
+  (while var-val-pairs
+    (let ((var (pop var-val-pairs))
+          (val (pop var-val-pairs)))
+      (set var val)
+      (put var 'customized-value
+           (list (custom-quote (symbol-value var)))))))
+;; -----------------------------------------------------------------------------
+
+
+
 ;; --------------- package management ---------------
-(setq package-archives
+(setq-and-tell-customize package-archives
  '(("gnu" . "http://elpa.gnu.org/packages/")
    ("non-gnu" . "https://elpa.nongnu.org/nongnu/")
    ("melpa" . "http://melpa.org/packages/")))
@@ -17,13 +32,16 @@
      ob-clojurescript ob-async async paredit
      modus-themes openwith org-tidy cider treemacs-all-the-icons treemacs
      clojure-mode magit)))
+;; -----------------------------------------------------------------------------
+
+
 
 ;; --------------- general global settings  ---------------
 ;; taken from Adam James' guide:
 ;; https://gist.github.com/adam-james-v/7a61612ce0649afc78513f54b337d8c9
 
 ;; separate custom-file because it's a mess, with everything in one place
-(setq custom-file (concat user-emacs-directory "custom.el"))
+(setq-and-tell-customize custom-file (concat user-emacs-directory "custom.el"))
 ;; we are loading at the top of init.el, to set custom variables nice and
 ;; separate, grouping relevant settings together
 (load custom-file 'noerror)
@@ -46,16 +64,6 @@
  ;; copy kill ring entries to OS clipboard
  '(save-interprogram-paste-before-kill t))
 
-(defun setq-and-tell-customize (&rest var-val-pairs)
-  "Set variable value and make sure Customize registers this change. Use
-instead of setq, to avoid confusion in Customize interface"
-  (message "%s" var-val-pairs)
-  (while var-val-pairs
-    (let ((var (pop var-val-pairs))
-          (val (pop var-val-pairs)))
-      (set var val)
-      (put var 'customized-value
-           (list (custom-quote (symbol-value var)))))))
 
 (setq-and-tell-customize 'make-backup-files nil) ; stop creating backup~ files
 (setq-and-tell-customize 'auto-save-default nil) ; stop creating #autosave# files
