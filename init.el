@@ -206,26 +206,171 @@ instead of setq, to avoid confusion in Customize interface"
 
 
 ;; --------------- org mode ---------------
-(org-babel-do-load-languages
-  'org-babel-load-languages
-  '((emacs-lisp . t)
-    (clojure . t)))
-;; Show syntax highlighting per language native mode in *.org
-(setq-and-tell-customize 'org-src-fontify-natively t)
-;; For languages with significant whitespace like Python:
-(setq-and-tell-customize 'org-src-preserve-indentation t)
+(require 'org)
+
+(eval-after-load 'org
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((clojure . t)
+     (clojurescript . t)
+     (emacs-lisp . t)
+     (shell . t))))
+
+;; Some backends for code execution need to be set.
+(setq-and-tell-customize
+      org-babel-clojure-backend 'cider
+      org-babel-clojure-sync-nrepl-timeout nil)
+
+
+
+(setq-and-tell-customize
+      org-startup-folded nil
+      org-hide-emphasis-markers nil
+      org-edit-src-content-indentation 0
+      org-src-tab-acts-natively t
+      ;; Show syntax highlighting per language native mode in *.org
+      org-src-fontify-natively t
+      ;; For languages with significant whitespace like Python:
+      (setq-and-tell-customize 'org-src-preserve-indentation t)
+      org-confirm-babel-evaluate nil
+      org-support-shift-select 'always)
+
+(add-hook 'org-mode-hook 'show-paren-mode)
+(add-hook 'org-mode-hook 'turn-on-visual-line-mode)
+
+;; enable paredit in source blocks of org-mode
+(add-hook 'org-src-mode-hook #'paredit-mode)
+
+;; Trying to fix weird org syntax problems. This just lets Org ignore < and >
+;; characters as if they were regular words. This is necessary because in
+;; Clojure I want to make functions with -> in the name and Org was always
+;; insisting on pairing <>. This caused any other paren matching to stop
+;; working. It sucked.
+(defun my-angle-bracket-fix ()
+  (modify-syntax-entry ?< "w")
+  (modify-syntax-entry ?> "w"))
+(add-hook 'org-mode-hook 'my-angle-bracket-fix)
+
+
+
+;; It’s extremely useful to split code blocks to quickly add org-mode text
+;; between the src. The default binding is C-c C-v C-d, which is somewhat
+;; annoying. I think M-s in org-mode should do the trick.
+
+;; Split Org Block using M-s
+(define-key org-mode-map (kbd "M-s") 'org-babel-demarcate-block)
+
+;; toggle paredit mode manually
+(define-key org-mode-map (kbd "M-P") 'paredit-mode)
+
+
+
+;; Sets M-<return> to evaluate code blocks in the REPL
+(defun org-meta-return-around (org-fun &rest args)
+  "Run `ober-eval-in-repl' if in source code block,
+  `ober-eval-block-in-repl' if at header,
+  and `org-meta-return' otherwise."
+    (if (org-in-block-p '("src"))
+        (let* ((point (point))
+               (element (org-element-at-point))
+               (area (org-src--contents-area element))
+               (beg (copy-marker (nth 0 area))))
+          (if (< point beg)
+              (ober-eval-block-in-repl)
+            (ober-eval-in-repl)))
+      (apply org-fun args)))
+
+(advice-add 'org-meta-return :around #'org-meta-return-around)
+
+;; Prevent eval in repl from moving cursor to the REPL
+(with-eval-after-load "eval-in-repl"
+  (setq eir-jump-after-eval nil))
+
+
+
+;; Remove the function which causes text to pop around when pressing tab.
+;; This is annoying and confusing.
+(remove-hook 'org-cycle-hook
+             'org-optimize-window-after-visibility-change)
+
+
+
+;; Tangling can be set to occur automatically on save. This makes things way
+;; simpler. Additionally, we set up todos to be moved to the agenda on save.
+;; This is just to keep things organized if todos are added to project org
+;; files. Once again, this is a good feature that I underutilize due to… how
+;; I am as a person, I guess??
+
+;; Tangle on save only occurs if the buffer being saved is an Org-Mode file.
+
+(defun org-babel-clojure-cider-current-ns ())
+
+(defun tangle-on-save-org-mode-file ()
+  (when (and (string-match-p
+              (regexp-quote ".org") (message "%s" (current-buffer)))
+             (not (string-match-p
+                   (regexp-quote "[") (message "%s" (current-buffer)))))
+    (org-babel-tangle)))
+
+(add-hook 'after-save-hook 'tangle-on-save-org-mode-file)
+
+(defun to-agenda-on-save-org-mode-file ()
+  (when (string= (message "%s" major-mode) "org-mode")
+    (org-agenda-file-to-front)))
+
+(add-hook 'after-save-hook 'to-agenda-on-save-org-mode-file)
+
+
+
+;; When a file is modified externally, emacs does not show this change
+;; by default. Instead, when you try to edit it will ask you to modify or
+;; revert. Since Tangling files changes src code automatically, it is more
+;; effective to automatically revert any buffers which have src files open.
+(defun revert-all-buffers ()
+  "Refreshes all open buffers from their respective files."
+  (interactive)
+  (dolist (buf (buffer-list))
+    (with-current-buffer buf
+      (when (and (buffer-file-name)
+		 (file-exists-p (buffer-file-name))
+		 (not (buffer-modified-p)))
+	(revert-buffer t t t) )))
+  (message "Refreshed open files."))
+(add-hook 'after-save-hook 'revert-all-buffers)
+
+
+
+;; The following code is from:
+;; https://www.wisdomandwonder.com/article/10630/how-fast-can-you-tangle-in-org-mode
+;; It basically boils down to adjusting garbage collection settings at key times during an org file save. Not strictly necessary, but nice to have.
+
+(setq help/default-gc-cons-threshold gc-cons-threshold)
+(defun help/set-gc-cons-threshold (&optional multiplier notify)
+  "Set `gc-cons-threshold' either to its default value or a
+   `multiplier' thereof."
+  (let* ((new-multiplier (or multiplier 1))
+         (new-threshold (* help/default-gc-cons-threshold
+                           new-multiplier)))
+    (setq gc-cons-threshold new-threshold)
+    (when notify (message "Setting `gc-cons-threshold' to %s"
+                          new-threshold))))
+(defun help/double-gc-cons-threshold () "Double `gc-cons-threshold'." (help/set-gc-cons-threshold 2))
+(add-hook 'org-babel-pre-tangle-hook #'help/double-gc-cons-threshold)
+(add-hook 'org-babel-post-tangle-hook #'help/set-gc-cons-threshold)
+
+
 
 (custom-set-variables
  ;; do not display inline images when doing org-cycle
  '(org-cycle-inline-images-display nil)
 
- ;; open file links in another frame
  '(org-link-frame-setup
-   '((vm . vm-visit-folder-other-frame)
-     (vm-imap . vm-visit-imap-folder-other-frame)
-     (gnus . org-gnus-no-new-news)
-     (file . find-file-other-frame)
-     (wl . wl-other-frame)))
+    '((vm . vm-visit-folder-other-frame)
+      (vm-imap . vm-visit-imap-folder-other-frame)
+      (gnus . org-gnus-no-new-news)
+      ;; open file links in another frame
+      (file . find-file-other-frame)
+      (wl . wl-other-frame)))
 
  ;; disable org-mode indentation, to keep lines under 80 characters
  '(org-startup-indented nil)
