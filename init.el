@@ -234,7 +234,7 @@ instead of setq, to avoid confusion in Customize interface"
       ;; For languages with significant whitespace like Python:
       'org-src-preserve-indentation t
       'org-confirm-babel-evaluate nil
-      'org-support-shift-select 'always)
+      )
 
 (add-hook 'org-mode-hook 'show-paren-mode)
 (add-hook 'org-mode-hook 'turn-on-visual-line-mode)
