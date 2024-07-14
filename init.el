@@ -379,7 +379,8 @@ instead of setq, to avoid confusion in Customize interface"
  ;; not sure how this variable was set, decided not to mess with it
  '(org-modules
    '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus
-             ol-info ol-irc ol-mhe ol-rmail org-tempo ol-w3m)))
+             ol-info ol-irc ol-mhe ol-rmail org-tempo ol-w3m))
+  '(org-tidy-protect-overlay nil))
 
 ;; make the windmove function active in locations where Org mode does not have
 ;; special functionality on S-<cursor>
