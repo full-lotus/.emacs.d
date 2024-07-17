@@ -118,11 +118,13 @@ instead of setq, to avoid confusion in Customize interface"
 
     ;; Try to open a buffer in not-selected window first, to not lose focus on
     ;; the current buffer
-    (".*" (display-buffer-use-least-recent-window
-          display-buffer-same-window
-          display-buffer-pop-up-window
-          display-buffer-pop-up-frame)))
+    ("\*.*\*" (display-buffer-use-least-recent-window
+               display-buffer-same-window
+               display-buffer-pop-up-window
+               display-buffer-pop-up-frame)))
  )
+
+
 
 (delete-selection-mode 1)                         ; Replace region when inserting text
 (display-time-mode 0)                             ; Enable time in the mode-line
