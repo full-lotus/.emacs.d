@@ -74,7 +74,8 @@ instead of setq, to avoid confusion in Customize interface"
 ;; I want it to automatically show the change without asking me every time.
 (global-auto-revert-mode t)
 (tool-bar-mode 0)
-(scroll-bar-mode 1)
+(scroll-bar-mode 1) ;; enable vertical scroll bars
+(horizontal-scroll-bar-mode 1) ;; enable horizontal scroll bars
 (cua-mode 1)
 
 ;; supposedly good defaults from here:
@@ -89,7 +90,6 @@ instead of setq, to avoid confusion in Customize interface"
  'display-time-mode 0                              ; Display time in frames
  'display-time-format "%H:%M"                      ; Format the time string
  'fill-column 80                                   ; Set width for automatic line breaks
- 'scroll-bar-mode nil
  'display-line-numbers-type nil
  'help-window-select t                             ; Focus new help windows when opened
  'indent-tabs-mode nil                             ; Stop using tabs to indent
@@ -253,7 +253,6 @@ instead of setq, to avoid confusion in Customize interface"
       )
 
 (add-hook 'org-mode-hook 'show-paren-mode)
-(add-hook 'org-mode-hook 'turn-on-visual-line-mode)
 
 ;; enable paredit in source blocks of org-mode
 (add-hook 'org-src-mode-hook #'paredit-mode)
