@@ -29,7 +29,7 @@ instead of setq, to avoid confusion in Customize interface"
 (custom-set-variables
  '(package-selected-packages
    '(org-babel-eval-in-repl
-     ob-clojurescript ob-async async paredit
+     ob-clojurescript ob-async async paredit clj-refactor
      modus-themes openwith org-tidy cider treemacs-all-the-icons treemacs
      clojure-mode magit)))
 ;; -----------------------------------------------------------------------------
@@ -121,7 +121,8 @@ instead of setq, to avoid confusion in Customize interface"
     ("\*.*\*" (display-buffer-use-least-recent-window
                display-buffer-same-window
                display-buffer-pop-up-window
-               display-buffer-pop-up-frame)))
+               display-buffer-pop-up-frame))
+  )
  )
 
 
@@ -254,8 +255,8 @@ instead of setq, to avoid confusion in Customize interface"
 
 (add-hook 'org-mode-hook 'show-paren-mode)
 
-;; enable paredit in source blocks of org-mode
-(add-hook 'org-src-mode-hook #'paredit-mode)
+;; enable clj-refactor-mode in source blocks of org-mode
+(add-hook 'org-src-mode-hook #'clj-refactor-mode)
 
 ;; Trying to fix weird org syntax problems. This just lets Org ignore < and >
 ;; characters as if they were regular words. This is necessary because in
