@@ -165,6 +165,14 @@ instead of setq, to avoid confusion in Customize interface"
 (add-hook 'cider-mode-hook #'enable-paredit-mode)
 (add-hook 'cider-repl-mode-hook #'enable-paredit-mode)
 (add-hook 'cider-mode-hook #'imenu-add-menubar-index)
+
+;; use Paredit hotkeys from VS Code Calva, to which I am used to
+(define-key paredit-mode-map (kbd "C-<right>") 'forward-sexp)
+(define-key paredit-mode-map (kbd "C-<left>") 'backward-sexp)
+(define-key paredit-mode-map (kbd "C-M-.") 'paredit-forward-slurp-sexp)
+(define-key paredit-mode-map (kbd "C-M-,") 'paredit-forward-barf-sexp)
+(define-key paredit-mode-map (kbd "C-M->") 'paredit-backward-barf-sexp)
+(define-key paredit-mode-map (kbd "C-M-<") 'paredit-backward-slurp-sexp)
 ;; -----------------------------------------------------------------------------
 
 
