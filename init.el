@@ -256,6 +256,17 @@ instead of setq, to avoid confusion in Customize interface"
 
 
 
+;; open the file specified by the :tangle header argument
+(defun org-babel-open-tangle-file ()
+  (interactive)
+  (let* ((info (org-babel-get-src-block-info))
+         (tangle (cdr (assoc :tangle (nth 2 info)))))
+    (when tangle
+      (find-file tangle))))
+
+(define-key org-mode-map (kbd "C-c o") 'org-babel-open-tangle-file)
+
+
 (setq-and-tell-customize
       'org-startup-folded nil
       'org-hide-emphasis-markers nil
