@@ -112,20 +112,21 @@ instead of setq, to avoid confusion in Customize interface"
  'scroll-conservatively 10000
 
  'display-buffer-alist
- '(
-    ;; treemacs is a file navigator, typically glued to the left screen side
-    ("*Treemacs-.*?" (display-buffer-in-direction) (direction . left))
+  '(
+     ;; treemacs is a file navigator, typically glued to the left screen side
+     ("*Treemacs-.*?" (display-buffer-in-direction) (direction . left))
 
-    ;; Try to open a buffer in not-selected window first, to not lose focus on
-    ;; the current buffer
-    ("\*.*\*" (display-buffer-use-least-recent-window
-               display-buffer-same-window
-               display-buffer-pop-up-window
-               display-buffer-pop-up-frame))
-  )
+     ;; Try to open a buffer in not-selected window first, to not lose focus on
+     ;; the current buffer
+     ;; Ignore Org Src buffers, since they should pop up in the same window
+     ("\*(?!Org Src).*\*"
+      (display-buffer-same-window
+       display-buffer-use-least-recent-window
+       
+       display-buffer-pop-up-window
+       display-buffer-pop-up-frame))
  )
-
-
+)
 
 (delete-selection-mode 1)                         ; Replace region when inserting text
 (display-time-mode 0)                             ; Enable time in the mode-line
@@ -248,8 +249,10 @@ instead of setq, to avoid confusion in Customize interface"
 
 ;; Some backends for code execution need to be set.
 (setq-and-tell-customize
-      'org-babel-clojure-backend 'cider
-      'org-babel-clojure-sync-nrepl-timeout nil)
+ ;; open src blocks in the same window as parent .org file
+ 'org-src-window-setup 'current-window
+ 'org-babel-clojure-backend 'cider
+ 'org-babel-clojure-sync-nrepl-timeout nil)
 
 
 
