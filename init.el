@@ -116,13 +116,16 @@ instead of setq, to avoid confusion in Customize interface"
      ;; treemacs is a file navigator, typically glued to the left screen side
      ("*Treemacs-.*?" (display-buffer-in-direction) (direction . left))
 
+     ;; Org Src buffers should pop up in the same window
+     ("\*Org Src.*\*"
+      (display-buffer-same-window
+       display-buffer-use-least-recent-window))
+     
      ;; Try to open a buffer in not-selected window first, to not lose focus on
      ;; the current buffer
-     ;; Ignore Org Src buffers, since they should pop up in the same window
-     ("\*(?!Org Src).*\*"
-      (display-buffer-same-window
-       display-buffer-use-least-recent-window
-       
+     ("\*.*\*"
+      (display-buffer-use-least-recent-window
+       display-buffer-same-window
        display-buffer-pop-up-window
        display-buffer-pop-up-frame))
  )
