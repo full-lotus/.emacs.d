@@ -181,6 +181,16 @@ instead of setq, to avoid confusion in Customize interface"
 (define-key paredit-mode-map (kbd "C-M-,") 'paredit-forward-barf-sexp)
 (define-key paredit-mode-map (kbd "C-M->") 'paredit-backward-barf-sexp)
 (define-key paredit-mode-map (kbd "C-M-<") 'paredit-backward-slurp-sexp)
+
+(require 'cider)
+(define-key cua-global-keymap [C-return] nil)
+(define-key cider-repl-mode-map [C-return] nil)
+;; those hotkeys are also from VS Code Calva
+
+(define-key cider-mode-map [C-return] 'cider-eval-sexp-at-point)
+(define-key cider-mode-map (kbd "M-<RET>") 'cider-eval-defun-at-point)
+(define-key cider-repl-mode-map [C-return] 'cider-eval-sexp-at-point)
+(define-key cider-repl-mode-map (kbd "M-<RET>") 'cider-eval-defun-at-point)
 ;; -----------------------------------------------------------------------------
 
 
