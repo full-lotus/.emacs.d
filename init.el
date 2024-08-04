@@ -141,6 +141,12 @@ instead of setq, to avoid confusion in Customize interface"
 
 ;; Apparently Garbage Collecting when out of focus can make emacs feel faster. I’ll try that.
 (add-hook 'focus-out-hook #'garbage-collect)
+
+
+;; Always show completions
+(setq-and-tell-customize 'completion-auto-help 'always)
+;; Auto-select *Completions* buffer
+(setq-and-tell-customize 'completion-auto-select 'second-tab)
 ;; -----------------------------------------------------------------------------
 
 
