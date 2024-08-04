@@ -142,11 +142,16 @@ instead of setq, to avoid confusion in Customize interface"
 ;; Apparently Garbage Collecting when out of focus can make emacs feel faster. I’ll try that.
 (add-hook 'focus-out-hook #'garbage-collect)
 
-
 ;; Always show completions
 (setq-and-tell-customize 'completion-auto-help 'always)
 ;; Auto-select *Completions* buffer
 (setq-and-tell-customize 'completion-auto-select 'second-tab)
+
+;; Don't clutter main Emacs folder with session. files
+(defun emacs-session-filename (session-id)
+  "Return the file name of the session file for SESSION-ID."
+  (expand-file-name (concat "session." session-id)
+                    "~/.emacs.d/sessions/"))
 ;; -----------------------------------------------------------------------------
 
 
