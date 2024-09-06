@@ -146,6 +146,9 @@ instead of setq, to avoid confusion in Customize interface"
 (setq-and-tell-customize 'completion-auto-help 'always)
 ;; Auto-select *Completions* buffer
 (setq-and-tell-customize 'completion-auto-select 'second-tab)
+;; Make <TAB> invoke completions list, when code is already idented properly
+(setq-and-tell-customize tab-always-indent 'complete)
+
 
 ;; Don't clutter main Emacs folder with session. files
 (defun emacs-session-filename (session-id)
