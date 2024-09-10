@@ -274,6 +274,14 @@ instead of setq, to avoid confusion in Customize interface"
      (emacs-lisp . t)
      (shell . t))))
 
+;; override broken fn, which deletes comments from clojure code
+(add-to-list 'load-path "~/.emacs.d/elisp/")
+(load "~/.emacs.d/elisp/ob-clojure-fix.el")
+(eval-after-load 'org
+  (with-eval-after-load 'org
+    (advice-add 'org-babel-expand-body:clojure
+		:override #'org-babel-expand-body:clojure_fixed)))
+
 ;; Some backends for code execution need to be set.
 (setq-and-tell-customize
  ;; open src blocks in the same window as parent .org file
