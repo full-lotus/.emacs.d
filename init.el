@@ -220,6 +220,10 @@ instead of setq, to avoid confusion in Customize interface"
 (require 'openwith)
 (openwith-mode t)
 
+;; trying these setting to be able to edit files as root
+(require 'tramp)
+(setq tramp-default-method "sudoedit")
+
 (custom-set-variables
   ;; associate file extensions (regex) to program-to-open-with
   '(openwith-associations
