@@ -29,7 +29,7 @@ instead of setq, to avoid confusion in Customize interface"
 (custom-set-variables
  '(package-selected-packages
    '(org-babel-eval-in-repl
-     ob-clojurescript ob-async async paredit clj-refactor
+     ob-clojurescript ob-async async paredit clj-refactor 
      openwith org-tidy cider treemacs-all-the-icons treemacs
      clojure-mode magit)))
 ;; -----------------------------------------------------------------------------
@@ -263,10 +263,6 @@ instead of setq, to avoid confusion in Customize interface"
 ;; hotkeys to navigate tab history
 (global-set-key (kbd "M-[") 'tab-bar-history-back)
 (global-set-key (kbd "M-]") 'tab-bar-history-forward)
-
-
-;; open treemacs when emacs starts
-(add-hook 'emacs-startup-hook 'treemacs)
 ;; -----------------------------------------------------------------------------
 
 
