@@ -13,6 +13,3 @@ session.*
 .cache
 eln-cache
 tramp
-
-# ignore Customize auto-generated file
-custom.el
