@@ -30,7 +30,7 @@ instead of setq, to avoid confusion in Customize interface"
  '(package-selected-packages
    '(org-babel-eval-in-repl
      ob-clojurescript ob-async async paredit clj-refactor
-     modus-themes openwith org-tidy cider treemacs-all-the-icons treemacs
+     openwith org-tidy cider treemacs-all-the-icons treemacs
      clojure-mode magit)))
 ;; -----------------------------------------------------------------------------
 
@@ -80,8 +80,6 @@ instead of setq, to avoid confusion in Customize interface"
 
 ;; supposedly good defaults from here:
 ;; https://github.com/angrybacon/dotemacs/blob/master/dotemacs.org#use-better-defaults
-(load-theme 'modus-operandi-deuteranopia t)
-
 (setq-and-tell-customize
  'ad-redefinition-action 'accept                   ; Silence warnings for redefinition
  'auto-window-vscroll nil                          ; Lighten vertical scroll
