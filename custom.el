@@ -65,7 +65,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(tab-bar ((t (:inherit variable-pitch :background "light sky blue" :foreground "black"))))
- '(tab-bar-tab ((t (:inherit tab-bar :box (:line-width (1 . 1) :style released-button)))))
+ '(tab-bar-tab ((t (:inherit tab-bar :background "cyan" :box (:line-width (1 . 1) :style released-button)))))
+ '(tab-bar-tab-group-current ((t (:inherit bold :background "cyan" :foreground "#193668" :box (:line-width (2 . -2) :color "#ffffff")))))
+ '(tab-bar-tab-group-inactive ((t (:background "light sky blue" :foreground "#193668" :box (:line-width (2 . -2) :color "light sky blue")))))
  '(tab-bar-tab-inactive ((t (:inherit tab-bar-tab :background "light sky blue"))))
  '(tab-line ((t (:inherit variable-pitch :background "light sky blue" :foreground "black" :height 0.9))))
  '(tab-line-highlight ((t (:background "cyan" :foreground "black" :box (:line-width (1 . 1) :style released-button)))))
