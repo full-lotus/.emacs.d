@@ -64,6 +64,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-block ((t (:extend t :background "lavender" :foreground "black"))))
+ '(org-block-begin-line ((t (:extend t :foreground "dim gray"))))
+ '(org-block-end-line ((t (:inherit org-block-begin-line :extend t))))
+ '(org-meta-line ((t (:foreground "dim gray"))))
  '(tab-bar ((t (:inherit variable-pitch :background "light sky blue" :foreground "black"))))
  '(tab-bar-tab ((t (:inherit tab-bar :background "cyan" :box (:line-width (1 . 1) :style released-button)))))
  '(tab-bar-tab-group-current ((t (:inherit bold :background "cyan" :foreground "#193668" :box (:line-width (2 . -2) :color "#ffffff")))))
