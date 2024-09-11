@@ -37,6 +37,11 @@ instead of setq, to avoid confusion in Customize interface"
 
 
 ;; --------------- general global settings  ---------------
+;; hide useless title bar, but allow resizing
+(add-to-list 'default-frame-alist '(undecorated . t))
+(add-to-list 'default-frame-alist '(drag-internal-border . 1))
+(add-to-list 'default-frame-alist '(internal-border-width . 5))
+
 ;; taken from Adam James' guide:
 ;; https://gist.github.com/adam-james-v/7a61612ce0649afc78513f54b337d8c9
 
