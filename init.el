@@ -278,6 +278,12 @@ instead of setq, to avoid confusion in Customize interface"
      (emacs-lisp . t)
      (shell . t))))
 
+
+;; detangle on each file save, doing this by hand is tedious
+(add-hook 'after-save-hook 'org-babel-detangle)
+
+
+
 ;; override broken fn, which deletes comments from clojure code
 (add-to-list 'load-path "~/.emacs.d/elisp/")
 (load "~/.emacs.d/elisp/ob-clojure-fix.el")
