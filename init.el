@@ -29,7 +29,7 @@ instead of setq, to avoid confusion in Customize interface"
 (custom-set-variables
  '(package-selected-packages
    '(org-babel-eval-in-repl
-     ob-clojurescript ob-async async paredit clj-refactor 
+     ob-clojurescript ob-async async paredit clj-refactor
      openwith org-tidy cider treemacs-all-the-icons treemacs
      clojure-mode magit)))
 ;; -----------------------------------------------------------------------------
@@ -123,16 +123,16 @@ instead of setq, to avoid confusion in Customize interface"
      ("\*Org Src.*\*"
       (display-buffer-same-window
        display-buffer-use-least-recent-window))
-     
+
      ;; Try to open a buffer in not-selected window first, to not lose focus on
      ;; the current buffer
      ("\*.*\*"
       (display-buffer-use-least-recent-window
        display-buffer-same-window
        display-buffer-pop-up-window
-       display-buffer-pop-up-frame))
- )
+       display-buffer-pop-up-frame)))
 )
+
 
 (delete-selection-mode 1)                         ; Replace region when inserting text
 (display-time-mode 0)                             ; Enable time in the mode-line
@@ -278,6 +278,29 @@ instead of setq, to avoid confusion in Customize interface"
      (emacs-lisp . t)
      (shell . t))))
 
+
+
+(defmacro save-frame-excursion (&rest body)
+   "Eval BODY and return to the currently selected frame."
+   (let ((frame-var (gensym "FRAME")))
+     `(let ((,frame-var (selected-frame)))
+        (unwind-protect
+            (progn ,@body)
+          (select-frame-set-input-focus ,frame-var)))))
+
+;; this fn version doesnt' help, has no visible effect
+;; (defun org-babel-detangle-no-buffer-pop-up (orig-fun &rest args)
+;;   (save-excursion
+;;     (let ((display-buffer-alist
+;;            '((".*" (display-buffer-no-window)))))
+;;       (apply orig-fun args))))
+
+;; disable buffer opening after detangling
+(defun org-babel-detangle-no-buffer-pop-up (orig-fun &rest args)
+  (save-window-excursion
+    (save-frame-excursion
+     (apply orig-fun args))))
+(advice-add 'org-babel-detangle :around #'org-babel-detangle-no-buffer-pop-up)
 
 ;; detangle on each file save, doing this by hand is tedious
 (add-hook 'after-save-hook 'org-babel-detangle)
