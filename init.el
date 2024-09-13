@@ -122,15 +122,7 @@ instead of setq, to avoid confusion in Customize interface"
      ;; Org Src buffers should pop up in the same window
      ("\*Org Src.*\*"
       (display-buffer-same-window
-       display-buffer-use-least-recent-window))
-
-     ;; Try to open a buffer in not-selected window first, to not lose focus on
-     ;; the current buffer
-     ("\*.*\*"
-      (display-buffer-use-least-recent-window
-       display-buffer-same-window
-       display-buffer-pop-up-window
-       display-buffer-pop-up-frame)))
+       display-buffer-use-least-recent-window)))
 )
 
 
