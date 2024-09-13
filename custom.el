@@ -4,6 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(blink-cursor-mode nil)
+ '(cider-font-lock-dynamically nil)
  '(custom-enabled-themes nil)
  '(custom-safe-themes
    '("9ab9441566f7c3b059a205a7c5fad32a58422c2695815436d8cc087860b8c2e5" "7613ef56a3aebbec29618a689e47876a72023bbd1b8393efc51c38f5ed3f33d1" "703a3469ae4d2a83fd5648cac0058d57ca215d0fea7541fb852205e4fae94983" "c7a926ad0e1ca4272c90fce2e1ffa7760494083356f6bb6d72481b879afce1f2" "8a0eba8f06120605030161981032469d87a9832402e4441daa91296aa463f124" "42b221449475e41bc04c5663164ffc5d1672c53163630d41d57ef27d5a01cca9" "21055a064d6d673f666baaed35a69519841134829982cbbb76960575f43424db" default))
@@ -64,6 +65,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(font-lock-comment-face ((t (:foreground "medium aquamarine"))))
+ '(font-lock-constant-face ((t (:foreground "gold"))))
+ '(font-lock-string-face ((t (:foreground "violet red"))))
+ '(font-lock-type-face ((t (:foreground "dark orange"))))
+ '(font-lock-variable-name-face ((t (:foreground "blue1"))))
  '(mode-line ((t (:background "lavender" :foreground "black" :box (:line-width (1 . -1) :style released-button)))))
  '(mode-line-inactive ((t (:inherit mode-line :background "lavender" :foreground "black" :box (1 . -1) :weight light))))
  '(org-block ((t (:extend t :background "lavender" :foreground "black"))))
