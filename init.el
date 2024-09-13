@@ -116,13 +116,25 @@ instead of setq, to avoid confusion in Customize interface"
 
  'display-buffer-alist
   '(
-     ;; treemacs is a file navigator, typically glued to the left screen side
-     ("*Treemacs-.*?" (display-buffer-in-direction) (direction . left))
+    ;; treemacs is a file navigator, typically glued to the left screen side
+    ("\\*Treemacs-.*?" (display-buffer-in-direction) (direction . left))
+    
+    ;; Org Src buffers should pop up in the same window
+    ("\\*Org Src.*\\*"
+     (display-buffer-same-window
+      display-buffer-use-least-recent-window))
+    
+    ;; open cider-test-report in another window, to keep the relevant tests open
+    ("\\*cider-test-report\\*"
+     (display-buffer-use-least-recent-window)
+     (reusable-frames . visible))
 
-     ;; Org Src buffers should pop up in the same window
-     ("\*Org Src.*\*"
-      (display-buffer-same-window
-       display-buffer-use-least-recent-window)))
+    ;; open cider-error in the same window, to keep the relevant code open
+    ("\\*cider-error\\*"
+     (display-buffer-same-window)
+     (inhibit-same-window . nil)
+     (reusable-frames . visible))
+    )
 )
 
 
