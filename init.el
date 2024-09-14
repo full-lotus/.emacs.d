@@ -284,26 +284,13 @@ instead of setq, to avoid confusion in Customize interface"
 
 
 
-(defmacro save-frame-excursion (&rest body)
-   "Eval BODY and return to the currently selected frame."
-   (let ((frame-var (gensym "FRAME")))
-     `(let ((,frame-var (selected-frame)))
-        (unwind-protect
-            (progn ,@body)
-          (select-frame-set-input-focus ,frame-var)))))
-
-;; this fn version doesnt' help, has no visible effect
-;; (defun org-babel-detangle-no-buffer-pop-up (orig-fun &rest args)
-;;   (save-excursion
-;;     (let ((display-buffer-alist
-;;            '((".*" (display-buffer-no-window)))))
-;;       (apply orig-fun args))))
-
-;; disable buffer opening after detangling
+;; prevent window/frame config changes during detangling
 (defun org-babel-detangle-no-buffer-pop-up (orig-fun &rest args)
-  (save-window-excursion
-    (save-frame-excursion
-     (apply orig-fun args))))
+  (save-excursion
+    (let ((display-buffer-alist
+           '((".*" (display-buffer-no-window) (allow-no-window . t)))))
+      (apply orig-fun args))))
+
 (advice-add 'org-babel-detangle :around #'org-babel-detangle-no-buffer-pop-up)
 
 ;; detangle on each file save, doing this by hand is tedious
