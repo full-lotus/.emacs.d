@@ -127,13 +127,20 @@ instead of setq, to avoid confusion in Customize interface"
     ;; open cider-test-report in another window, to keep the relevant tests open
     ("\\*cider-test-report\\*"
      (display-buffer-use-least-recent-window)
-     (reusable-frames . visible))
+     (inhibit-switch-frame . t))
 
     ;; open cider-error in the same window, to keep the relevant code open
     ("\\*cider-error\\*"
      (display-buffer-same-window)
      (inhibit-same-window . nil)
-     (reusable-frames . visible))
+     (inhibit-switch-frame . t))
+
+    ;; open scratch buffers in selected frame, existing windows
+    ("\\*.*\\*"
+     (display-buffer-same-window)
+     (display-buffer-use-some-window)
+     (inhibit-same-window . nil)
+     (inhibit-switch-frame . t))
     )
 )
 
