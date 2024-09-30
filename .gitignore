@@ -13,3 +13,6 @@ session.*
 .cache
 eln-cache
 tramp
+
+# ignore recent files list
+recentf
