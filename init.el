@@ -28,8 +28,8 @@ instead of setq, to avoid confusion in Customize interface"
 
 (custom-set-variables
  '(package-selected-packages
-   '(org-babel-eval-in-repl ivy counsel smex
-     ob-clojurescript ob-async async paredit clj-refactor
+   '(org-babel-eval-in-repl ivy counsel smex wgrep
+     ob-clojurescript ob-async async paredit clj-refactor wgrep
      openwith org-tidy cider treemacs-all-the-icons treemacs
      clojure-mode magit)))
 ;; -----------------------------------------------------------------------------
@@ -42,7 +42,35 @@ instead of setq, to avoid confusion in Customize interface"
 ;; use Ivy + Counsel + Swiper for better completion/search
 ;; settings taken from here https://github.com/abo-abo/swiper
 (ivy-mode)
+;; disable icomplete to fix error:
+;; Error in post-command-hook (icomplete-post-command-hook):
+;; (wrong-number-of-arguments #<subr counsel-ag-function> 3)
+(defun ivy-icomplete (f &rest r)
+  (icomplete-mode -1)
+  (unwind-protect
+       (apply f r)
+    (icomplete-mode 1)))
+
+(advice-add 'ivy-read :around #'ivy-icomplete)
+;; wgrep allows to convert ivy-occur buffer to editable, to get VS Code-like
+;; search and replace experience
+(use-package wgrep
+  :ensure t
+  :custom
+  (wgrep-auto-save-buffer t)
+  (wgrep-change-readonly-file t))
+;; counsel-mode improves many stanard completion-related features
 (counsel-mode)
+;; fix counsel-rg not displaying errors properly
+(with-eval-after-load 'counsel
+  (advice-add 'counsel-rg
+              :around
+              (lambda (func &rest args)
+                (cl-flet ((filter-func (code) (if (= code 2) 0 code)))
+                  (unwind-protect
+                      (progn (advice-add 'process-exit-status :filter-return #'filter-func)
+                             (apply func args))
+                    (advice-remove 'process-exit-status #'filter-func))))))
 ;; use smex to show command history in counsel-M-x
 (smex-initialize)
 ;; Enable orderless matching for execute-extended-command
