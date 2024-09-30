@@ -19,3 +19,6 @@ recentf
 
 # ignore minibuffer input history
 history
+
+# ignore smex command history
+smex-items

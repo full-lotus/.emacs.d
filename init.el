@@ -28,7 +28,7 @@ instead of setq, to avoid confusion in Customize interface"
 
 (custom-set-variables
  '(package-selected-packages
-   '(org-babel-eval-in-repl ivy counsel
+   '(org-babel-eval-in-repl ivy counsel smex
      ob-clojurescript ob-async async paredit clj-refactor
      openwith org-tidy cider treemacs-all-the-icons treemacs
      clojure-mode magit)))
@@ -43,6 +43,8 @@ instead of setq, to avoid confusion in Customize interface"
 ;; settings taken from here https://github.com/abo-abo/swiper
 (ivy-mode)
 (counsel-mode)
+;; use smex to show command history in counsel-M-x
+(smex-initialize)
 ;; Enable orderless matching for execute-extended-command
 (setq-and-tell-customize 'ivy-re-builders-alist
                          '((counsel-M-x . ivy--regex-ignore-order)
