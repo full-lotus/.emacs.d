@@ -16,3 +16,6 @@ tramp
 
 # ignore recent files list
 recentf
+
+# ignore minibuffer input history
+history
