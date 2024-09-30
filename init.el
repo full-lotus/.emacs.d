@@ -184,6 +184,13 @@ instead of setq, to avoid confusion in Customize interface"
      (display-buffer-use-some-window)
      (inhibit-same-window . nil)
      (inhibit-switch-frame . t))
+
+    ;; try open all other buffers in the other window first, then the same
+    (".*"
+     (display-buffer-use-least-recent-window)
+     (display-buffer-same-window)
+     (display-buffer-use-some-window)
+     (inhibit-switch-frame . t))
     )
 )
 
