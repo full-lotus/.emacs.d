@@ -37,14 +37,20 @@ instead of setq, to avoid confusion in Customize interface"
 
 
 ;; --------------- general global settings  ---------------
+;; save command history, e. g. for execute-extended-command
+(savehist-mode 1)
 ;; use Ivy + Counsel + Swiper for better completion/search
 ;; settings taken from here https://github.com/abo-abo/swiper
 (ivy-mode)
 (counsel-mode)
-;; Enable fuzzy matching
+;; Enable orderless matching for execute-extended-command
 (setq-and-tell-customize 'ivy-re-builders-alist
                          '((counsel-M-x . ivy--regex-ignore-order)
                            (t . ivy--regex-plus)))
+;; Drop beginning-of-string anchor ^ from execute-extended-command
+(with-eval-after-load 'ivy
+    (setcdr (assoc 'counsel-M-x ivy-initial-inputs-alist) ""))
+
 (setq-and-tell-customize 'ivy-use-virtual-buffers t)
 (setq-and-tell-customize 'enable-recursive-minibuffers t)
 ;; enter an input that matches one of the candidates instead of this candidate
