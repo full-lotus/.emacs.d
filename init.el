@@ -225,12 +225,10 @@ instead of setq, to avoid confusion in Customize interface"
      (inhibit-same-window . nil)
      (inhibit-switch-frame . t))
 
-    ;; try open all other buffers in the other window first, then the same
-    (".*"
-     (display-buffer-use-least-recent-window)
-     (display-buffer-same-window)
-     (display-buffer-use-some-window)
-     (inhibit-switch-frame . t))
+    ;; open search matches from ivy-occur buffer in another window
+    ((major-mode . ivy-occur-grep-mode)
+     (display-buffer-in-previous-window)
+     (inhibit-same-window . t))
     )
 )
 
