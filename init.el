@@ -39,19 +39,24 @@ instead of setq, to avoid confusion in Customize interface"
 ;; --------------- general global settings  ---------------
 ;; save command history, e. g. for execute-extended-command
 (savehist-mode 1)
+
 ;; use Ivy + Counsel + Swiper for better completion/search
 ;; settings taken from here https://github.com/abo-abo/swiper
 (ivy-mode)
+(setq-and-tell-customize 'ivy-use-virtual-buffers t)
+(setq-and-tell-customize 'enable-recursive-minibuffers t)
+
 ;; disable icomplete to fix error:
 ;; Error in post-command-hook (icomplete-post-command-hook):
 ;; (wrong-number-of-arguments #<subr counsel-ag-function> 3)
 (defun ivy-icomplete (f &rest r)
   (icomplete-mode -1)
   (unwind-protect
-       (apply f r)
+      (apply f r)
     (icomplete-mode 1)))
 
 (advice-add 'ivy-read :around #'ivy-icomplete)
+
 ;; wgrep allows to convert ivy-occur buffer to editable, to get VS Code-like
 ;; search and replace experience
 (use-package wgrep
@@ -59,8 +64,10 @@ instead of setq, to avoid confusion in Customize interface"
   :custom
   (wgrep-auto-save-buffer t)
   (wgrep-change-readonly-file t))
+
 ;; counsel-mode improves many stanard completion-related features
 (counsel-mode)
+
 ;; fix counsel-rg not displaying errors properly
 (with-eval-after-load 'counsel
   (advice-add 'counsel-rg
@@ -71,23 +78,26 @@ instead of setq, to avoid confusion in Customize interface"
                       (progn (advice-add 'process-exit-status :filter-return #'filter-func)
                              (apply func args))
                     (advice-remove 'process-exit-status #'filter-func))))))
+
 ;; use smex to show command history in counsel-M-x
 (smex-initialize)
+
 ;; Enable orderless matching for execute-extended-command
 (setq-and-tell-customize 'ivy-re-builders-alist
                          '((counsel-M-x . ivy--regex-ignore-order)
                            (t . ivy--regex-plus)))
+
 ;; Drop beginning-of-string anchor ^ from execute-extended-command
 (with-eval-after-load 'ivy
-    (setcdr (assoc 'counsel-M-x ivy-initial-inputs-alist) ""))
+  (setcdr (assoc 'counsel-M-x ivy-initial-inputs-alist) ""))
 
-(setq-and-tell-customize 'ivy-use-virtual-buffers t)
-(setq-and-tell-customize 'enable-recursive-minibuffers t)
 ;; enter an input that matches one of the candidates instead of this candidate
 (setq-and-tell-customize' ivy-use-selectable-prompt t)
+
 ;; enable this if you want `swiper' to use it
 ;; (setq search-default-mode #'char-fold-to-regexp)
 (global-set-key "\C-s" 'swiper)
+
 ;; some of those hotkeys are redundant because of counsel-mode
 ;; but I'm not sure which I can drop, and to lazy to check one-by-one
 (global-set-key "\C-s" 'swiper)
