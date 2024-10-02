@@ -240,11 +240,9 @@ instead of setq, to avoid confusion in Customize interface"
    ((major-mode . ivy-occur-grep-mode)
     (display-buffer-use-least-recent-window)
     (inhibit-same-window . t))
-   )
- )
 
 
-(delete-selection-mode 1)                         ; Replace region when inserting text
+
 (display-time-mode 0)                             ; Enable time in the mode-line
 (fset 'yes-or-no-p 'y-or-n-p)                     ; Replace yes/no prompts with y/n
 (menu-bar-mode 0)                                 ; Disable the menu bar
