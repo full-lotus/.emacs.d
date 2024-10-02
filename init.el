@@ -273,6 +273,8 @@ instead of setq, to avoid confusion in Customize interface"
 ;; don't open new buffers when navigating dirs in dired
 (setq-and-tell-customize 'dired-kill-when-opening-new-dired-buffer t)
 
+;; use screen flash instead of annoying error sound
+(setq-and-tell-customize 'visible-bell t)
 
 (display-time-mode 0)                             ; Enable time in the mode-line
 (fset 'yes-or-no-p 'y-or-n-p)                     ; Replace yes/no prompts with y/n
