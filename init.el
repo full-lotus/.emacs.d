@@ -241,6 +241,15 @@ instead of setq, to avoid confusion in Customize interface"
     (display-buffer-use-least-recent-window)
     (inhibit-same-window . t))
 
+   ;; prevent all other buffers from opening new windows and switching frames
+   (".*"
+    (display-buffer-use-least-recent-window
+     display-buffer-some-window)
+    (inhibit-same-window . nil)
+    (inhibit-switch-frame . t))
+   )
+ )
+
 
 
 (display-time-mode 0)                             ; Enable time in the mode-line
