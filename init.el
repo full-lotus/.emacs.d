@@ -175,73 +175,73 @@ instead of setq, to avoid confusion in Customize interface"
 ;; supposedly good defaults from here:
 ;; https://github.com/angrybacon/dotemacs/blob/master/dotemacs.org#use-better-defaults
 (setq-and-tell-customize
- 'ad-redefinition-action 'accept                   ; Silence warnings for redefinition
- 'auto-window-vscroll nil                          ; Lighten vertical scroll
- 'confirm-kill-emacs 'yes-or-no-p                  ; Confirm before exiting Emacs
- 'display-time-default-load-average nil            ; Don't display load average
- 'display-time-mode 0                              ; Display time in frames
- 'display-time-format "%H:%M"                      ; Format the time string
- 'fill-column 80                                   ; Set width for automatic line breaks
+ 'ad-redefinition-action 'accept        ; Silence warnings for redefinition
+ 'auto-window-vscroll nil               ; Lighten vertical scroll
+ 'confirm-kill-emacs 'yes-or-no-p       ; Confirm before exiting Emacs
+ 'display-time-default-load-average nil ; Don't display load average
+ 'display-time-mode 0                   ; Display time in frames
+ 'display-time-format "%H:%M"           ; Format the time string
+ 'fill-column 80                        ; Set width for automatic line breaks
  'display-line-numbers-type nil
- 'help-window-select t                             ; Focus new help windows when opened
- 'indent-tabs-mode nil                             ; Stop using tabs to indent
- 'inhibit-startup-screen t                         ; Disable start-up screen
- 'initial-scratch-message ""                       ; Empty the initial *scratch* buffer
- 'left-margin-width 1 'right-margin-width 1        ; Add left and right margins
- 'mouse-yank-at-point t                            ; Yank at point rather than pointer
- 'ns-use-srgb-colorspace nil                       ; Don't use sRGB colors
- 'select-enable-clipboard t                        ; Merge system's and Emacs' clipboard
+ 'help-window-select t                      ; Focus new help windows when opened
+ 'indent-tabs-mode nil                      ; Stop using tabs to indent
+ 'inhibit-startup-screen t                  ; Disable start-up screen
+ 'initial-scratch-message ""                ; Empty the initial *scratch* buffer
+ 'left-margin-width 1 'right-margin-width 1 ; Add left and right margins
+ 'mouse-yank-at-point t                     ; Yank at point rather than pointer
+ 'ns-use-srgb-colorspace nil                ; Don't use sRGB colors
+ 'select-enable-clipboard t             ; Merge system's and Emacs' clipboard
  'sentence-end-double-space nil
  ;; try to reuse existing window for opening buffers              ; End a sentence after a dot and a space
- 'show-trailing-whitespace nil                     ; Display trailing whitespaces
- 'split-height-threshold nil                       ; Disable vertical window splitting
- 'split-width-threshold 1                          ; Disable horizontal window splitting
- 'tab-width 4                                      ; Set width for tabs
- 'uniquify-buffer-name-style 'forward              ; Uniquify buffer names
- 'window-combination-resize t                      ; Resize windows proportionally
- 'x-stretch-cursor t                               ; Stretch cursor to the glyph width
+ 'show-trailing-whitespace nil          ; Display trailing whitespaces
+ 'split-height-threshold nil            ; Disable vertical window splitting
+ 'split-width-threshold 1               ; Disable horizontal window splitting
+ 'tab-width 4                           ; Set width for tabs
+ 'uniquify-buffer-name-style 'forward   ; Uniquify buffer names
+ 'window-combination-resize t           ; Resize windows proportionally
+ 'x-stretch-cursor t                    ; Stretch cursor to the glyph width
  'scroll-step 1
  'scroll-conservatively 10000
 
  'display-buffer-alist
-  '(
-    ;; treemacs is a file navigator, typically glued to the left screen side
-    ("\\*Treemacs-.*?" (display-buffer-in-direction) (direction . left))
+ '(
+   ;; treemacs is a file navigator, typically glued to the left screen side
+   ("\\*Treemacs-.*?" (display-buffer-in-direction) (direction . left))
 
-    ;; Org Src buffers should pop up in the same window
-    ("\\*Org Src.*\\*"
-     (display-buffer-same-window
-      display-buffer-use-least-recent-window))
+   ;; Org Src buffers should pop up in the same window
+   ("\\*Org Src.*\\*"
+    (display-buffer-same-window
+     display-buffer-use-least-recent-window))
 
-    ;; open cider-test-report in another window, to keep the relevant tests open
-    ("\\*cider-test-report\\*"
-     (display-buffer-use-least-recent-window)
-     (inhibit-switch-frame . t))
+   ;; open cider-test-report in another window, to keep the relevant tests open
+   ("\\*cider-test-report\\*"
+    (display-buffer-use-least-recent-window)
+    (inhibit-switch-frame . t))
 
-    ;; open cider-error in the same window, to keep the relevant code open
-    ("\\*cider-error\\*"
-     (display-buffer-same-window)
-     (inhibit-same-window . nil)
-     (inhibit-switch-frame . t))
+   ;; open cider-error in the same window, to keep the relevant code open
+   ("\\*cider-error\\*"
+    (display-buffer-same-window)
+    (inhibit-same-window . nil)
+    (inhibit-switch-frame . t))
     
-    ;; open *Help* buffers in another window
-    ("\\*Help\\*"
-     (display-buffer-use-least-recent-window)
-     (inhibit-same-window . t))
+   ;; open *Help* buffers in another window
+   ("\\*Help\\*"
+    (display-buffer-use-least-recent-window)
+    (inhibit-same-window . t))
 
-    ;; open scratch buffers in selected frame, existing windows
-    ("\\*.*\\*"
-     (display-buffer-same-window
-      display-buffer-use-some-window)
-     (inhibit-same-window . nil)
-     (inhibit-switch-frame . t))
+   ;; open scratch buffers in selected frame, existing windows
+   ("\\*.*\\*"
+    (display-buffer-same-window
+     display-buffer-use-some-window)
+    (inhibit-same-window . nil)
+    (inhibit-switch-frame . t))
 
-    ;; open search matches from ivy-occur buffer in another window
-    ((major-mode . ivy-occur-grep-mode)
-     (display-buffer-use-least-recent-window)
-     (inhibit-same-window . t))
-    )
-)
+   ;; open search matches from ivy-occur buffer in another window
+   ((major-mode . ivy-occur-grep-mode)
+    (display-buffer-use-least-recent-window)
+    (inhibit-same-window . t))
+   )
+ )
 
 
 (delete-selection-mode 1)                         ; Replace region when inserting text
