@@ -164,7 +164,9 @@ instead of setq, to avoid confusion in Customize interface"
 (tool-bar-mode 0)
 (scroll-bar-mode 1) ;; enable vertical scroll bars
 (horizontal-scroll-bar-mode 1) ;; enable horizontal scroll bars
-(cua-mode 1)
+(delete-selection-mode 1) ;; delete active region on yanking (paste)
+
+(global-set-key (kbd "C-z") 'undo) ;; make undo hotkey familiar
 
 ;; supposedly good defaults from here:
 ;; https://github.com/angrybacon/dotemacs/blob/master/dotemacs.org#use-better-defaults
@@ -304,7 +306,6 @@ instead of setq, to avoid confusion in Customize interface"
 (define-key paredit-mode-map (kbd "C-M-<") 'paredit-backward-slurp-sexp)
 
 (require 'cider)
-(define-key cua-global-keymap [C-return] nil)
 (define-key cider-repl-mode-map [C-return] nil)
 ;; those hotkeys are also from VS Code Calva
 
