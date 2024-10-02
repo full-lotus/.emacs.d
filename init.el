@@ -94,6 +94,22 @@ instead of setq, to avoid confusion in Customize interface"
 ;; enter an input that matches one of the candidates instead of this candidate
 (setq-and-tell-customize' ivy-use-selectable-prompt t)
 
+(defun rapid-replace ()
+  "Opens up wgrep buffer with query-replace-regexp started"
+  (interactive)
+  (let* ((thing (ivy-thing-at-point))
+         (search-str (read-string "Enter at least 3 chars to replace: " thing)))
+    (run-at-time nil nil (lambda ()
+                           (run-at-time nil nil (lambda ()
+                                                  (ivy-wgrep-change-to-wgrep-mode)))
+                           (ivy-occur)))
+    (counsel-rg search-str)
+    ;; (query-replace-regexp (regexp-quote thing))
+    )
+  )
+
+(global-set-key (kbd "C-S-h") 'rapid-replace)
+
 (defun counsel-git-grep-ivy-thing-at-point ()
   "Run `counsel-git-grep` with ivy-thing-at-point as the initial input."
   (interactive)
@@ -223,7 +239,7 @@ instead of setq, to avoid confusion in Customize interface"
     (display-buffer-same-window)
     (inhibit-same-window . nil)
     (inhibit-switch-frame . t))
-    
+
    ;; open *Help* buffers in another window
    ("\\*Help\\*"
     (display-buffer-use-least-recent-window)
