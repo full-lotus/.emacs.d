@@ -257,6 +257,10 @@ instead of setq, to avoid confusion in Customize interface"
     (display-buffer-use-least-recent-window)
     (inhibit-same-window . t))
 
+   ((major-mode . dired-mode)
+    (display-buffer-reuse-mode-window)
+    (inhibit-same-window . nil))
+
    ;; prevent all other buffers from opening new windows and switching frames
    (".*"
     (display-buffer-use-least-recent-window
@@ -266,6 +270,8 @@ instead of setq, to avoid confusion in Customize interface"
    )
  )
 
+;; don't open new buffers when navigating dirs in dired
+(setq-and-tell-customize 'dired-kill-when-opening-new-dired-buffer t)
 
 
 (display-time-mode 0)                             ; Enable time in the mode-line
