@@ -217,17 +217,22 @@ instead of setq, to avoid confusion in Customize interface"
      (display-buffer-same-window)
      (inhibit-same-window . nil)
      (inhibit-switch-frame . t))
+    
+    ;; open *Help* buffers in another window
+    ("\\*Help\\*"
+     (display-buffer-use-least-recent-window)
+     (inhibit-same-window . t))
 
     ;; open scratch buffers in selected frame, existing windows
     ("\\*.*\\*"
-     (display-buffer-same-window)
-     (display-buffer-use-some-window)
+     (display-buffer-same-window
+      display-buffer-use-some-window)
      (inhibit-same-window . nil)
      (inhibit-switch-frame . t))
 
     ;; open search matches from ivy-occur buffer in another window
     ((major-mode . ivy-occur-grep-mode)
-     (display-buffer-in-previous-window)
+     (display-buffer-use-least-recent-window)
      (inhibit-same-window . t))
     )
 )
