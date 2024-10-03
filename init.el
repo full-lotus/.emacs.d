@@ -402,7 +402,7 @@ instead of setq, to avoid confusion in Customize interface"
 ;; --------------- window/tab navigation ---------------
 (global-set-key (kbd "C-o") 'other-window)
 (global-set-key (kbd "M-o") 'other-frame)
-(global-set-key (kbd "C-b") 'treemacs)
+(global-set-key (kbd "C-S-b") 'treemacs)
 (global-set-key (kbd "C-x w") 'bury-buffer)
 
 (custom-set-variables
