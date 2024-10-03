@@ -132,7 +132,8 @@ instead of setq, to avoid confusion in Customize interface"
 
 ;; some of those hotkeys are redundant because of counsel-mode
 ;; but I'm not sure which I can drop, and to lazy to check one-by-one
-(global-set-key "\C-s" 'swiper-thing-at-point)
+(global-set-key (kbd "C-S-s") 'swiper-thing-at-point)
+(global-set-key (kbd "C-s") 'swiper)
 (global-set-key (kbd "C-c C-r") 'ivy-resume)
 (global-set-key (kbd "<f6>") 'ivy-resume)
 (global-set-key (kbd "M-x") 'counsel-M-x)
@@ -144,7 +145,8 @@ instead of setq, to avoid confusion in Customize interface"
 (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
 (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
 (global-set-key (kbd "C-c g") 'counsel-git)
-(global-set-key (kbd "C-c j") 'counsel-git-grep-ivy-thing-at-point)
+(global-set-key (kbd "C-c C-S-j") 'counsel-git-grep-ivy-thing-at-point)
+(global-set-key (kbd "C-c C-j") 'counsel-git-grep)
 (global-set-key (kbd "C-c k") 'counsel-ag)
 (global-set-key (kbd "C-x l") 'counsel-locate)
 (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
