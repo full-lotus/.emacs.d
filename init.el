@@ -94,21 +94,33 @@ instead of setq, to avoid confusion in Customize interface"
 ;; enter an input that matches one of the candidates instead of this candidate
 (setq-and-tell-customize' ivy-use-selectable-prompt t)
 
-(defun rapid-replace ()
+;; this rapid replace is still not as good as want it to be
+;; probably I can make a better version by overriding ivy-read in
+;; counsel-git-grep, to get interactive completion + wgrep +
+;; query-replace-regexp with regex already entered
+(defun rapid-replace-across-git-repo ()
   "Opens up wgrep buffer with query-replace-regexp started"
   (interactive)
-  (let* ((thing (ivy-thing-at-point))
-         (search-str (read-string "Enter at least 3 chars to replace: " thing)))
-    (run-at-time nil nil (lambda ()
-                           (run-at-time nil nil (lambda ()
-                                                  (ivy-wgrep-change-to-wgrep-mode)))
-                           (ivy-occur)))
-    (counsel-rg search-str)
-    ;; (query-replace-regexp (regexp-quote thing))
-    )
-  )
+  (eval 
+   '(let* ((thing (ivy-thing-at-point))
+          (search-str (read-string "Enter at least 3 chars to replace: " thing)))
+     (run-at-time
+      nil nil
+      (lambda ()
+        (run-at-time
+         nil nil
+         (lambda ()
+           (run-at-time
+            nil nil
+            (lambda ()
+              (call-interactively 'query-replace-regexp
+                                               (regexp-quote search-str))))
+           (ivy-wgrep-change-to-wgrep-mode)))
+        (ivy-occur)))
+     (counsel-git-grep search-str))
+   t))
 
-(global-set-key (kbd "C-S-h") 'rapid-replace)
+(global-set-key (kbd "C-S-h") 'rapid-replace-across-git-repo)
 
 (defun counsel-git-grep-ivy-thing-at-point ()
   "Run `counsel-git-grep` with ivy-thing-at-point as the initial input."
