@@ -1,4 +1,4 @@
-;; --------------- emacs customization ---------------
+;; --------------- emacs Customize module hacks ---------------
 (defun setq-and-tell-customize (&rest var-val-pairs)
   "Set variable value and make sure Customize registers this change. Use
 instead of setq, to avoid confusion in Customize interface"
@@ -14,7 +14,7 @@ instead of setq, to avoid confusion in Customize interface"
 
 
 ;; --------------- package management ---------------
-(setq package-archives
+(setq-and-tell-customize 'package-archives
  '(("gnu" . "http://elpa.gnu.org/packages/")
    ("non-gnu" . "https://elpa.nongnu.org/nongnu/")
    ("melpa" . "http://melpa.org/packages/")))
@@ -32,6 +32,13 @@ instead of setq, to avoid confusion in Customize interface"
      ob-clojurescript ob-async async paredit clj-refactor wgrep
      openwith org-tidy cider treemacs-all-the-icons treemacs
      clojure-mode magit)))
+;; -----------------------------------------------------------------------------
+
+
+
+;; --------------- other elisp customization files ---------------
+(add-to-list 'load-path "~/.emacs.d/elisp/")
+(load "~/.emacs.d/elisp/replace+.el")
 ;; -----------------------------------------------------------------------------
 
 
@@ -92,32 +99,41 @@ instead of setq, to avoid confusion in Customize interface"
   (setcdr (assoc 'counsel-M-x ivy-initial-inputs-alist) ""))
 
 ;; enter an input that matches one of the candidates instead of this candidate
-(setq-and-tell-customize' ivy-use-selectable-prompt t)
 
-;; this rapid replace is still not as good as want it to be
-;; probably I can make a better version by overriding ivy-read in
-;; counsel-git-grep, to get interactive completion + wgrep +
-;; query-replace-regexp with regex already entered
+(defun get-initial-input-for-replace ()
+  nil)
+(setq-and-tell-customize 'search/replace-default-fn
+                         'get-initial-input-for-replace)
+
+(defun query-replace-regexp-with-initial-input (input)
+  (eval
+   '(let ((original-fn (symbol-function 'initial-input-for-replace)))
+      (fset 'get-initial-input-for-replace (lambda () (regexp-quote input)))
+      (unwind-protect
+          (call-interactively 'query-replace-regexp)
+        (fset 'get-initial-input-for-replace original-fn)))
+   t))
+
 (defun rapid-replace-across-git-repo ()
   "Opens up wgrep buffer with query-replace-regexp started"
   (interactive)
   (eval 
    '(let* ((thing (ivy-thing-at-point))
-          (search-str (read-string "Enter at least 3 chars to replace: " thing)))
-     (run-at-time
-      nil nil
-      (lambda ()
-        (run-at-time
-         nil nil
-         (lambda ()
-           (run-at-time
-            nil nil
-            (lambda ()
-              (call-interactively 'query-replace-regexp
-                                               (regexp-quote search-str))))
-           (ivy-wgrep-change-to-wgrep-mode)))
-        (ivy-occur)))
-     (counsel-git-grep search-str))
+           (search-str (read-string "Enter at least 3 chars to replace: " thing)))
+      (run-at-time
+       nil nil
+       (lambda ()
+         (run-at-time
+          nil nil
+          (lambda ()
+            (run-at-time
+             nil nil
+             (lambda ()
+               (query-replace-regexp-with-initial-input search-str)
+               ))
+            (ivy-wgrep-change-to-wgrep-mode)))
+         (ivy-occur)))
+      (counsel-git-grep search-str))
    t))
 
 (global-set-key (kbd "C-S-h") 'rapid-replace-across-git-repo)
