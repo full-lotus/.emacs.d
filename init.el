@@ -99,6 +99,9 @@ instead of setq, to avoid confusion in Customize interface"
   (setcdr (assoc 'counsel-M-x ivy-initial-inputs-alist) ""))
 
 ;; enter an input that matches one of the candidates instead of this candidate
+(setq-and-tell-customize 'ivy-use-selectable-prompt t)
+
+
 
 (defun get-initial-input-for-replace ()
   nil)
