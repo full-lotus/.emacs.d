@@ -31,7 +31,7 @@
  '(org-startup-indented nil)
  '(org-tidy-protect-overlay nil)
  '(package-selected-packages
-   '(wgrep smex counsel ivy org ayu-theme org-babel-eval-in-repl ob-clojurescript ob-async async paredit clj-refactor modus-themes openwith org-tidy cider treemacs-all-the-icons treemacs clojure-mode magit))
+   '(replace-symbol wgrep smex counsel ivy org ayu-theme org-babel-eval-in-repl ob-clojurescript ob-async async paredit clj-refactor modus-themes openwith org-tidy cider treemacs-all-the-icons treemacs clojure-mode magit))
  '(safe-local-variable-values
    '((cider-clojure-cli-parameters . "-M:cider/nrepl:dev")
      (cider-clojure-cli-parameters . "-M:dev")
