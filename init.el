@@ -452,7 +452,7 @@ instead of setq, to avoid confusion in Customize interface"
      (emacs-lisp . t)
      (shell . t))))
 
-
+(setq-and-tell-customize 'org-support-shift-select 'always)
 
 ;; prevent window/frame config changes during detangling
 (defun org-babel-detangle-no-buffer-pop-up (orig-fun &rest args)
