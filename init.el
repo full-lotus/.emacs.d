@@ -468,6 +468,42 @@ instead of setq, to avoid confusion in Customize interface"
 
 
 
+;; Tangling can be set to occur automatically on save. This makes things way
+;; simpler. Additionally, we set up todos to be moved to the agenda on save.
+;; This is just to keep things organized if todos are added to project org
+;; files
+
+;; Tangle on save only occurs if the buffer being saved is an Org-Mode file.
+
+(defun org-babel-clojure-cider-current-ns ())
+
+(defun tangle-on-save-org-mode-file ()
+  (when (and (string-match-p
+              (regexp-quote ".org") (message "%s" (current-buffer)))
+             (not (string-match-p
+                   (regexp-quote "[") (message "%s" (current-buffer)))))
+    (org-babel-tangle)))
+
+(add-hook 'after-save-hook 'tangle-on-save-org-mode-file)
+
+(defun to-agenda-on-save-org-mode-file ()
+  (when (string= (message "%s" major-mode) "org-mode")
+    (org-agenda-file-to-front)))
+
+(add-hook 'after-save-hook 'to-agenda-on-save-org-mode-file)
+;; disable new buffer pop-up caused by tangling
+(defun org-babel-tangle-no-buffer-pop-up (orig-fun &rest args)
+  (save-excursion
+    (let ((display-buffer-alist
+           '((".*" (display-buffer-no-window) (allow-no-window . t)))))
+      (apply orig-fun args))))
+
+(advice-add 'org-babel-tangle :around 'org-babel-tangle-no-buffer-pop-up)
+
+
+
+
+
 ;; override broken fn, which deletes comments from clojure code
 (add-to-list 'load-path "~/.emacs.d/elisp/")
 (load "~/.emacs.d/elisp/ob-clojure-fix.el")
@@ -564,33 +600,6 @@ instead of setq, to avoid confusion in Customize interface"
 ;; This is annoying and confusing.
 (remove-hook 'org-cycle-hook
              'org-optimize-window-after-visibility-change)
-
-
-
-;; Tangling can be set to occur automatically on save. This makes things way
-;; simpler. Additionally, we set up todos to be moved to the agenda on save.
-;; This is just to keep things organized if todos are added to project org
-;; files. Once again, this is a good feature that I underutilize due to… how
-;; I am as a person, I guess??
-
-;; Tangle on save only occurs if the buffer being saved is an Org-Mode file.
-
-(defun org-babel-clojure-cider-current-ns ())
-
-(defun tangle-on-save-org-mode-file ()
-  (when (and (string-match-p
-              (regexp-quote ".org") (message "%s" (current-buffer)))
-             (not (string-match-p
-                   (regexp-quote "[") (message "%s" (current-buffer)))))
-    (org-babel-tangle)))
-
-(add-hook 'after-save-hook 'tangle-on-save-org-mode-file)
-
-(defun to-agenda-on-save-org-mode-file ()
-  (when (string= (message "%s" major-mode) "org-mode")
-    (org-agenda-file-to-front)))
-
-(add-hook 'after-save-hook 'to-agenda-on-save-org-mode-file)
 
 
 
