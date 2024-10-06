@@ -425,18 +425,7 @@ instead of setq, to avoid confusion in Customize interface"
 (global-set-key (kbd "C-x w") 'bury-buffer)
 
 (custom-set-variables
- ;; enable tab-bar-mode
- '(tab-bar-mode t)
- ;; enable tabs globally
- '(global-tab-line-mode t)
- ;; enable tab history
- '(tab-bar-history-mode t)
- ;; records window configuration changes, allowing to undo/redo the changes
  '(winner-mode t))
-
-;; hotkeys to navigate tab history
-(global-set-key (kbd "M-[") 'tab-bar-history-back)
-(global-set-key (kbd "M-]") 'tab-bar-history-forward)
 ;; -----------------------------------------------------------------------------
 
 

@@ -15,7 +15,6 @@
  '(display-fill-column-indicator-column 80)
  '(fido-mode t)
  '(global-display-fill-column-indicator-mode t)
- '(global-tab-line-mode t)
  '(openwith-associations '(("\\.\\(doc\\|docx\\)\\'" "libreoffice.writer" (file))))
  '(org-agenda-files
    '("/mnt/sda2/projects/dev/form-slap/README.org" "/home/german/Desktop/zigiwave/work-todo.org" "/mnt/sda2/projects/dev/job-search/resume/german-nurlygaianov.org" "/home/german/Desktop/zigiwave/work-todo-archive.org" "/mnt/sda2/projects/dev/cascad/design-review.org"))
@@ -57,10 +56,6 @@
      (cider-clojure-cli-global-options . " -A:dev -X dev/-main --middleware [cider.nrepl/cider-middleware,shadow.cljs.devtools.server.nrepl/middleware]")
      (cider-preferred-build-tool . clj)))
  '(save-interprogram-paste-before-kill t)
- '(tab-bar-close-button-show nil)
- '(tab-bar-history-mode t)
- '(tab-bar-mode t)
- '(tab-line-close-button-show nil)
  '(winner-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
