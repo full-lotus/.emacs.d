@@ -68,8 +68,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(font-lock-comment-face ((t (:foreground "medium aquamarine"))))
- '(font-lock-constant-face ((t (:foreground "gold"))))
- '(font-lock-string-face ((t (:foreground "violet red"))))
+ '(font-lock-constant-face ((t (:foreground "saddle brown"))))
+ '(font-lock-keyword-face ((t (:foreground "violet red"))))
+ '(font-lock-string-face ((t (:foreground "dark violet"))))
  '(font-lock-type-face ((t (:foreground "dark orange"))))
  '(font-lock-variable-name-face ((t (:foreground "blue1"))))
  '(link ((t (:foreground "dark cyan" :underline t))))
