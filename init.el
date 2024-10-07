@@ -164,7 +164,7 @@ instead of setq, to avoid confusion in Customize interface"
 (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
 (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
 (global-set-key (kbd "C-c g") 'counsel-git)
-(global-set-key (kbd "C-c C-S-j") 'counsel-git-grep-ivy-thing-at-point)
+(global-set-key (kbd "C-c C-J") 'counsel-git-grep-ivy-thing-at-point)
 (global-set-key (kbd "C-c C-j") 'counsel-git-grep)
 (global-set-key (kbd "C-c k") 'counsel-ag)
 (global-set-key (kbd "C-x l") 'counsel-locate)
