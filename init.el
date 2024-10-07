@@ -291,7 +291,9 @@ instead of setq, to avoid confusion in Customize interface"
     (inhibit-same-window . t))
 
    ((major-mode . dired-mode)
-    (display-buffer-reuse-mode-window)
+    (display-buffer-same-window
+     display-buffer-reuse-window
+     display-buffer-use-least-recent-window) 
     (inhibit-same-window . nil))
 
    ;; prevent all other buffers from opening new windows and switching frames
@@ -304,7 +306,7 @@ instead of setq, to avoid confusion in Customize interface"
  )
 
 ;; don't open new buffers when navigating dirs in dired
-(setq-and-tell-customize 'dired-kill-when-opening-new-dired-buffer t)
+(setq-and-tell-customize 'dired-kill-when-opening-new-dired-buffer nil)
 
 ;; use screen flash instead of annoying error sound
 (setq-and-tell-customize 'visible-bell t)
