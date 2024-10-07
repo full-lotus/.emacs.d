@@ -232,6 +232,7 @@ instead of setq, to avoid confusion in Customize interface"
  'display-time-format "%H:%M"           ; Format the time string
  'fill-column 80                        ; Set width for automatic line breaks
  'display-line-numbers-type nil
+ 'column-number-mode t
  'help-window-select t                      ; Focus new help windows when opened
  'indent-tabs-mode nil                      ; Stop using tabs to indent
  'inhibit-startup-screen t                  ; Disable start-up screen
