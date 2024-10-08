@@ -307,7 +307,7 @@ instead of setq, to avoid confusion in Customize interface"
  )
 
 ;; don't open new buffers when navigating dirs in dired
-(setq-and-tell-customize 'dired-kill-when-opening-new-dired-buffer nil)
+(setq-and-tell-customize 'dired-kill-when-opening-new-dired-buffer t)
 
 ;; use screen flash instead of annoying error sound
 (setq-and-tell-customize 'visible-bell t)
@@ -344,7 +344,7 @@ instead of setq, to avoid confusion in Customize interface"
 (setq-and-tell-customize
       'nrepl-hide-special-buffers t
       'cider-repl-clear-help-banner t
-      'cider-font-lock-dynamically nil
+      'cider-font-lock-dynamically '(macro core function var)
       'cider-popup-stacktraces nil
       'cider-repl-popup-stacktraces t
       'cider-repl-use-pretty-printing t
