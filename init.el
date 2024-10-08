@@ -39,6 +39,9 @@ instead of setq, to avoid confusion in Customize interface"
 ;; --------------- other elisp customization files ---------------
 (add-to-list 'load-path "~/.emacs.d/elisp/")
 (load "~/.emacs.d/elisp/replace+.el")
+
+;; this prevents replace+ being limited to an active region
+(setq-and-tell-customize 'search/replace-region-as-default-flag t)
 ;; -----------------------------------------------------------------------------
 
 
@@ -120,7 +123,7 @@ instead of setq, to avoid confusion in Customize interface"
 (defun rapid-replace-across-git-repo ()
   "Opens up wgrep buffer with query-replace-regexp started"
   (interactive)
-  (eval 
+  (eval
    '(let* ((thing (ivy-thing-at-point))
            (search-str (read-string "Enter at least 3 chars to replace: " thing)))
       (run-at-time
@@ -294,7 +297,7 @@ instead of setq, to avoid confusion in Customize interface"
    ((major-mode . dired-mode)
     (display-buffer-same-window
      display-buffer-reuse-window
-     display-buffer-use-least-recent-window) 
+     display-buffer-use-least-recent-window)
     (inhibit-same-window . nil))
 
    ;; prevent all other buffers from opening new windows and switching frames
