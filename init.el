@@ -300,6 +300,13 @@ instead of setq, to avoid confusion in Customize interface"
      display-buffer-use-least-recent-window)
     (inhibit-same-window . nil))
 
+   ;; do not switch windows in org-mode, e. g. for org-mark-ring-goto
+   ((major-mode . org-mode)
+    (display-buffer-same-window
+     display-buffer-reuse-window
+     display-buffer-use-least-recent-window)
+    (inhibit-same-window . nil))
+
    ;; prevent all other buffers from opening new windows and switching frames
    (".*"
     (display-buffer-use-least-recent-window
