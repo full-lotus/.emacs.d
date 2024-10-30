@@ -657,14 +657,6 @@ instead of setq, to avoid confusion in Customize interface"
              ol-info ol-irc ol-mhe ol-rmail org-tempo ol-w3m))
   '(org-tidy-protect-overlay nil))
 
-;; make the windmove function active in locations where Org mode does not have
-;; special functionality on S-<cursor>
-(add-hook 'org-shiftup-final-hook 'windmove-up)
-(add-hook 'org-shiftleft-final-hook 'windmove-left)
-(add-hook 'org-shiftdown-final-hook 'windmove-down)
-(add-hook 'org-shiftright-final-hook 'windmove-right)
-
-
 (defun my/org-checkbox-todo ()
   "Switch header TODO state to DONE when all checkboxes are ticked,
 to TODO otherwise"
