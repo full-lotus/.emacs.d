@@ -91,6 +91,7 @@ instead of setq, to avoid confusion in Customize interface"
 
 ;; use smex to show command history in counsel-M-x
 (smex-initialize)
+(setq-and-tell-customize 'smex-history-use-recent-first t)
 
 ;; Enable orderless matching for execute-extended-command
 (setq-and-tell-customize 'ivy-re-builders-alist
