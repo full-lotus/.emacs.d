@@ -4,7 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(blink-cursor-mode nil)
- '(cider-font-lock-dynamically nil)
+ '(cider-font-lock-dynamically '(macro function var core))
  '(counsel-rg-base-command
    '("rg" "--max-columns" "240" "--with-filename" "--no-heading" "--line-number" "--color" "never" "%s"))
  '(custom-enabled-themes nil)
@@ -17,7 +17,7 @@
  '(global-display-fill-column-indicator-mode t)
  '(openwith-associations '(("\\.\\(doc\\|docx\\)\\'" "libreoffice.writer" (file))))
  '(org-agenda-files
-   '("/mnt/sda2/projects/dev/form-slap/README.org" "/home/german/Desktop/zigiwave/work-todo.org" "/mnt/sda2/projects/dev/job-search/resume/german-nurlygaianov.org" "/home/german/Desktop/zigiwave/work-todo-archive.org" "/mnt/sda2/projects/dev/cascad/design-review.org"))
+   '("/mnt/sda2/projects/dev/form-slap/README.org" "/mnt/sda2/projects/dev/form-slap/README.org_archive" "/home/german/Desktop/zigiwave/work-todo.org" "/mnt/sda2/projects/dev/job-search/resume/german-nurlygaianov.org" "/home/german/Desktop/zigiwave/work-todo-archive.org" "/mnt/sda2/projects/dev/cascad/design-review.org"))
  '(org-cycle-inline-images-display nil)
  '(org-link-frame-setup
    '((vm . vm-visit-folder-other-frame)
@@ -64,6 +64,7 @@
  ;; If there is more than one, they won't work right.
  '(font-lock-comment-face ((t (:foreground "medium aquamarine"))))
  '(font-lock-constant-face ((t (:foreground "saddle brown"))))
+ '(font-lock-doc-face ((t (:inherit font-lock-comment-face))))
  '(font-lock-keyword-face ((t (:foreground "violet red"))))
  '(font-lock-string-face ((t (:foreground "dark violet"))))
  '(font-lock-type-face ((t (:foreground "dark orange"))))
