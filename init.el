@@ -151,13 +151,21 @@ instead of setq, to avoid confusion in Customize interface"
   (interactive)
   (rapid-replace 'counsel-rg))
 
-(defun counsel-git-grep-ivy-thing-at-point ()
+(defun regex-fn-ivy-thing-at-point (regex-fn)
   "Run `counsel-git-grep` with ivy-thing-at-point as the initial input."
   (interactive)
   (let ((thing (ivy-thing-at-point)))
     (when (use-region-p)
       (deactivate-mark))
-    (counsel-git-grep (regexp-quote thing))))
+    (funcall regex-fn (regexp-quote thing))))
+
+(defun counsel-git-grep-ivy-thing-at-point ()
+  (interactive)
+  (regex-fn-ivy-thing-at-point 'counsel-git-grep))
+
+(defun counsel-rg-ivy-thing-at-point ()
+  (interactive)
+  (regex-fn-ivy-thing-at-point 'counsel-rg))
 
 ;; some of those hotkeys are redundant because of counsel-mode
 ;; but I'm not sure which I can drop, and to lazy to check one-by-one
@@ -175,6 +183,8 @@ instead of setq, to avoid confusion in Customize interface"
 (global-set-key (kbd "C-c g") 'counsel-git)
 (global-set-key (kbd "C-c J") 'counsel-git-grep-ivy-thing-at-point)
 (global-set-key (kbd "C-c j") 'counsel-git-grep)
+(global-set-key (kbd "C-c r") 'counsel-rg)
+(global-set-key (kbd "C-c R") 'counsel-rg-ivy-thing-at-point)
 (global-set-key (kbd "C-S-h") 'rapid-replace-ripgrep)
 (global-set-key (kbd "C-c k") 'counsel-ag)
 (global-set-key (kbd "C-x l") 'counsel-locate)
