@@ -531,6 +531,18 @@ instead of setq, to avoid confusion in Customize interface"
 
 
 
+(defun org-collapse-above-level (level)
+  "Collapse all headings above LEVEL in the current buffer."
+  (interactive "nEnter level to collapse above: ")
+  (org-map-entries
+   (lambda ()
+     (let ((heading-level (org-current-level)))
+       (when (and heading-level (> (+ heading-level 1) level))
+         (hide-subtree))))
+   t 'file))
+
+(define-key org-mode-map (kbd "C-c h") 'org-collapse-above-level)
+
 
 
 ;; override broken fn, which deletes comments from clojure code
