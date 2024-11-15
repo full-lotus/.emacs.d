@@ -589,7 +589,8 @@ instead of setq, to avoid confusion in Customize interface"
 
 ;; toggle paredit mode manually
 (define-key org-mode-map (kbd "M-P") 'paredit-mode)
-
+;;
+(define-key org-mode-map (kbd "C-c a") 'org-agenda)
 
 
 ;; Sets M-<return> to evaluate code blocks in the REPL
