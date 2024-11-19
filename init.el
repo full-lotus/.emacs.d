@@ -482,6 +482,8 @@ instead of setq, to avoid confusion in Customize interface"
      (shell . t))))
 
 (setq-and-tell-customize 'org-support-shift-select 'always)
+(setq-and-tell-customize 'org-agenda-restore-windows-after-quit t)
+
 
 ;; prevent window/frame config changes during detangling
 (defun org-babel-detangle-no-buffer-pop-up (orig-fun &rest args)
