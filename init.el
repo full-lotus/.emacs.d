@@ -331,6 +331,14 @@ instead of setq, to avoid confusion in Customize interface"
      display-buffer-use-least-recent-window)
     (inhibit-same-window . nil))
 
+   ;; open Cider REPL in the same window and frame
+   ((major-mode . cider-repl-mode)
+    (display-buffer-same-window
+     display-buffer-reuse-window
+     display-buffer-use-least-recent-window)
+    (inhibit-same-window . nil)
+    (inhibit-switch-frame . t))
+
    ;; prevent all other buffers from opening new windows and switching frames
    (".*"
     (display-buffer-use-least-recent-window
