@@ -408,6 +408,11 @@ instead of setq, to avoid confusion in Customize interface"
 
 
 
+;; I write tests in the same ns as source code, source and tests must be close
+(setq-and-tell-customize 'cider-test-infer-test-ns (lambda (ns) ns))
+
+
+
 ;; paredit-mode-map is not loaded without require
 (require 'paredit)
 ;; use Paredit hotkeys from VS Code Calva, to which I am used to
