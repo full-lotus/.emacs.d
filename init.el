@@ -19,19 +19,28 @@ instead of setq, to avoid confusion in Customize interface"
    ("non-gnu" . "https://elpa.nongnu.org/nongnu/")
    ("melpa" . "http://melpa.org/packages/")))
 
-; activate all the packages
+; add all installed packages to load-path
 (package-initialize)
-
-; fetch the list of packages available
+; fetch the list of packages available, must run package-initialize first
 (unless package-archive-contents
   (package-refresh-contents))
 
+; list non-default packages
 (custom-set-variables
  '(package-selected-packages
    '(org-babel-eval-in-repl ivy counsel smex wgrep
      ob-clojurescript ob-async async paredit clj-refactor wgrep
      openwith org-tidy cider treemacs-all-the-icons treemacs
      clojure-mode magit)))
+
+; install all non-default packages
+(dolist (pkg package-selected-packages)
+  (unless (package-installed-p pkg)
+    (package-install pkg)))
+
+; load all non-default packages
+(dolist (pkg package-selected-packages)
+  (require pkg nil 'noerror))
 ;; -----------------------------------------------------------------------------
 
 
@@ -423,7 +432,6 @@ instead of setq, to avoid confusion in Customize interface"
 (define-key paredit-mode-map (kbd "C-M->") 'paredit-backward-barf-sexp)
 (define-key paredit-mode-map (kbd "C-M-<") 'paredit-backward-slurp-sexp)
 
-(require 'cider)
 (define-key cider-repl-mode-map [C-return] nil)
 ;; those hotkeys are also from VS Code Calva
 
@@ -443,7 +451,6 @@ instead of setq, to avoid confusion in Customize interface"
 
 ;; --------------- file management  ---------------
 ;; mode that enables choosing program-to-open-with based on file extensions
-(require 'openwith)
 (openwith-mode t)
 
 ;; trying these setting to be able to edit files as root
