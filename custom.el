@@ -17,7 +17,7 @@
  '(global-display-fill-column-indicator-mode t)
  '(openwith-associations '(("\\.\\(doc\\|docx\\)\\'" "libreoffice.writer" (file))))
  '(org-agenda-files
-   '("/mnt/sda2/projects/dev/form-slap/README.org" "/home/german/Desktop/zigiwave/work-todo.org" "/mnt/sda2/projects/dev/job-search/resume/german-nurlygaianov.org" "/home/german/Desktop/zigiwave/work-todo-archive.org" "/mnt/sda2/projects/dev/cascad/design-review.org"))
+   '("/mnt/sda2/projects/dev/kombinacija/README.org" "/mnt/sda2/projects/dev/form-slap/README.org" "/home/german/Desktop/zigiwave/work-todo.org" "/mnt/sda2/projects/dev/job-search/resume/german-nurlygaianov.org" "/home/german/Desktop/zigiwave/work-todo-archive.org" "/mnt/sda2/projects/dev/cascad/design-review.org"))
  '(org-cycle-inline-images-display nil)
  '(org-link-frame-setup
    '((vm . vm-visit-folder-other-frame)
