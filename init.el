@@ -56,6 +56,10 @@ instead of setq, to avoid confusion in Customize interface"
 
 
 ;; --------------- general global settings  ---------------
+;; use SSH through daemon launched on startup
+(setenv "SSH_AUTH_SOCK" (concat (getenv "XDG_RUNTIME_DIR") "/ssh-agent.socket"))
+
+
 ;; save command history, e. g. for execute-extended-command
 (savehist-mode 1)
 
