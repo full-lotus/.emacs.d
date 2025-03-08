@@ -308,6 +308,14 @@ instead of setq, to avoid confusion in Customize interface"
     (display-buffer-use-least-recent-window)
     (inhibit-same-window . t))
 
+   ;; without this, transient buffer breaks window layout
+   ;; it happens because of conflicts with lower settings
+   (".*transient.*"
+    (display-buffer-in-side-window)
+    (side . bottom)
+    (inhibit-same-window . t)
+    (window-parameters (no-other-window . t)))
+
    ;; open search matches from ivy-occur buffer in another window
    ((major-mode . ivy-occur-grep-mode)
     (display-buffer-use-least-recent-window)
