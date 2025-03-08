@@ -22,3 +22,4 @@ history
 
 # ignore smex command history
 smex-items
+/init-debug-transient-window.el
