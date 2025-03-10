@@ -31,7 +31,7 @@ instead of setq, to avoid confusion in Customize interface"
    '(org-babel-eval-in-repl ivy counsel smex wgrep
      ob-clojurescript ob-async async paredit clj-refactor wgrep
      openwith org-tidy cider treemacs-all-the-icons treemacs
-     clojure-mode magit)))
+     clojure-mode magit command-log-mode posframe)))
 
 ; install all non-default packages
 (dolist (pkg package-selected-packages)
@@ -804,4 +804,34 @@ text and copying to the killring."
        ))
 
 (global-set-key (kbd "<f5>") 'my/copy-id-to-clipboard)
+;; -----------------------------------------------------------------------------
+
+
+
+;; --------------- emacs introspection ---------------
+(setq dw/command-window-frame nil)
+
+(defun dw/toggle-command-window ()
+  (interactive)
+  (if dw/command-window-frame
+      (progn
+        (posframe-delete-frame clm/command-log-buffer)
+        (setq dw/command-window-frame nil))
+    (progn
+      (global-command-log-mode t)
+      (with-current-buffer
+          (setq clm/command-log-buffer
+                (get-buffer-create " *command-log*"))
+        (text-scale-set -1))
+      (setq dw/command-window-frame
+            (posframe-show
+             clm/command-log-buffer
+             :position `(,(- (x-display-pixel-width) 450) . 15)
+             :width 38
+             :height 5
+             :min-width 38
+             :min-height 5
+             :internal-border-width 2
+             :internal-border-color "#c792ea"
+             :override-parameters '((parent-frame . nil)))))))
 ;; -----------------------------------------------------------------------------
