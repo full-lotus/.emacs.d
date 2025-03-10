@@ -812,6 +812,7 @@ text and copying to the killring."
 (setq dw/command-window-frame nil)
 
 (defun dw/toggle-command-window ()
+  "Show overlay frame which shows invoked functions and their hotkeys"
   (interactive)
   (if dw/command-window-frame
       (progn
