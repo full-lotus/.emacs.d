@@ -6,10 +6,19 @@
  '(blink-cursor-mode nil)
  '(cider-font-lock-dynamically '(macro function var core))
  '(counsel-rg-base-command
-   '("rg" "--multiline" "--multiline-dotall" "--max-columns" "240" "--with-filename" "--no-heading" "--line-number" "--color" "never" "%s"))
+   '("rg" "--multiline" "--multiline-dotall" "--max-columns" "240"
+     "--with-filename" "--no-heading" "--line-number" "--color"
+     "never" "%s"))
  '(custom-enabled-themes nil)
  '(custom-safe-themes
-   '("9ab9441566f7c3b059a205a7c5fad32a58422c2695815436d8cc087860b8c2e5" "7613ef56a3aebbec29618a689e47876a72023bbd1b8393efc51c38f5ed3f33d1" "703a3469ae4d2a83fd5648cac0058d57ca215d0fea7541fb852205e4fae94983" "c7a926ad0e1ca4272c90fce2e1ffa7760494083356f6bb6d72481b879afce1f2" "8a0eba8f06120605030161981032469d87a9832402e4441daa91296aa463f124" "42b221449475e41bc04c5663164ffc5d1672c53163630d41d57ef27d5a01cca9" "21055a064d6d673f666baaed35a69519841134829982cbbb76960575f43424db" default))
+   '("9ab9441566f7c3b059a205a7c5fad32a58422c2695815436d8cc087860b8c2e5"
+     "7613ef56a3aebbec29618a689e47876a72023bbd1b8393efc51c38f5ed3f33d1"
+     "703a3469ae4d2a83fd5648cac0058d57ca215d0fea7541fb852205e4fae94983"
+     "c7a926ad0e1ca4272c90fce2e1ffa7760494083356f6bb6d72481b879afce1f2"
+     "8a0eba8f06120605030161981032469d87a9832402e4441daa91296aa463f124"
+     "42b221449475e41bc04c5663164ffc5d1672c53163630d41d57ef27d5a01cca9"
+     "21055a064d6d673f666baaed35a69519841134829982cbbb76960575f43424db"
+     default))
  '(desktop-save t)
  '(desktop-save-mode t)
  '(display-fill-column-indicator-column 80)
@@ -17,20 +26,28 @@
  '(global-display-fill-column-indicator-mode t)
  '(openwith-associations '(("\\.\\(doc\\|docx\\)\\'" "libreoffice.writer" (file))))
  '(org-agenda-files
-   '("/mnt/sda2/projects/dev/kombinacija/README.org" "/mnt/sda2/projects/dev/form-slap/README.org" "/home/german/Desktop/zigiwave/work-todo.org" "/mnt/sda2/projects/dev/job-search/resume/german-nurlygaianov.org" "/home/german/Desktop/zigiwave/work-todo-archive.org" "/mnt/sda2/projects/dev/cascad/design-review.org"))
+   '("/mnt/sda2/projects/dev/kombinacija/README.org"
+     "/mnt/sda2/projects/dev/form-slap/README.org"
+     "/home/german/Desktop/zigiwave/work-todo.org"
+     "/mnt/sda2/projects/dev/job-search/resume/german-nurlygaianov.org"
+     "/home/german/Desktop/zigiwave/work-todo-archive.org"
+     "/mnt/sda2/projects/dev/cascad/design-review.org"))
  '(org-cycle-inline-images-display nil)
  '(org-link-frame-setup
    '((vm . vm-visit-folder-other-frame)
      (vm-imap . vm-visit-imap-folder-other-frame)
-     (gnus . org-gnus-no-new-news)
-     (file . find-file-other-frame)
+     (gnus . org-gnus-no-new-news) (file . find-file-other-frame)
      (wl . wl-other-frame)))
  '(org-modules
-   '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus ol-info ol-irc ol-mhe ol-rmail org-tempo ol-w3m))
+   '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus ol-info ol-irc
+	     ol-mhe ol-rmail org-tempo ol-w3m))
  '(org-startup-indented nil)
  '(org-tidy-protect-overlay nil)
  '(package-selected-packages
-   '(replace-symbol wgrep smex counsel ivy org ayu-theme org-babel-eval-in-repl ob-clojurescript ob-async async paredit clj-refactor modus-themes openwith org-tidy cider treemacs-all-the-icons treemacs clojure-mode magit))
+   '(async ayu-theme cider clj-refactor clojure-mode command-log-mode
+	   counsel ivy magit modus-themes ob-async ob-clojurescript
+	   openwith org org-babel-eval-in-repl org-tidy paredit
+	   replace-symbol smex treemacs treemacs-all-the-icons wgrep))
  '(safe-local-variable-values
    '((cider-clojure-cli-parameters . "-M:cider/nrepl:dev")
      (cider-clojure-cli-parameters . "-M:dev")
@@ -49,11 +66,14 @@
      (cider-merge-sessions 'project)
      (cider-clojure-cli-global-options . "-A:dev")
      (cider-clojure-cli-global-options . "-A:dev -X dev/-main")
-     (cider-clojure-cli-global-options . "-A:dev -Sdeps {:deps{nrepl/nrepl{:mvn/version\"1.0.0\"}cider/cider-nrepl{:mvn/version\"0.44.0\"}}:aliases{:cider/nrepl{:main-opts[\"-m\"\"nrepl.cmdline\"\"--middleware\"\"[cider.nrepl/cider-middleware,shadow.cljs.devtools.server.nrepl/middleware]\"]}}} -M:cider/nrepl -X dev/-main")
+     (cider-clojure-cli-global-options
+      . "-A:dev -Sdeps {:deps{nrepl/nrepl{:mvn/version\"1.0.0\"}cider/cider-nrepl{:mvn/version\"0.44.0\"}}:aliases{:cider/nrepl{:main-opts[\"-m\"\"nrepl.cmdline\"\"--middleware\"\"[cider.nrepl/cider-middleware,shadow.cljs.devtools.server.nrepl/middleware]\"]}}} -M:cider/nrepl -X dev/-main")
      (cider-inject-dependencies-at-jack-in)
-     (cider-clojure-cli-global-options . " -A:dev -X dev/-main --middleware \"[cider.nrepl/cider-middleware,shadow.cljs.devtools.server.nrepl/middleware]\"")
+     (cider-clojure-cli-global-options
+      . " -A:dev -X dev/-main --middleware \"[cider.nrepl/cider-middleware,shadow.cljs.devtools.server.nrepl/middleware]\"")
      (cider-preferred-build-tool . clojure-cli)
-     (cider-clojure-cli-global-options . " -A:dev -X dev/-main --middleware [cider.nrepl/cider-middleware,shadow.cljs.devtools.server.nrepl/middleware]")
+     (cider-clojure-cli-global-options
+      . " -A:dev -X dev/-main --middleware [cider.nrepl/cider-middleware,shadow.cljs.devtools.server.nrepl/middleware]")
      (cider-preferred-build-tool . clj)))
  '(save-interprogram-paste-before-kill t)
  '(winner-mode t))
