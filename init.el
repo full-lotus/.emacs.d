@@ -31,7 +31,7 @@ instead of setq, to avoid confusion in Customize interface"
    '(org-babel-eval-in-repl ivy counsel smex wgrep
      ob-clojurescript ob-async async paredit clj-refactor wgrep
      openwith org-tidy cider treemacs-all-the-icons treemacs
-     clojure-mode magit command-log-mode posframe)))
+     clojure-mode magit command-log-mode posframe pcre2el)))
 
 ; install all non-default packages
 (dolist (pkg package-selected-packages)
