@@ -31,7 +31,8 @@ instead of setq, to avoid confusion in Customize interface"
    '(org-babel-eval-in-repl ivy counsel smex wgrep
      ob-clojurescript ob-async async paredit clj-refactor wgrep
      openwith org-tidy cider treemacs-all-the-icons treemacs
-     clojure-mode magit command-log-mode posframe pcre2el dired-ranger)))
+     clojure-mode magit command-log-mode posframe pcre2el dired-ranger
+     flycheck flycheck-clj-kondo rainbow-delimiters)))
 
 ; install all non-default packages
 (dolist (pkg package-selected-packages)
@@ -225,7 +226,6 @@ instead of setq, to avoid confusion in Customize interface"
  '(blink-cursor-mode nil)
 
  ;; save Emacs frame configuration on exit
- '(desktop-save t)
  '(desktop-save-mode t)
 
  ;; to see when a line is longer than 80 symbols
@@ -404,6 +404,8 @@ instead of setq, to avoid confusion in Customize interface"
 
 
 ;; --------------- programming  ---------------
+(global-flycheck-mode)
+
 ;; --------------- Clojure  ---------------
 (setq-and-tell-customize
       'nrepl-hide-special-buffers t
