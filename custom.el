@@ -41,10 +41,10 @@
  '(org-tidy-protect-overlay nil)
  '(package-selected-packages
    '(async ayu-theme cider clj-refactor clojure-mode command-log-mode
-	   counsel ivy magit modus-themes ob-async ob-clojurescript
-	   openwith org org-babel-eval-in-repl org-tidy paredit
-	   pcre2el replace-symbol smex treemacs treemacs-all-the-icons
-	   wgrep))
+	   counsel dired-ranger ivy magit modus-themes ob-async
+	   ob-clojurescript openwith org org-babel-eval-in-repl
+	   org-tidy paredit pcre2el replace-symbol smex treemacs
+	   treemacs-all-the-icons wgrep))
  '(safe-local-variable-values
    '((cider-clojure-cli-parameters . "-M:cider/nrepl:dev")
      (cider-clojure-cli-parameters . "-M:dev")
