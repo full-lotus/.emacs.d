@@ -29,10 +29,10 @@ instead of setq, to avoid confusion in Customize interface"
 (custom-set-variables
  '(package-selected-packages
    '(org-babel-eval-in-repl ivy counsel smex wgrep
-     ob-clojurescript ob-async async paredit clj-refactor wgrep
+     ob-clojurescript ob-async async clj-refactor wgrep
      openwith org-tidy cider treemacs-all-the-icons treemacs
      clojure-mode magit command-log-mode posframe pcre2el dired-ranger
-     flycheck flycheck-clj-kondo rainbow-delimiters casual-avy)))
+     flycheck flycheck-clj-kondo rainbow-delimiters casual-avy puni)))
 
 ; install all non-default packages
 (dolist (pkg package-selected-packages)
@@ -435,8 +435,8 @@ instead of setq, to avoid confusion in Customize interface"
 
 (add-hook 'cider-mode-hook (lambda () (show-paren-mode 1)))
 (add-hook 'cider-mode-hook #'eldoc-mode)
-(add-hook 'cider-mode-hook #'enable-paredit-mode)
-(add-hook 'cider-repl-mode-hook #'enable-paredit-mode)
+(add-hook 'cider-mode-hook #'puni-mode)
+(add-hook 'cider-repl-mode-hook #'puni-mode)
 (add-hook 'cider-mode-hook #'imenu-add-menubar-index)
 
 
@@ -446,15 +446,13 @@ instead of setq, to avoid confusion in Customize interface"
 
 
 
-;; paredit-mode-map is not loaded without require
-(require 'paredit)
-;; use Paredit hotkeys from VS Code Calva, to which I am used to
-(define-key paredit-mode-map (kbd "C-<right>") 'forward-sexp)
-(define-key paredit-mode-map (kbd "C-<left>") 'backward-sexp)
-(define-key paredit-mode-map (kbd "C-M-.") 'paredit-forward-slurp-sexp)
-(define-key paredit-mode-map (kbd "C-M-,") 'paredit-forward-barf-sexp)
-(define-key paredit-mode-map (kbd "C-M->") 'paredit-backward-barf-sexp)
-(define-key paredit-mode-map (kbd "C-M-<") 'paredit-backward-slurp-sexp)
+;; use sexp editing hotkeys from VS Code Calva, to which I am used to
+(define-key puni-mode-map (kbd "C-<right>") 'puni-forward-sexp)
+(define-key puni-mode-map (kbd "C-<left>") 'puni-backward-sexp)
+(define-key puni-mode-map (kbd "C-M-.") 'puni-slurp-forward)
+(define-key puni-mode-map (kbd "C-M-,") 'puni-barf-forward)
+(define-key puni-mode-map (kbd "C-M->") 'puni-barf-backward)
+(define-key puni-mode-map (kbd "C-M-<") 'puni-slurp-backward)
 
 (define-key cider-repl-mode-map [C-return] nil)
 ;; those hotkeys are also from VS Code Calva
@@ -468,7 +466,7 @@ instead of setq, to avoid confusion in Customize interface"
 
 
 ;; --------------- ClojureScript ---------------
-(add-hook 'clojurescript-mode #'enable-paredit-mode)
+(add-hook 'clojurescript-mode #'puni-mode)
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
@@ -655,8 +653,8 @@ instead of setq, to avoid confusion in Customize interface"
 ;; Split Org Block using M-s
 (define-key org-mode-map (kbd "M-s") 'org-babel-demarcate-block)
 
-;; toggle paredit mode manually
-(define-key org-mode-map (kbd "M-P") 'paredit-mode)
+;; toggle puni-mode manually
+(define-key org-mode-map (kbd "M-P") 'puni-mode)
 ;;
 (define-key org-mode-map (kbd "C-c a") 'org-agenda)
 

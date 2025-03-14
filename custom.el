@@ -44,7 +44,7 @@
 	   command-log-mode counsel dired-ranger flycheck
 	   flycheck-clj-kondo ivy magit modus-themes ob-async
 	   ob-clojurescript openwith org org-babel-eval-in-repl
-	   org-tidy paredit pcre2el rainbow-delimiters replace-symbol
+	   org-tidy pcre2el puni rainbow-delimiters replace-symbol
 	   smex treemacs treemacs-all-the-icons wgrep))
  '(safe-local-variable-values
    '((cider-clojure-cli-parameters . "-M:cider/nrepl:dev")
