@@ -413,7 +413,11 @@ instead of setq, to avoid confusion in Customize interface"
 
 
 ;; --------------- programming  ---------------
+;; check syntax globally
 (global-flycheck-mode)
+
+;; enable colorful parens globally
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 ;; --------------- Clojure  ---------------
 (setq-and-tell-customize
