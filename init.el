@@ -60,6 +60,8 @@ instead of setq, to avoid confusion in Customize interface"
 ;; use avy through Transient menu
 (keymap-global-set "M-g" #'casual-avy-tmenu)
 
+(keymap-global-set "M-SPC" #'avy-goto-word-0)
+
 ;; make some multi-chord commands repeatable with 1 key press
 ;; for example - repeat C-x <LEFT> (previous-buffer) with just <LEFT>
 (repeat-mode 1)
