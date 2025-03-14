@@ -32,7 +32,7 @@ instead of setq, to avoid confusion in Customize interface"
      ob-clojurescript ob-async async paredit clj-refactor wgrep
      openwith org-tidy cider treemacs-all-the-icons treemacs
      clojure-mode magit command-log-mode posframe pcre2el dired-ranger
-     flycheck flycheck-clj-kondo rainbow-delimiters)))
+     flycheck flycheck-clj-kondo rainbow-delimiters casual-avy)))
 
 ; install all non-default packages
 (dolist (pkg package-selected-packages)
@@ -57,6 +57,9 @@ instead of setq, to avoid confusion in Customize interface"
 
 
 ;; --------------- general global settings  ---------------
+;; use avy through Transient menu
+(keymap-global-set "M-g" #'casual-avy-tmenu)
+
 ;; make some multi-chord commands repeatable with 1 key press
 ;; for example - repeat C-x <LEFT> (previous-buffer) with just <LEFT>
 (repeat-mode 1)
