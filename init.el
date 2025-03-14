@@ -57,6 +57,10 @@ instead of setq, to avoid confusion in Customize interface"
 
 
 ;; --------------- general global settings  ---------------
+;; make some multi-chord commands repeatable with 1 key press
+;; for example - repeat C-x <LEFT> (previous-buffer) with just <LEFT>
+(repeat-mode 1)
+
 ;; use SSH through daemon launched on startup
 (setenv "SSH_AUTH_SOCK" (concat (getenv "XDG_RUNTIME_DIR") "/ssh-agent.socket"))
 
