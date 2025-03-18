@@ -29,7 +29,7 @@ instead of setq, to avoid confusion in Customize interface"
 (custom-set-variables
  '(package-selected-packages
    '(org-babel-eval-in-repl ivy counsel smex wgrep
-     ob-clojurescript ob-async async clj-refactor wgrep
+     ob-clojurescript ob-async async wgrep
      openwith org-tidy cider treemacs-all-the-icons treemacs
      clojure-mode magit command-log-mode posframe pcre2el dired-ranger
      flycheck flycheck-clj-kondo rainbow-delimiters casual-avy puni)))
@@ -634,9 +634,6 @@ instead of setq, to avoid confusion in Customize interface"
       )
 
 (add-hook 'org-mode-hook 'show-paren-mode)
-
-;; enable clj-refactor-mode in source blocks of org-mode
-(add-hook 'org-src-mode-hook #'clj-refactor-mode)
 
 ;; Trying to fix weird org syntax problems. This just lets Org ignore < and >
 ;; characters as if they were regular words. This is necessary because in

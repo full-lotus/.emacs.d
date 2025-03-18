@@ -40,12 +40,12 @@
  '(org-startup-indented nil)
  '(org-tidy-protect-overlay nil)
  '(package-selected-packages
-   '(async ayu-theme casual-avy cider clj-refactor clojure-mode
-	   command-log-mode counsel dired-ranger flycheck
-	   flycheck-clj-kondo ivy magit modus-themes ob-async
-	   ob-clojurescript openwith org org-babel-eval-in-repl
-	   org-tidy pcre2el puni rainbow-delimiters replace-symbol
-	   smex treemacs treemacs-all-the-icons wgrep))
+   '(async ayu-theme casual-avy cider clojure-mode command-log-mode
+	   counsel dired-ranger flycheck flycheck-clj-kondo ivy magit
+	   modus-themes ob-async ob-clojurescript openwith org
+	   org-babel-eval-in-repl org-tidy pcre2el puni
+	   rainbow-delimiters replace-symbol smex treemacs
+	   treemacs-all-the-icons wgrep))
  '(safe-local-variable-values
    '((cider-clojure-cli-parameters . "-M:cider/nrepl:dev")
      (cider-clojure-cli-parameters . "-M:dev")
