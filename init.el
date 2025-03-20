@@ -531,17 +531,17 @@ instead of setq, to avoid confusion in Customize interface"
 (setq-and-tell-customize 'org-agenda-restore-windows-after-quit t)
 
 
-;; prevent window/frame config changes during detangling
-(defun org-babel-detangle-no-buffer-pop-up (orig-fun &rest args)
-  (save-excursion
-    (let ((display-buffer-alist
-           '((".*" (display-buffer-no-window) (allow-no-window . t)))))
-      (apply orig-fun args))))
+;; ;; prevent window/frame config changes during detangling
+;; (defun org-babel-detangle-no-buffer-pop-up (orig-fun &rest args)
+;;   (save-excursion
+;;     (let ((display-buffer-alist
+;;            '((".*" (display-buffer-no-window) (allow-no-window . t)))))
+;;       (apply orig-fun args))))
 
-(advice-add 'org-babel-detangle :around #'org-babel-detangle-no-buffer-pop-up)
+;; (advice-add 'org-babel-detangle :around #'org-babel-detangle-no-buffer-pop-up)
 
-;; detangle on each file save, doing this by hand is tedious
-(add-hook 'after-save-hook 'org-babel-detangle)
+;; ;; detangle on each file save, doing this by hand is tedious
+;; (add-hook 'after-save-hook 'org-babel-detangle)
 
 
 
