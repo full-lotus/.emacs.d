@@ -614,9 +614,11 @@ instead of setq, to avoid confusion in Customize interface"
 (defun org-babel-open-tangle-file ()
   (interactive)
   (let* ((info (org-babel-get-src-block-info))
-         (tangle (cdr (assoc :tangle (nth 2 info)))))
-    (when tangle
-      (find-file tangle))))
+         (tangle (cdr (assoc :tangle (nth 2 info))))
+	 (src (cdr (assoc :src (nth 2 info)))))
+    (if (not (equal tangle "no"))
+	(find-file tangle)
+      (when src (find-file src)))))
 
 (define-key org-mode-map (kbd "C-c o") 'org-babel-open-tangle-file)
 
