@@ -461,8 +461,17 @@ instead of setq, to avoid confusion in Customize interface"
 (global-set-key (kbd "C-S-b") 'treemacs)
 (global-set-key (kbd "C-x w") 'bury-buffer)
 
-(custom-set-variables
- '(winner-mode t))
+(defun modi/multi-pop-to-mark (orig-fun &rest args)
+  "Call ORIG-FUN until the cursor moves.
+Try the repeated popping up to 10 times."
+  (let ((p (point)))
+    (dotimes (i 10)
+      (when (= p (point))
+        (apply orig-fun args)))))
+(advice-add 'pop-to-mark-command :around
+            #'modi/multi-pop-to-mark)
+
+(setq set-mark-command-repeat-pop t)
 ;; Navigation:1 ends here
 
 ;; Enable ivy and counsel modes
@@ -770,6 +779,10 @@ instead of setq, to avoid confusion in Customize interface"
 ;; Navigation
 
 ;; [[file:init.org::*Navigation][Navigation:1]]
+(global-set-key (kbd "M--") #'org-mark-ring-goto)
+(global-set-key (kbd "M-=") #'org-mark-ring-push)
+
+
 (setq-mark-as-customized
  ;; open src blocks in the same window as parent .org file
  'org-src-window-setup 'current-window
