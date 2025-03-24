@@ -877,7 +877,10 @@ Try the repeated popping up to 10 times."
 
 
 ;; [[file:init.org::*Code execution][Code execution:1]]
-;; not sure if I need this
+;; use Cider REPL to eval Clojure code in org-mode
+(load "~/.emacs.d/elisp/cider-eval-in-org-mode.el")
+
+;; not sure if I need the code below
 
 ;; (defun org-babel-clojure-cider-current-ns ())
 ;; 'org-confirm-babel-evaluate nil
