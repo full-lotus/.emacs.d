@@ -334,6 +334,17 @@ instead of setq, to avoid confusion in Customize interface"
 ;; Creating buffers and choosing how to display them
 
 ;; [[file:init.org::*Creating buffers and choosing how to display them][Creating buffers and choosing how to display them:1]]
+(custom-set-variables
+ '(winner-mode t))
+
+(defun my/switch-buffer-here ()
+  "Switch buffer in the current window, ignoring `display-buffer-alist`."
+  (interactive)
+  (let ((display-buffer-alist nil)) ;; Temporarily disable display-buffer-alist
+    (call-interactively 'switch-to-buffer)))
+
+(global-set-key (kbd "C-x b") #'my/switch-buffer-here)
+
 (setq-mark-as-customized
  ;; Uniquify buffer names
  'uniquify-buffer-name-style 'forward
