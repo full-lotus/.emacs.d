@@ -1,9 +1,17 @@
-;; Sync init.el changes to customize
-;; I use Emacs Customize GUI, because it's convenient. I want to see actual info
-;; there, that's why I use this fn instead of =setq=
+:PROPERTIES:
+:header-args: :comments both :noweb yes
+:END:
+
+* Emacs init.el configuration file
+It's the first Elisp file loaded on Emacs startup
 
 
-;; [[file:init.org::*Sync init.el changes to customize][Sync init.el changes to customize:1]]
+* Customize and custom.el
+** Sync init.el changes to customize
+I use Emacs Customize GUI, because it's convenient. I want to see actual info
+there, that's why I use this fn instead of =setq=
+
+#+begin_src elisp :tangle ./init.el
 (defun setq-mark-as-customized (&rest var-val-pairs)
   "Set variable value and make sure Customize registers this change. Use
 instead of setq, to avoid confusion in Customize interface"
@@ -14,43 +22,41 @@ instead of setq, to avoid confusion in Customize interface"
       (set var val)
       (put var 'customized-value
            (list (custom-quote (symbol-value var)))))))
-;; Sync init.el changes to customize:1 ends here
+#+end_src
 
-;; Separate custom.el from init.el
-
-;; [[file:init.org::*Separate custom.el from init.el][Separate custom.el from init.el:1]]
+** Separate custom.el from init.el
+#+begin_src elisp :tangle ./init.el
 ;; separate custom-file because it's a mess, with everything in one place
 (setq-mark-as-customized 'custom-file (concat user-emacs-directory "custom.el"))
 
 ;; we are loading at the top of init.el, to set custom variables nice and
 ;; separate, grouping relevant settings together
 (load custom-file 'noerror)
-;; Separate custom.el from init.el:1 ends here
+#+end_src
 
-;; Set URLs from which we search and download packages
 
-;; [[file:init.org::*Set URLs from which we search and download packages][Set URLs from which we search and download packages:1]]
+* Package management
+** Set URLs from which we search and download packages
+#+begin_src elisp :tangle ./init.el
 (setq-mark-as-customized
  'package-archives
  '(("gnu" . "http://elpa.gnu.org/packages/")
    ("non-gnu" . "https://elpa.nongnu.org/nongnu/")
    ("melpa" . "http://melpa.org/packages/")))
-;; Set URLs from which we search and download packages:1 ends here
+#+end_src
 
-;; Init package.el, fetch available packages from URLs
-
-;; [[file:init.org::*Init package.el, fetch available packages from URLs][Init package.el, fetch available packages from URLs:1]]
+** Init package.el, fetch available packages from URLs
+#+begin_src elisp :tangle ./init.el
 ;; start package system (package.el, package dirs, available packages cache)
 (package-initialize)
 
 ;; fetch the list of packages available, must run package-initialize first
 (unless package-archive-contents
   (package-refresh-contents))
-;; Init package.el, fetch available packages from URLs:1 ends here
+#+end_src
 
-;; Install and load all non-default packages
-
-;; [[file:init.org::*Install and load all non-default packages][Install and load all non-default packages:1]]
+** Install and load all non-default packages
+#+begin_src elisp :tangle ./init.el
 ;; add non-default packages that we need
 (custom-set-variables
  '(package-selected-packages
@@ -69,11 +75,12 @@ instead of setq, to avoid confusion in Customize interface"
 ;; require all non-default packages
 (dolist (pkg package-selected-packages)
   (require pkg nil 'noerror))
-;; Install and load all non-default packages:1 ends here
+#+end_src
 
-;; Emacs startup/exit
 
-;; [[file:init.org::*Emacs startup/exit][Emacs startup/exit:1]]
+* General global configuration
+** Emacs startup/exit
+#+begin_src elisp :tangle ./init.el
 (setq-mark-as-customized
  ;; Don't display load average
  'display-time-default-load-average nil
@@ -87,11 +94,10 @@ instead of setq, to avoid confusion in Customize interface"
  ;; Confirm before exiting Emacs
  'confirm-kill-emacs 'yes-or-no-p
  )
-;; Emacs startup/exit:1 ends here
+#+end_src
 
-;; Elisp
-
-;; [[file:init.org::*Elisp][Elisp:1]]
+** Elisp
+#+begin_src elisp :tangle ./init.el
 ;; the dir with elisp files to be loaded
 (add-to-list 'load-path "~/.emacs.d/elisp/")
 
@@ -99,36 +105,33 @@ instead of setq, to avoid confusion in Customize interface"
  ;; Silence warnings for redefinition
  'ad-redefinition-action 'accept
  )
-;; Elisp:1 ends here
+#+end_src
 
-;; Use SSH through daemon launched on startup
-
-;; [[file:init.org::*Use SSH through daemon launched on startup][Use SSH through daemon launched on startup:1]]
+** Use SSH through daemon launched on startup
+#+begin_src elisp :tangle ./init.el
 (setenv "SSH_AUTH_SOCK" (concat (getenv "XDG_RUNTIME_DIR") "/ssh-agent.socket"))
-;; Use SSH through daemon launched on startup:1 ends here
+#+end_src
 
-;; Sound
-
-;; [[file:init.org::*Sound][Sound:1]]
+** Sound
+#+begin_src elisp :tangle ./init.el
 ;; use screen flash instead of annoying error sound
 (setq-mark-as-customized
  'visible-bell t
  )
-;; Sound:1 ends here
+#+end_src
 
-;; History
-
-;; [[file:init.org::*History][History:1]]
+** Commands
+*** History
+#+begin_src elisp :tangle ./init.el
 ;; save command history, e. g. for execute-extended-command
 (savehist-mode 1)
 ;; use smex to show command history in counsel-M-x
 (smex-initialize)
 (setq-mark-as-customized 'smex-history-use-recent-first t)
-;; History:1 ends here
+#+end_src
 
-;; Command/key press log
-
-;; [[file:init.org::*Command/key press log][Command/key press log:1]]
+*** Command/key press log
+#+begin_src elisp :tangle ./init.el
 (setq dw/command-window-frame nil)
 
 (defun dw/toggle-command-window ()
@@ -155,26 +158,22 @@ instead of setq, to avoid confusion in Customize interface"
              :internal-border-width 2
              :internal-border-color "#c792ea"
              :override-parameters '((parent-frame . nil)))))))
-;; Command/key press log:1 ends here
+#+end_src
 
-;; Easier yes/no
-
-;; [[file:init.org::*Easier yes/no][Easier yes/no:1]]
+*** Easier yes/no
+#+begin_src elisp :tangle ./init.el
 ;; Replace yes/no prompts with y/n
 (fset 'yes-or-no-p 'y-or-n-p)
-;; Easier yes/no:1 ends here
+#+end_src
 
-;; Easy (1 button) command repeat
-
-;; [[file:init.org::*Easy (1 button) command repeat][Easy (1 button) command repeat:1]]
+*** Easy (1 button) command repeat
+#+begin_src elisp :tangle ./init.el
 ;; make some multi-chord commands repeatable with 1 key press
 ;; for example - repeat C-x <LEFT> (previous-buffer) with just <LEFT>
 (repeat-mode 1)
-;; Easy (1 button) command repeat:1 ends here
-
-;; Emacs temporary files
-
-;; [[file:init.org::*Emacs temporary files][Emacs temporary files:1]]
+#+end_src
+** Emacs temporary files
+#+begin_src elisp :tangle ./init.el
 ;; stop creating backup~ files
 (setq-mark-as-customized 'make-backup-files nil)
 
@@ -189,20 +188,20 @@ instead of setq, to avoid confusion in Customize interface"
   "Return the file name of the session file for SESSION-ID."
   (expand-file-name (concat "session." session-id)
                     "~/.emacs.d/sessions/"))
-;; Emacs temporary files:1 ends here
+#+end_src
 
-;; Navigation
 
-;; [[file:init.org::*Navigation][Navigation:1]]
+* Text
+** Navigation
+#+begin_src elisp :tangle ./init.el
 ;; use avy through Transient menu
 (keymap-global-set "M-g" #'casual-avy-tmenu)
 
 (keymap-global-set "M-SPC" #'avy-goto-word-0)
-;; Navigation:1 ends here
+#+end_src
 
-;; Display
-
-;; [[file:init.org::*Display][Display:1]]
+** Display
+#+begin_src elisp :tangle ./init.el
 ;; blinking cursor is annoying
 (blink-cursor-mode -1)
 
@@ -237,11 +236,12 @@ instead of setq, to avoid confusion in Customize interface"
  )
 
 (global-display-fill-column-indicator-mode t)
-;; Display:1 ends here
+#+end_src
 
-;; Editing
+(display-line-numbers-type 1)
 
-;; [[file:init.org::*Editing][Editing:1]]
+** Editing
+#+begin_src elisp :tangle ./init.el
 ;; make undo hotkey familiar
 (global-set-key (kbd "C-z") 'undo)
 
@@ -268,11 +268,10 @@ instead of setq, to avoid confusion in Customize interface"
 
 ;; delete all trailing whitespace
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-;; Editing:1 ends here
+#+end_src
 
-;; Syncing with filesystem (reverting)
-
-;; [[file:init.org::*Syncing with filesystem (reverting)][Syncing with filesystem (reverting):1]]
+** Syncing with filesystem (reverting)
+#+begin_src elisp :tangle ./init.el
 ;; The auto-revert setting is enabled because tangle / detangle for literate
 ;; programming will change contents of files. If the file is open in a buffer,
 ;; I want it to automatically show the change without asking me every time.
@@ -294,11 +293,13 @@ instead of setq, to avoid confusion in Customize interface"
 ;; 	(revert-buffer t t t) )))
 ;;   (message "Refreshed open files."))
 ;; (add-hook 'after-save-hook 'revert-all-buffers)
-;; Syncing with filesystem (reverting):1 ends here
+#+end_src
 
-;; Hide
 
-;; [[file:init.org::*Hide][Hide:1]]
+* Frame/window/buffer configuration
+** Display
+*** Hide
+#+begin_src elisp :tangle ./init.el
 ;; hide useless title bar, but allow resizing
 (add-to-list 'default-frame-alist '(undecorated . t))
 (add-to-list 'default-frame-alist '(drag-internal-border . 1))
@@ -314,11 +315,10 @@ instead of setq, to avoid confusion in Customize interface"
  ;; don't use sRGB colors
  'ns-use-srgb-colorspace nil
  )
-;; Hide:1 ends here
+#+end_src
 
-;; Splitting/resizing
-
-;; [[file:init.org::*Splitting/resizing][Splitting/resizing:1]]
+*** Splitting/resizing
+#+begin_src elisp :tangle ./init.el
 (setq-mark-as-customized
  ;; Disable vertical window splitting
  'split-height-threshold nil
@@ -329,11 +329,10 @@ instead of setq, to avoid confusion in Customize interface"
  ;; Resize windows proportionally
  'window-combination-resize t
  )
-;; Splitting/resizing:1 ends here
+#+end_src
 
-;; Creating buffers and choosing how to display them
-
-;; [[file:init.org::*Creating buffers and choosing how to display them][Creating buffers and choosing how to display them:1]]
+*** Creating buffers and choosing how to display them
+#+begin_src elisp :tangle ./init.el
 (setq-mark-as-customized
  ;; Uniquify buffer names
  'uniquify-buffer-name-style 'forward
@@ -427,11 +426,10 @@ instead of setq, to avoid confusion in Customize interface"
     (inhibit-switch-frame . t))
    )
  )
-;; Creating buffers and choosing how to display them:1 ends here
+#+end_src
 
-;; Scrolling
-
-;; [[file:init.org::*Scrolling][Scrolling:1]]
+** Scrolling
+#+begin_src elisp :tangle ./init.el
 (scroll-bar-mode 1) ;; enable vertical scroll bars
 (horizontal-scroll-bar-mode 1) ;; enable horizontal scroll bars
 
@@ -442,17 +440,15 @@ instead of setq, to avoid confusion in Customize interface"
  'scroll-step 1
  'scroll-conservatively 10000
  )
-;; Scrolling:1 ends here
+#+end_src
 
-;; Save/load frame configuration on exit/start
-
-;; [[file:init.org::*Save/load frame configuration on exit/start][Save/load frame configuration on exit/start:1]]
+** Save/load frame configuration on exit/start
+#+begin_src elisp :tangle ./init.el
 (desktop-save-mode t)
-;; Save/load frame configuration on exit/start:1 ends here
+#+end_src
 
-;; Navigation
-
-;; [[file:init.org::*Navigation][Navigation:1]]
+** Navigation
+#+begin_src elisp :tangle ./init.el
 (global-set-key (kbd "C-o") 'other-window)
 (define-key dired-mode-map (kbd "C-o") 'other-window)
 (define-key ivy-occur-mode-map (kbd "C-o") 'other-window)
@@ -463,22 +459,22 @@ instead of setq, to avoid confusion in Customize interface"
 
 (custom-set-variables
  '(winner-mode t))
-;; Navigation:1 ends here
+#+end_src
 
-;; Enable ivy and counsel modes
 
-;; [[file:init.org::*Enable ivy and counsel modes][Enable ivy and counsel modes:1]]
+* Command/code completion
+** Enable ivy and counsel modes
+#+begin_src elisp :tangle ./init.el
 ;; use Ivy + Counsel + Swiper for better completion/search
 ;; settings taken from here https://github.com/abo-abo/swiper
 (ivy-mode)
 (counsel-mode)
 (setq-mark-as-customized 'ivy-use-virtual-buffers t)
 (setq-mark-as-customized 'enable-recursive-minibuffers t)
-;; Enable ivy and counsel modes:1 ends here
+#+end_src
 
-;; Disable icomplete mode when calling ivy-read, to fix a conflict
-
-;; [[file:init.org::*Disable icomplete mode when calling ivy-read, to fix a conflict][Disable icomplete mode when calling ivy-read, to fix a conflict:1]]
+*** Disable icomplete mode when calling ivy-read, to fix a conflict
+#+begin_src elisp :tangle ./init.el
 ;; disable icomplete to fix error:
 ;; Error in post-command-hook (icomplete-post-command-hook):
 ;; (wrong-number-of-arguments #<subr counsel-ag-function> 3)
@@ -489,11 +485,10 @@ instead of setq, to avoid confusion in Customize interface"
     (icomplete-mode 1)))
 
 (advice-add 'ivy-read :around #'ivy-icomplete)
-;; Disable icomplete mode when calling ivy-read, to fix a conflict:1 ends here
+#+end_src
 
-;; Fix counsel-rg not displaying errors properly
-
-;; [[file:init.org::*Fix counsel-rg not displaying errors properly][Fix counsel-rg not displaying errors properly:1]]
+*** Fix counsel-rg not displaying errors properly
+#+begin_src elisp :tangle ./init.el
 (with-eval-after-load 'counsel
   (advice-add
    'counsel-rg
@@ -504,11 +499,10 @@ instead of setq, to avoid confusion in Customize interface"
            (progn (advice-add 'process-exit-status :filter-return #'filter-func)
                   (apply func args))
          (advice-remove 'process-exit-status #'filter-func))))))
-;; Fix counsel-rg not displaying errors properly:1 ends here
+#+end_src
 
-;; Customize ivy matching behavior
-
-;; [[file:init.org::*Customize ivy matching behavior][Customize ivy matching behavior:1]]
+** Customize ivy matching behavior
+#+begin_src elisp :tangle ./init.el
 ;; Enable orderless matching for execute-extended-command
 (setq-mark-as-customized 'ivy-re-builders-alist
                          '((counsel-M-x . ivy--regex-ignore-order)
@@ -520,11 +514,10 @@ instead of setq, to avoid confusion in Customize interface"
 
 ;; allow selecting the prompt itself as command candidate
 (setq-mark-as-customized 'ivy-use-selectable-prompt t)
-;; Customize ivy matching behavior:1 ends here
+#+end_src
 
-;; Add commands for searching the current symbol under cursor
-
-;; [[file:init.org::*Add commands for searching the current symbol under cursor][Add commands for searching the current symbol under cursor:1]]
+** Add commands for searching the current symbol under cursor
+#+begin_src elisp :tangle ./init.el
 (defun regex-fn-ivy-thing-at-point (regex-fn)
   "Run `counsel-git-grep` with ivy-thing-at-point as the initial input."
   (interactive)
@@ -540,13 +533,12 @@ instead of setq, to avoid confusion in Customize interface"
 (defun counsel-rg-ivy-thing-at-point ()
   (interactive)
   (regex-fn-ivy-thing-at-point 'counsel-rg))
-;; Add commands for searching the current symbol under cursor:1 ends here
+#+end_src
 
-;; Configure ivy and counsel hotkeys
+** Configure ivy and counsel hotkeys
 
 
-
-;; [[file:init.org::*Configure ivy and counsel hotkeys][Configure ivy and counsel hotkeys:1]]
+#+begin_src elisp :tangle ./init.el
 ;; some of those hotkeys are redundant because of counsel-mode
 ;; but I'm not sure which I can drop, and to lazy to check one-by-one
 (global-set-key (kbd "C-s") 'swiper)
@@ -569,11 +561,10 @@ instead of setq, to avoid confusion in Customize interface"
 (global-set-key (kbd "C-x l") 'counsel-locate)
 (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-;; Configure ivy and counsel hotkeys:1 ends here
+#+end_src
 
-;; Code completion
-
-;; [[file:init.org::*Code completion][Code completion:1]]
+** Code completion
+#+begin_src elisp :tangle ./init.el
 ;; Always show completions
 (setq-mark-as-customized 'completion-auto-help 'always)
 
@@ -582,11 +573,14 @@ instead of setq, to avoid confusion in Customize interface"
 
 ;; Make <TAB> invoke completions list, when code is already idented properly
 (setq-mark-as-customized 'tab-always-indent 'complete)
-;; Code completion:1 ends here
+#+end_src
 
-;; Wgrep
 
-;; [[file:init.org::*Wgrep][Wgrep:1]]
+* Improved text replace
+Make search-and-replace across project work as convenient as in VS Code.
+
+** Wgrep
+#+begin_src elisp :tangle ./init.el
 ;; wgrep allows to convert ivy-occur buffer to editable, to get VS Code-like
 ;; search and replace experience
 (use-package wgrep
@@ -594,14 +588,13 @@ instead of setq, to avoid confusion in Customize interface"
   :custom
   (wgrep-auto-save-buffer t)
   (wgrep-change-readonly-file t))
-;; Wgrep:1 ends here
+#+end_src
 
-;; Replace+.el
-;; Allows to invoke replace fn with a search regex in the list of defaults.
-;; The defaults are cycled in minibuffer with up/down arrows.
+** Replace+.el
+Allows to invoke replace fn with a search regex in the list of defaults.
+The defaults are cycled in minibuffer with up/down arrows.
 
-
-;; [[file:init.org::*Replace+.el][Replace+.el:1]]
+#+begin_src elisp :tangle ./init.el
 (load "~/.emacs.d/elisp/replace+.el")
 
 ;; this prevents replace+ being limited to an active region
@@ -620,11 +613,10 @@ instead of setq, to avoid confusion in Customize interface"
           (call-interactively 'query-replace-regexp)
         (fset 'get-initial-input-for-replace original-fn)))
    t))
-;; Replace+.el:1 ends here
+#+end_src
 
-;; Start replace with preview in one keystroke
-
-;; [[file:init.org::*Start replace with preview in one keystroke][Start replace with preview in one keystroke:1]]
+** Start replace with preview in one keystroke
+#+begin_src elisp :tangle ./init.el
 (defun rapid-replace (search-fn)
   "Opens up wgrep buffer with query-replace-regexp started"
   (interactive)
@@ -656,18 +648,19 @@ instead of setq, to avoid confusion in Customize interface"
   (rapid-replace 'counsel-rg))
 
 (global-set-key (kbd "C-S-h") 'rapid-replace-ripgrep)
-;; Start replace with preview in one keystroke:1 ends here
+#+end_src
 
-;; Syntax checking
 
-;; [[file:init.org::*Syntax checking][Syntax checking:1]]
+* Programming
+** Syntax checking
+#+begin_src elisp :tangle ./init.el
 ;; check syntax globally
 (global-flycheck-mode)
-;; Syntax checking:1 ends here
+#+end_src
 
-;; Puni-mode
-
-;; [[file:init.org::*Puni-mode][Puni-mode:1]]
+** Parenthesis config
+*** Puni-mode
+#+begin_src elisp :tangle ./init.el
 ;; use sexp editing hotkeys from VS Code Calva, to which I am used to
 (define-key puni-mode-map (kbd "C-<right>") 'puni-forward-sexp)
 (define-key puni-mode-map (kbd "C-<left>") 'puni-backward-sexp)
@@ -684,20 +677,19 @@ instead of setq, to avoid confusion in Customize interface"
 (add-hook 'clojure-mode #'puni-mode)
 (add-hook 'cider-mode-hook #'puni-mode)
 (add-hook 'cider-repl-mode-hook #'puni-mode)
-;; Puni-mode:1 ends here
+#+end_src
 
-;; Display
-
-;; [[file:init.org::*Display][Display:1]]
+*** Display
+#+begin_src elisp :tangle ./init.el
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 ;; always highlight matching paren
 (show-paren-mode 1)
-;; Display:1 ends here
+#+end_src
 
-;; CIDER
-
-;; [[file:init.org::*CIDER][CIDER:1]]
+** Clojure
+*** CIDER
+#+begin_src elisp :tangle ./init.el
 (setq-mark-as-customized
       'nrepl-hide-special-buffers t
       'cider-repl-clear-help-banner t
@@ -729,11 +721,11 @@ instead of setq, to avoid confusion in Customize interface"
 (define-key cider-mode-map (kbd "M-<RET>") 'cider-eval-defun-at-point)
 (define-key cider-repl-mode-map [C-return] 'cider-eval-sexp-at-point)
 (define-key cider-repl-mode-map (kbd "M-<RET>") 'cider-eval-defun-at-point)
-;; CIDER:1 ends here
+#+end_src
 
-;; Initialization
-
-;; [[file:init.org::*Initialization][Initialization:1]]
+** Literate programming (org-mode)
+*** Initialization
+#+begin_src elisp :tangle ./init.el
   ;; (require 'org)
 
   (eval-after-load 'org
@@ -755,21 +747,19 @@ instead of setq, to avoid confusion in Customize interface"
 
    ;; disable org-mode indentation, to keep lines under 80 characters
    'org-startup-indented nil)
-;; Initialization:1 ends here
+#+end_src
 
-;; Display
-
-;; [[file:init.org::*Display][Display:1]]
+*** Display
+#+begin_src elisp :tangle ./init.el
 ;; hide :PROPERTIES: and other drawers
 (use-package org-tidy
   :ensure t
   :hook
   (org-mode . org-tidy-mode))
-;; Display:1 ends here
+#+end_src
 
-;; Navigation
-
-;; [[file:init.org::*Navigation][Navigation:1]]
+*** Navigation
+#+begin_src elisp :tangle ./init.el
 (setq-mark-as-customized
  ;; open src blocks in the same window as parent .org file
  'org-src-window-setup 'current-window
@@ -811,11 +801,10 @@ instead of setq, to avoid confusion in Customize interface"
 	(find-file tangle)
       (when src (find-file src)))))
 (define-key org-mode-map (kbd "C-c o") 'org-babel-open-tangle-file)
-;; Navigation:1 ends here
+#+end_src
 
-;; Editing
-
-;; [[file:init.org::*Editing][Editing:1]]
+*** Editing
+#+begin_src elisp :tangle ./init.el
 (setq-mark-as-customized
  'org-support-shift-select 'always
  'org-hide-emphasis-markers nil
@@ -845,14 +834,13 @@ instead of setq, to avoid confusion in Customize interface"
 
 ;; Split Org Block using M-s
 (define-key org-mode-map (kbd "M-s") 'org-babel-demarcate-block)
-;; Editing:1 ends here
+#+end_src
 
-;; Code execution
-;; Not sure I need this since I'm using CIDER, not babel, to execute Clojure in
-;; org-mode
+*** Code execution
+Not sure I need this since I'm using CIDER, not babel, to execute Clojure in
+org-mode
 
-
-;; [[file:init.org::*Code execution][Code execution:1]]
+#+begin_src elisp :tangle ./init.el
 ;; not sure if I need this
 
 ;; (defun org-babel-clojure-cider-current-ns ())
@@ -879,11 +867,10 @@ instead of setq, to avoid confusion in Customize interface"
 ;; ;; Prevent eval in repl from moving cursor to the REPL
 ;; (with-eval-after-load "eval-in-repl"
 ;;   (setq eir-jump-after-eval nil))
-;; Code execution:1 ends here
+#+end_src
 
-;; Tangling
-
-;; [[file:init.org::*Tangling][Tangling:1]]
+*** Tangling
+#+begin_src elisp :tangle ./init.el
 ;; Tangling can be set to occur automatically on save. This makes things way
 ;; simpler. Additionally, we set up todos to be moved to the agenda on save.
 ;; This is just to keep things organized if todos are added to project org
@@ -913,11 +900,10 @@ instead of setq, to avoid confusion in Customize interface"
   (with-eval-after-load 'org
     (advice-add 'org-babel-expand-body:clojure
 		:override #'org-babel-expand-body:clojure_fixed)))
-;; Tangling:1 ends here
+#+end_src
 
-;; Detangling *DISABLED*
-
-;; [[file:init.org::*Detangling *DISABLED*][Detangling *DISABLED*:1]]
+*** Detangling *DISABLED*
+#+begin_src elisp :tangle ./init.el
 ;; ;; prevent window/frame config changes during detangling
 ;; (defun org-babel-detangle-no-buffer-pop-up (orig-fun &rest args)
 ;;   (save-excursion
@@ -929,11 +915,10 @@ instead of setq, to avoid confusion in Customize interface"
 
 ;; ;; detangle on each file save, doing this by hand is tedious
 ;; (add-hook 'after-save-hook 'org-babel-detangle)
-;; Detangling *DISABLED*:1 ends here
+#+end_src
 
-;; Performance optimizations *DISABLED*
-
-;; [[file:init.org::*Performance optimizations *DISABLED*][Performance optimizations *DISABLED*:1]]
+*** Performance optimizations *DISABLED*
+#+begin_src elisp :tangle ./init.el
 ;; ;; Apparently Garbage Collecting when out of focus can make emacs feel faster. I’ll try that.
 ;; (add-hook 'focus-out-hook #'garbage-collect)
 
@@ -954,11 +939,10 @@ instead of setq, to avoid confusion in Customize interface"
 ;; (defun help/double-gc-cons-threshold () "Double `gc-cons-threshold'." (help/set-gc-cons-threshold 2))
 ;; (add-hook 'org-babel-pre-tangle-hook #'help/double-gc-cons-threshold)
 ;; (add-hook 'org-babel-post-tangle-hook #'help/set-gc-cons-threshold)
-;; Performance optimizations *DISABLED*:1 ends here
+#+end_src
 
-;; Todo and agenda
-
-;; [[file:init.org::*Todo and agenda][Todo and agenda:1]]
+*** Todo and agenda
+#+begin_src elisp :tangle ./init.el
 (defun to-agenda-on-save-org-mode-file ()
   (when (string= (message "%s" major-mode) "org-mode")
     (org-agenda-file-to-front)))
@@ -996,19 +980,20 @@ to TODO otherwise"
           (org-todo 'todo)))))))))
 
 (add-hook 'org-checkbox-statistics-hook 'my/org-checkbox-todo)
-;; Todo and agenda:1 ends here
+#+end_src
 
-;; Permissions
 
-;; [[file:init.org::*Permissions][Permissions:1]]
+* File management
+** Permissions
+#+begin_src elisp :tangle ./init.el
 ;; trying these setting to be able to edit files as root
 (require 'tramp)
 (setq tramp-default-method "sudoedit")
-;; Permissions:1 ends here
 
-;; Extensions
+#+end_src
 
-;; [[file:init.org::*Extensions][Extensions:1]]
+** Extensions
+#+begin_src elisp :tangle ./init.el
 ;; mode that enables choosing program-to-open-with based on file extensions
 (openwith-mode t)
 
@@ -1018,4 +1003,4 @@ to TODO otherwise"
     '(("\\.\\(doc\\|docx\\)\\'" "libreoffice.writer"
         (file))
       )))
-;; Extensions:1 ends here
+#+end_src
