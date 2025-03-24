@@ -26,7 +26,8 @@
  '(global-display-fill-column-indicator-mode t)
  '(openwith-associations '(("\\.\\(doc\\|docx\\)\\'" "libreoffice.writer" (file))))
  '(org-agenda-files
-   '("/mnt/sda2/projects/dev/kombinacija/README.org"
+   '("/home/german/.emacs.d/init.org"
+     "/mnt/sda2/projects/dev/kombinacija/README.org"
      "/mnt/sda2/projects/dev/form-slap/README.org"))
  '(org-cycle-inline-images-display nil)
  '(org-link-frame-setup
@@ -40,12 +41,11 @@
  '(org-startup-indented nil)
  '(org-tidy-protect-overlay nil)
  '(package-selected-packages
-   '(async ayu-theme casual-avy cider clojure-mode command-log-mode
-	   counsel dired-ranger flycheck flycheck-clj-kondo ivy magit
-	   modus-themes ob-async ob-clojurescript openwith org
-	   org-babel-eval-in-repl org-tidy pcre2el puni
-	   rainbow-delimiters replace-symbol smex treemacs
-	   treemacs-all-the-icons wgrep))
+   '(ivy counsel smex wgrep ob-clojurescript ob-async async wgrep
+	 openwith org-tidy cider treemacs-all-the-icons treemacs
+	 clojure-mode magit command-log-mode posframe pcre2el
+	 dired-ranger flycheck flycheck-clj-kondo rainbow-delimiters
+	 casual-avy puni))
  '(safe-local-variable-values
    '((cider-clojure-cli-parameters . "-M:cider/nrepl:dev")
      (cider-clojure-cli-parameters . "-M:dev")
