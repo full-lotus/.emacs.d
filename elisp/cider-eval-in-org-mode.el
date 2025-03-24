@@ -1,14 +1,10 @@
-;;; org-code-block-tools.el --- Tools for org code block analysis
+;;; cider-eval-in-org-mode.el
+;;; Evaluate Clojure through CIDER REPL straight from org-mode code blocks 
 
-;; Author: Claude
-;; Keywords: org-mode, literate programming
+;; Keywords: org-mode, literate programming, clojure, cider
 
 ;;; Commentary:
-;; This package provides tools for analyzing code blocks in org-mode documents.
-;; It includes functions to:
-;; - Build a graph of relationships between code blocks through noweb references
-;; - Display these relationships in an org buffer for easy navigation
-;; - Find the ultimate tangle destination of any code block
+;;
 
 ;;; Code:
 
