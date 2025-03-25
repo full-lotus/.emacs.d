@@ -45,7 +45,7 @@
 	 openwith org-tidy cider treemacs-all-the-icons treemacs
 	 clojure-mode magit command-log-mode posframe pcre2el
 	 dired-ranger flycheck flycheck-clj-kondo rainbow-delimiters
-	 casual-avy puni))
+	 casual-avy puni poly-org))
  '(safe-local-variable-values
    '((cider-clojure-cli-parameters . "-M:cider/nrepl:dev")
      (cider-clojure-cli-parameters . "-M:dev")

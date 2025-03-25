@@ -58,7 +58,9 @@ instead of setq, to avoid confusion in Customize interface"
      ob-clojurescript ob-async async wgrep
      openwith org-tidy cider treemacs-all-the-icons treemacs
      clojure-mode magit command-log-mode posframe pcre2el dired-ranger
-     flycheck flycheck-clj-kondo rainbow-delimiters casual-avy puni)))
+     flycheck flycheck-clj-kondo rainbow-delimiters casual-avy puni
+     poly-org
+     )))
 
 ;; install all non-default packages
 (dolist (pkg package-selected-packages)
@@ -871,16 +873,26 @@ Try the repeated popping up to 10 times."
 (define-key org-mode-map (kbd "M-s") 'org-babel-demarcate-block)
 ;; Editing:1 ends here
 
-;; Code execution
-;; Not sure I need this since I'm using CIDER, not babel, to execute Clojure in
-;; org-mode
+;; Eval in Cider REPL with proper namespace
+;; To figure out the namespace of a code block:
+
+;; 1. We create a graph, where edges are noweb refs.
+;; 2. Using the graph, we find root code block, which points to source file
+;; 3. In the source file, we find =(ns ...)= macro, which gets us a namespace.
+;;    To do that, we =(advice-add 'cider-current-ns)== - if we are
+;;    inside :noweb-ref block, ns search function is called on the :tangle file
 
 
-;; [[file:init.org::*Code execution][Code execution:1]]
+;; [[file:init.org::*Eval in Cider REPL with proper namespace][Eval in Cider REPL with proper namespace:1]]
 ;; use Cider REPL to eval Clojure code in org-mode
 (load "~/.emacs.d/elisp/cider-eval-in-org-mode.el")
+;; Eval in Cider REPL with proper namespace:1 ends here
 
-;; not sure if I need the code below
+;; Babel settings *DISABLED*
+
+;; [[file:init.org::*Babel settings *DISABLED*][Babel settings *DISABLED*:1]]
+;; not sure if I need the code below since I'm using straight-up CIDER, not
+;; Babel, to execute Clojure in org-mode
 
 ;; (defun org-babel-clojure-cider-current-ns ())
 ;; 'org-confirm-babel-evaluate nil
@@ -906,7 +918,7 @@ Try the repeated popping up to 10 times."
 ;; ;; Prevent eval in repl from moving cursor to the REPL
 ;; (with-eval-after-load "eval-in-repl"
 ;;   (setq eir-jump-after-eval nil))
-;; Code execution:1 ends here
+;; Babel settings *DISABLED*:1 ends here
 
 ;; Tangling
 
