@@ -921,8 +921,7 @@ org-mode
 (advice-add 'org-babel-tangle :around 'org-babel-tangle-no-buffer-pop-up)
 
 ;; override broken fn, which deletes comments from clojure code
-(add-to-list 'load-path "~/.emacs.d/elisp/")
-;; (load "~/.emacs.d/elisp/ob-clojure-fix.el")
+(load "~/.emacs.d/elisp/ob-clojure-fix.el")
 (eval-after-load 'org
   (with-eval-after-load 'org
     (advice-add 'org-babel-expand-body:clojure
