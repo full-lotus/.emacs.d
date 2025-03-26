@@ -59,7 +59,6 @@ instead of setq, to avoid confusion in Customize interface"
      openwith org-tidy cider treemacs-all-the-icons treemacs
      clojure-mode magit command-log-mode posframe pcre2el dired-ranger
      flycheck flycheck-clj-kondo rainbow-delimiters casual-avy puni
-     poly-org
      )))
 
 ;; install all non-default packages
@@ -854,9 +853,6 @@ Try the repeated popping up to 10 times."
  'org-edit-src-content-indentation 0
  'org-src-tab-acts-natively t
 
- ;; Show syntax highlighting per language native mode in *.org
- 'org-src-fontify-natively t
-
  ;; For languages with significant whitespace like Python:
  'org-src-preserve-indentation t
  )
@@ -879,38 +875,10 @@ Try the repeated popping up to 10 times."
 (define-key org-mode-map (kbd "M-s") 'org-babel-demarcate-block)
 ;; Editing:1 ends here
 
-;; Multiple major modes in the same buffer (polymode)
-;; I use poly-org package which automatically and quickly switches modes, when I
-;; go inside code blocks. This allows working with code as easily as in source
-;; files, without constant painful buffer/context switching.
+;; Code execution
+;; I switch CIDER on/off when going in/out of Clojure source blocks. This allows
+;; working with the code almost as good as in a dedicated buffer with clojure-mode.
 
-
-;; [[file:init.org::*Multiple major modes in the same buffer (polymode)][Multiple major modes in the same buffer (polymode):1]]
-;; I read on Emacs Telegram channel that these 2 settings help fix some issues
-;; with poly-org
-(setq-mark-as-customized
- 'org-startup-indented nil
- 'org-adapt-indentation nil)
-
-;; Flycheck with poly-org uses crashes with too many errors, because it
-;; doesn't recognize modes properly. This should help
-(defun flycheck-buffer-not-indirect-p (&rest _)
-  "Ensure that the current buffer is not indirect."
-  (null (buffer-base-buffer)))
-
-(advice-add 'flycheck-may-check-automatically
-            :before-while #'flycheck-buffer-not-indirect-p)
-
-;; I tried this hack to fix font-lock issues arising from polymode
-(defun set-lavender-background ()
-  (face-remap-add-relative 'default
-                            :background "lavender"))
-(add-hook 'clojure-mode-hook #'set-lavender-background)
-(add-hook 'clojurescript-mode-hook #'set-lavender-background)
-(add-hook 'emacs-lisp-mode-hook #'set-lavender-background)
-;; Multiple major modes in the same buffer (polymode):1 ends here
-
-;; Eval in Cider REPL with proper namespace
 ;; To figure out the namespace of a code block:
 
 ;; 1. We create a graph, where edges are noweb refs.
@@ -920,42 +888,31 @@ Try the repeated popping up to 10 times."
 ;;    inside :noweb-ref block, ns search function is called on the :tangle file
 
 
-;; [[file:init.org::*Eval in Cider REPL with proper namespace][Eval in Cider REPL with proper namespace:1]]
+;; [[file:init.org::*Code execution][Code execution:1]]
 ;; use Cider REPL to eval Clojure code in org-mode
 (load "~/.emacs.d/elisp/cider-eval-in-org-mode.el")
-;; Eval in Cider REPL with proper namespace:1 ends here
 
-;; Babel settings *DISABLED*
+(defun toggle-cider-on-org-src-block ()
+  "Automatically enable or disable CIDER when entering or leaving
+Clojure source blocks in Org mode."
+  (when (eq major-mode 'org-mode)
+    (let* ((context (org-element-context))
+           (block-type (org-element-property :language context))
+           (block-type-lower (when block-type (downcase block-type)))
+           (in-clojure-block (string= block-type-lower "clojure")))
 
-;; [[file:init.org::*Babel settings *DISABLED*][Babel settings *DISABLED*:1]]
-;; not sure if I need the code below since I'm using straight-up CIDER, not
-;; Babel, to execute Clojure in org-mode
+      (cond
+       ;; Entering a Clojure source block
+       ((and in-clojure-block (not cider-mode))
+        (cider-mode))
 
-;; (defun org-babel-clojure-cider-current-ns ())
-;; 'org-confirm-babel-evaluate nil
+       ;; Leaving a Clojure source block
+       ((and (not in-clojure-block) cider-mode)
+        (cider-mode -1))))))
 
-;; ;; Sets M-<return> to evaluate code blocks in the REPL
-;; (defun org-meta-return-around (org-fun &rest args)
-;;   "Run `ober-eval-in-repl' if in source code block,
-;;   `ober-eval-block-in-repl' if at header,
-;;   and `org-meta-return' otherwise."
-;;     (if (org-in-block-p '("src"))
-;;         (let* ((point (point))
-;;                (element (org-element-at-point))
-;;                (area (org-src--contents-area element))
-;;                (beg (copy-marker (nth 0 area))))
-;;           (if (< point beg)
-;;               (ober-eval-block-in-repl)
-;;             (ober-eval-in-repl)))
-;;       (apply org-fun args)))
-
-;; (advice-add 'org-meta-return :around #'org-meta-return-around)
-
-
-;; ;; Prevent eval in repl from moving cursor to the REPL
-;; (with-eval-after-load "eval-in-repl"
-;;   (setq eir-jump-after-eval nil))
-;; Babel settings *DISABLED*:1 ends here
+(add-hook 'post-command-hook #'toggle-cider-on-org-src-block)
+;; (remove-hook 'post-command-hook #'toggle-cider-on-org-src-block)
+;; Code execution:1 ends here
 
 ;; Tangling
 
@@ -988,28 +945,6 @@ Try the repeated popping up to 10 times."
   (with-eval-after-load 'org
     (advice-add 'org-babel-expand-body:clojure
 		:override #'org-babel-expand-body:clojure_fixed)))
-
-(defun dont-tangle-in-source-blocks (orig-fun &rest args)
-  "Disable poly-org when tangling, to avoid triggering a bug.
-See issue https://github.com/polymode/poly-org/issues/53
-This function:
-1. Disables poly-mode if we are inside org source block
-2. Executes the original `org-babel-tangle` function
-3. Restores poly-org-mode, font-lock, scroll position, and removes a mark"
-  (let ((scroll-pos (window-start)))
-    (if (org-in-src-block-p)
-	(progn
-	  (poly-org-mode -1)
-	  (unwind-protect
-	      (comment (apply orig-fun args))
-	    (poly-org-mode t)
-	    (font-lock-fontify-buffer)
-	    (set-mark nil)
-	    (set-window-start (selected-window) scroll-pos)
-	    ))
-      (apply orig-fun args))))
-
-(advice-add 'org-babel-tangle :around #'dont-tangle-in-source-blocks)
 ;; Tangling:1 ends here
 
 ;; Detangling *DISABLED*
