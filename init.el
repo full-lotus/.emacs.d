@@ -956,6 +956,28 @@ Try the repeated popping up to 10 times."
   (with-eval-after-load 'org
     (advice-add 'org-babel-expand-body:clojure
 		:override #'org-babel-expand-body:clojure_fixed)))
+
+(defun dont-tangle-in-source-blocks (orig-fun &rest args)
+  "Disable poly-org when tangling, to avoid triggering a bug.
+See issue https://github.com/polymode/poly-org/issues/53
+This function:
+1. Disables poly-mode if we are inside org source block
+2. Executes the original `org-babel-tangle` function
+3. Restores poly-org-mode, font-lock, scroll position, and removes a mark"
+  (let ((scroll-pos (window-start)))
+    (if (org-in-src-block-p)
+	(progn
+	  (poly-org-mode -1)
+	  (unwind-protect
+	      (comment (apply orig-fun args))
+	    (poly-org-mode t)
+	    (font-lock-fontify-buffer)
+	    (set-mark nil)
+	    (set-window-start (selected-window) scroll-pos)
+	    ))
+      (apply orig-fun args))))
+
+(advice-add 'org-babel-tangle :around #'dont-tangle-in-source-blocks)
 ;; Tangling:1 ends here
 
 ;; Detangling *DISABLED*
