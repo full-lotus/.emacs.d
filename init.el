@@ -778,10 +778,7 @@ Try the repeated popping up to 10 times."
   			ol-info ol-irc ol-mhe ol-rmail org-tempo ol-w3m)
 
    ;; protection of overlay messes up editing sometimes
-   'org-tidy-protect-overlay nil
-
-   ;; disable org-mode indentation, to keep lines under 80 characters
-   'org-startup-indented nil)
+   'org-tidy-protect-overlay nil)
 ;; Initialization:1 ends here
 
 ;; Display
@@ -881,6 +878,37 @@ Try the repeated popping up to 10 times."
 ;; Split Org Block using M-s
 (define-key org-mode-map (kbd "M-s") 'org-babel-demarcate-block)
 ;; Editing:1 ends here
+
+;; Multiple major modes in the same buffer (polymode)
+;; I use poly-org package which automatically and quickly switches modes, when I
+;; go inside code blocks. This allows working with code as easily as in source
+;; files, without constant painful buffer/context switching.
+
+
+;; [[file:init.org::*Multiple major modes in the same buffer (polymode)][Multiple major modes in the same buffer (polymode):1]]
+;; I read on Emacs Telegram channel that these 2 settings help fix some issues
+;; with poly-org
+(setq-mark-as-customized
+ 'org-startup-indented nil
+ 'org-adapt-indentation nil)
+
+;; Flycheck with poly-org uses crashes with too many errors, because it
+;; doesn't recognize modes properly. This should help
+(defun flycheck-buffer-not-indirect-p (&rest _)
+  "Ensure that the current buffer is not indirect."
+  (null (buffer-base-buffer)))
+
+(advice-add 'flycheck-may-check-automatically
+            :before-while #'flycheck-buffer-not-indirect-p)
+
+;; I tried this hack to fix font-lock issues arising from polymode
+(defun set-lavender-background ()
+  (face-remap-add-relative 'default
+                            :background "lavender"))
+(add-hook 'clojure-mode-hook #'set-lavender-background)
+(add-hook 'clojurescript-mode-hook #'set-lavender-background)
+(add-hook 'emacs-lisp-mode-hook #'set-lavender-background)
+;; Multiple major modes in the same buffer (polymode):1 ends here
 
 ;; Eval in Cider REPL with proper namespace
 ;; To figure out the namespace of a code block:
