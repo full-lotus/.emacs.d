@@ -101,6 +101,10 @@ instead of setq, to avoid confusion in Customize interface"
  ;; Silence warnings for redefinition
  'ad-redefinition-action 'accept
  )
+
+(defmacro comment (&rest body)
+  "A simple way to comment out code in Emacs Lisp."
+  nil)
 ;; Elisp:1 ends here
 
 ;; Use SSH through daemon launched on startup
