@@ -800,6 +800,10 @@ Try the repeated popping up to 10 times."
 (global-set-key (kbd "M--") #'org-mark-ring-goto)
 (global-set-key (kbd "M-=") #'org-mark-ring-push)
 
+(setq-mark-as-customized 'org-id-link-to-org-use-id t)
+(define-key org-mode-map (kbd "C-c l") 'org-store-link)
+(define-key org-mode-map (kbd "<f5>") 'org-id-get-create)
+(define-key org-mode-map (kbd "<f9>") 'org-id-copy)
 
 (setq-mark-as-customized
  ;; open src blocks in the same window as parent .org file
