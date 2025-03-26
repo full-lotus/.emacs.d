@@ -777,6 +777,7 @@ Try the repeated popping up to 10 times."
    'org-modules '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus
   			ol-info ol-irc ol-mhe ol-rmail org-tempo ol-w3m)
 
+   ;; protection of overlay messes up editing sometimes
    'org-tidy-protect-overlay nil
 
    ;; disable org-mode indentation, to keep lines under 80 characters
@@ -787,10 +788,10 @@ Try the repeated popping up to 10 times."
 
 ;; [[file:init.org::*Display][Display:1]]
 ;; hide :PROPERTIES: and other drawers
-(use-package org-tidy
-  :ensure t
-  :hook
-  (org-mode . org-tidy-mode))
+;; (use-package org-tidy
+;;   :ensure t
+;;   :hook
+;;   (org-mode . org-tidy-mode))
 ;; Display:1 ends here
 
 ;; Navigation

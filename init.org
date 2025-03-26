@@ -769,6 +769,7 @@ The defaults are cycled in minibuffer with up/down arrows.
    'org-modules '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus
   			ol-info ol-irc ol-mhe ol-rmail org-tempo ol-w3m)
 
+   ;; protection of overlay messes up editing sometimes
    'org-tidy-protect-overlay nil
 
    ;; disable org-mode indentation, to keep lines under 80 characters
@@ -778,10 +779,10 @@ The defaults are cycled in minibuffer with up/down arrows.
 *** Display
 #+begin_src elisp :tangle ./init.el
 ;; hide :PROPERTIES: and other drawers
-(use-package org-tidy
-  :ensure t
-  :hook
-  (org-mode . org-tidy-mode))
+;; (use-package org-tidy
+;;   :ensure t
+;;   :hook
+;;   (org-mode . org-tidy-mode))
 #+end_src
 
 *** Navigation
