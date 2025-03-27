@@ -65,7 +65,7 @@ instead of setq, to avoid confusion in Customize interface"
      openwith org-tidy cider treemacs-all-the-icons treemacs
      clojure-mode magit command-log-mode posframe pcre2el dired-ranger
      flycheck flycheck-clj-kondo rainbow-delimiters casual-avy puni
-     )))
+     poly-org)))
 
 ;; install all non-default packages
 (dolist (pkg package-selected-packages)
@@ -855,6 +855,7 @@ The defaults are cycled in minibuffer with up/down arrows.
   (modify-syntax-entry ?< "w")
   (modify-syntax-entry ?> "w"))
 (add-hook 'org-mode-hook 'my-angle-bracket-fix)
+(remove-hook 'org-mode-hook 'my-angle-bracket-fix)
 
 ;; It’s useful to split code blocks to quickly add org-mode text
 ;; between the src. The default binding is C-c C-v C-d, which is somewhat
@@ -880,25 +881,25 @@ To figure out the namespace of a code block:
 ;; use Cider REPL to eval Clojure code in org-mode
 (load "~/.emacs.d/elisp/cider-eval-in-org-mode.el")
 
-(defun toggle-cider-on-org-src-block ()
-  "Automatically enable or disable CIDER when entering or leaving
-Clojure source blocks in Org mode."
-  (when (eq major-mode 'org-mode)
-    (let* ((context (org-element-context))
-           (block-type (org-element-property :language context))
-           (block-type-lower (when block-type (downcase block-type)))
-           (in-clojure-block (string= block-type-lower "clojure")))
+;; (defun toggle-cider-on-org-src-block ()
+;;   "Automatically enable or disable CIDER when entering or leaving
+;; Clojure source blocks in Org mode."
+;;   (when (eq major-mode 'org-mode)
+;;     (let* ((context (org-element-context))
+;;            (block-type (org-element-property :language context))
+;;            (block-type-lower (when block-type (downcase block-type)))
+;;            (in-clojure-block (string= block-type-lower "clojure")))
 
-      (cond
-       ;; Entering a Clojure source block
-       ((and in-clojure-block (not cider-mode))
-        (cider-mode))
+;;       (cond
+;;        ;; Entering a Clojure source block
+;;        ((and in-clojure-block (not cider-mode))
+;;         (cider-mode))
 
-       ;; Leaving a Clojure source block
-       ((and (not in-clojure-block) cider-mode)
-        (cider-mode -1))))))
+;;        ;; Leaving a Clojure source block
+;;        ((and (not in-clojure-block) cider-mode)
+;;         (cider-mode -1))))))
 
-(add-hook 'post-command-hook #'toggle-cider-on-org-src-block)
+;; (add-hook 'post-command-hook #'toggle-cider-on-org-src-block)
 ;; (remove-hook 'post-command-hook #'toggle-cider-on-org-src-block)
 #+end_src
 
@@ -917,11 +918,17 @@ found a workaround, but I was wrong. See [[https://github.com/polymode/poly-org/
 ;; Tangle on save only occurs if the buffer being saved is an Org-Mode file.
 (defun tangle-on-save-org-mode-file ()
   (when (and (string-match-p
-              (regexp-quote ".org") (message "%s" (current-buffer)))
-             (not (string-match-p
-                   (regexp-quote "[") (message "%s" (current-buffer)))))
-    (org-babel-tangle)))
+              (regexp-quote ".org") (message "%s" (current-buffer))))
+    (message
+     "tangle hook, pm-base-buffer-before-save %s" pm-base-buffer-before-save)
+    (message "tangle hook, pm-base-buffer %s" (pm-base-buffer))
+    (message "tangle hook, current buffer %s" (current-buffer))
+    (org-babel-tangle)
+    ))
 (add-hook 'after-save-hook 'tangle-on-save-org-mode-file)
+(remove-hook 'after-save-hook 'tangle-on-save-org-mode-file)
+;; (add-hook 'before-save-hook 'tangle-on-save-org-mode-file)
+;; (remove-hook 'before-save-hook 'tangle-on-save-org-mode-file)
 
 ;; disable new buffer pop-up caused by tangling
 (defun org-babel-tangle-no-buffer-pop-up (orig-fun &rest args)
@@ -929,14 +936,38 @@ found a workaround, but I was wrong. See [[https://github.com/polymode/poly-org/
     (let ((display-buffer-alist
            '((".*" (display-buffer-no-window) (allow-no-window . t)))))
       (apply orig-fun args))))
-(advice-add 'org-babel-tangle :around 'org-babel-tangle-no-buffer-pop-up)
+;; (advice-add 'org-babel-tangle :around 'org-babel-tangle-no-buffer-pop-up)
+(advice-remove 'org-babel-tangle 'org-babel-tangle-no-buffer-pop-up)
 
 ;; override broken fn, which deletes comments from clojure code
 (load "~/.emacs.d/elisp/ob-clojure-fix.el")
-(eval-after-load 'org
-  (with-eval-after-load 'org
-    (advice-add 'org-babel-expand-body:clojure
-		:override #'org-babel-expand-body:clojure_fixed)))
+(advice-add 'org-babel-expand-body:clojure
+	    :override #'org-babel-expand-body:clojure_fixed)
+
+
+
+(defvar pm-base-buffer-before-save)
+
+(defun pm-store-base-buffer-before-save (&rest _)
+  ""
+  (setq pm-base-buffer-before-save (pm-base-buffer))
+  (message "pm-base-buffer-before-save %s" pm-base-buffer-before-save))
+
+(advice-add 'save-buffer :before 'pm-store-base-buffer-before-save)
+(advice-remove 'save-buffer 'store-pm-base-buffer-before-save)
+
+(defun pm-move-point-to-start-before-tangle (orig-fun &rest args)
+  ""
+  (let ((orig-buffer (current-buffer)))
+    (message "pm-base-buffer %s" (pm-base-buffer))
+    (switch-to-buffer pm-base-buffer-before-save)
+    (save-excursion
+      (goto-char (point-min))
+      (apply orig-fun args))
+    (switch-to-buffer orig-buffer)))
+
+(advice-add 'org-babel-tangle :around 'pm-move-point-to-start-before-tangle)
+;; (advice-remove 'org-babel-tangle 'pm-move-point-to-start-before-tangle)
 #+end_src
 
 *** Detangling *DISABLED*
@@ -985,6 +1016,7 @@ found a workaround, but I was wrong. See [[https://github.com/polymode/poly-org/
     (org-agenda-file-to-front)))
 
 (add-hook 'after-save-hook 'to-agenda-on-save-org-mode-file)
+(remove-hook 'after-save-hook 'to-agenda-on-save-org-mode-file)
 
 (setq-mark-as-customized 'org-agenda-restore-windows-after-quit t)
 
