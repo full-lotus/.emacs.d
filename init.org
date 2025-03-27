@@ -771,6 +771,16 @@ The defaults are cycled in minibuffer with up/down arrows.
    'org-tidy-protect-overlay nil)
 #+end_src
 
+*** Display
+#+begin_src elisp :tangle ./init.el
+;; background colors are changed to be consistent with src-blocks in org-mode
+(setq-mark-as-customized
+ 'org-src-fontify-natively t
+ 'org-src-block-faces '(("elisp" (:background "lavender"))
+			("emacs-lisp" (:background "lavender"))
+			("clojure" (:background "lavender"))))
+#+end_src
+
 *** Navigation
 #+begin_src elisp :tangle ./init.el
 (global-set-key (kbd "M--") #'org-mark-ring-goto)
@@ -866,16 +876,13 @@ drop tangle-on-save hook, and to tangle manually from outside source blocks.
  'org-adapt-indentation nil
  'org-startup-indented nil)
 
-;; background colors are changed to be consistent with src-blocks in org-mode
-;; there is probably a better way to do this, but I don't know it
-(setq-mark-as-customized
- 'org-src-fontify-natively t)
-(defun set-lavender-background ()
-  (face-remap-add-relative 'default
-                           :background "lavender"))
-(add-hook 'clojure-mode-hook #'set-lavender-background)
-(add-hook 'clojurescript-mode-hook #'set-lavender-background)
-(add-hook 'emacs-lisp-mode-hook #'set-lavender-background)
+;; polymode ignores faces config for both inner modes and org mode
+(add-hook
+ 'polymode-init-inner-hook
+ (lambda ()
+   (oset pm/chunkmode adjust-face
+	 '(:background "lavender"
+           :extend t))))
 
 ;; prevents flycheck from confusing buffers and breaking down
 ;; see issue https://github.com/polymode/poly-org/issues3/
