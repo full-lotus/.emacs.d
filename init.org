@@ -772,15 +772,6 @@ The defaults are cycled in minibuffer with up/down arrows.
    'org-tidy-protect-overlay nil)
 #+end_src
 
-*** Display
-#+begin_src elisp :tangle ./init.el
-;; hide :PROPERTIES: and other drawers
-;; (use-package org-tidy
-;;   :ensure t
-;;   :hook
-;;   (org-mode . org-tidy-mode))
-#+end_src
-
 *** Navigation
 #+begin_src elisp :tangle ./init.el
 (global-set-key (kbd "M--") #'org-mark-ring-goto)
@@ -969,86 +960,13 @@ found a workaround, but I was wrong. See [[https://github.com/polymode/poly-org/
 (advice-add 'org-babel-tangle :around 'pm-move-point-to-start-before-tangle)
 ;; (advice-remove 'org-babel-tangle 'pm-move-point-to-start-before-tangle)
 #+end_src
-
-*** Detangling *DISABLED*
-#+begin_src elisp :tangle ./init.el
-;; ;; prevent window/frame config changes during detangling
-;; (defun org-babel-detangle-no-buffer-pop-up (orig-fun &rest args)
-;;   (save-excursion
-;;     (let ((display-buffer-alist
-;;            '((".*" (display-buffer-no-window) (allow-no-window . t)))))
-;;       (apply orig-fun args))))
-
-;; (advice-add 'org-babel-detangle :around #'org-babel-detangle-no-buffer-pop-up)
-
-;; ;; detangle on each file save, doing this by hand is tedious
-;; (add-hook 'after-save-hook 'org-babel-detangle)
-#+end_src
-
-*** Performance optimizations *DISABLED*
-#+begin_src elisp :tangle ./init.el
-;; ;; Apparently Garbage Collecting when out of focus can make emacs feel faster. I’ll try that.
-;; (add-hook 'focus-out-hook #'garbage-collect)
-
-;; ;; The following code is from:
-;; ;; https://www.wisdomandwonder.com/article/10630/how-fast-can-you-tangle-in-org-mode
-;; ;; It basically boils down to adjusting garbage collection settings at key times during an org file save. Not strictly necessary, but nice to have.
-
-;; (setq help/default-gc-cons-threshold gc-cons-threshold)
-;; (defun help/set-gc-cons-threshold (&optional multiplier notify)
-;;   "Set `gc-cons-threshold` either to its default value or a
-;;    `multiplier` thereof."
-;;   (let* ((new-multiplier (or multiplier 1))
-;;          (new-threshold (* help/default-gc-cons-threshold
-;;                            new-multiplier)))
-;;     (setq gc-cons-threshold new-threshold)
-;;     (when notify (message "Setting `gc-cons-threshold` to %s"
-;;                           new-threshold))))
-;; (defun help/double-gc-cons-threshold () "Double `gc-cons-threshold`." (help/set-gc-cons-threshold 2))
-;; (add-hook 'org-babel-pre-tangle-hook #'help/double-gc-cons-threshold)
-;; (add-hook 'org-babel-post-tangle-hook #'help/set-gc-cons-threshold)
 #+end_src
 
 *** Todo and agenda
 #+begin_src elisp :tangle ./init.el
-(defun to-agenda-on-save-org-mode-file ()
-  (when (string= (message "%s" major-mode) "org-mode")
-    (org-agenda-file-to-front)))
-
-(add-hook 'after-save-hook 'to-agenda-on-save-org-mode-file)
-(remove-hook 'after-save-hook 'to-agenda-on-save-org-mode-file)
-
 (setq-mark-as-customized 'org-agenda-restore-windows-after-quit t)
 
 (define-key org-mode-map (kbd "C-c a") 'org-agenda)
-
-(defun my/org-checkbox-todo ()
-  "Switch header TODO state to DONE when all checkboxes are ticked,
-to TODO otherwise"
-  (let ((todo-state (org-get-todo-state)) beg end)
-    (unless (not todo-state)
-      (save-excursion
-    (org-back-to-heading t)
-    (setq beg (point))
-    (end-of-line)
-    (setq end (point))
-    (goto-char beg)
-    (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
-                   end t)
-        (if (match-end 1)
-        (if (equal (match-string 1) "100%")
-            (unless (string-equal todo-state "DONE")
-              (org-todo 'done))
-          (unless (string-equal todo-state "TODO")
-            (org-todo 'todo)))
-          (if (and (> (match-end 2) (match-beginning 2))
-               (equal (match-string 2) (match-string 3)))
-          (unless (string-equal todo-state "DONE")
-            (org-todo 'done))
-        (unless (string-equal todo-state "TODO")
-          (org-todo 'todo)))))))))
-
-(add-hook 'org-checkbox-statistics-hook 'my/org-checkbox-todo)
 #+end_src
 
 
