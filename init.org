@@ -686,6 +686,14 @@ The defaults are cycled in minibuffer with up/down arrows.
 ** Parenthesis config
 *** Puni-mode
 #+begin_src elisp :tangle ./init.el
+;; toggle puni-mode manually
+(global-set-key (kbd "M-P") 'puni-mode)
+
+(puni-global-mode 1)
+
+;; puni-mode doesn't have auto-pairing
+(electric-pair-mode 1)
+
 ;; use sexp editing hotkeys from VS Code Calva, to which I am used to
 (define-key puni-mode-map (kbd "C-<right>") 'puni-forward-sexp)
 (define-key puni-mode-map (kbd "C-<left>") 'puni-backward-sexp)
@@ -693,15 +701,6 @@ The defaults are cycled in minibuffer with up/down arrows.
 (define-key puni-mode-map (kbd "C-M-,") 'puni-barf-forward)
 (define-key puni-mode-map (kbd "C-M->") 'puni-barf-backward)
 (define-key puni-mode-map (kbd "C-M-<") 'puni-slurp-backward)
-
-;; toggle puni-mode manually
-(define-key org-mode-map (kbd "M-P") 'puni-mode)
-
-;; use puni-mode with Clojure
-(add-hook 'clojurescript-mode #'puni-mode)
-(add-hook 'clojure-mode #'puni-mode)
-(add-hook 'cider-mode-hook #'puni-mode)
-(add-hook 'cider-repl-mode-hook #'puni-mode)
 #+end_src
 
 *** Display
