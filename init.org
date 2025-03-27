@@ -857,9 +857,38 @@ The defaults are cycled in minibuffer with up/down arrows.
 #+end_src
 
 *** Code execution
-I switch CIDER on/off when going in/out of Clojure source blocks. This allows
-working with the code almost as good as in a dedicated buffer with clojure-mode.
+**** Mode switching - polymode (poly-org)
+I spent 3 days trying to fix this [[https://github.com/polymode/poly-org/issues/53][issue]]. I couldn't do it, so I decided to just
+drop tangle-on-save hook, and to tangle manually from outside source blocks.
 
+#+begin_src elisp :tangle ./init.el
+;; these supposed to prevent breaking display of source blocks
+(setq-mark-as-customized
+ 'org-adapt-indentation nil
+ 'org-startup-indented nil)
+
+;; background colors are changed to be consistent with src-blocks in org-mode
+;; there is probably a better way to do this, but I don't know it
+(setq-mark-as-customized
+ 'org-src-fontify-natively t)
+(defun set-lavender-background ()
+  (face-remap-add-relative 'default
+                           :background "lavender"))
+(add-hook 'clojure-mode-hook #'set-lavender-background)
+(add-hook 'clojurescript-mode-hook #'set-lavender-background)
+(add-hook 'emacs-lisp-mode-hook #'set-lavender-background)
+
+;; prevents flycheck from confusing buffers and breaking down
+;; see issue https://github.com/polymode/poly-org/issues3/
+(defun flycheck-buffer-not-indirect-p (&rest _)
+  "Ensure that the current buffer is not indirect."
+  (null (buffer-base-buffer)))
+
+(advice-add 'flycheck-may-check-automatically
+            :before-while #'flycheck-buffer-not-indirect-p)
+#+end_src
+
+**** Clojure namespace detection
 To figure out the namespace of a code block:
 
 1. We create a graph, where edges are noweb refs.
@@ -871,95 +900,14 @@ To figure out the namespace of a code block:
 #+begin_src elisp :tangle ./init.el
 ;; use Cider REPL to eval Clojure code in org-mode
 (load "~/.emacs.d/elisp/cider-eval-in-org-mode.el")
-
-;; (defun toggle-cider-on-org-src-block ()
-;;   "Automatically enable or disable CIDER when entering or leaving
-;; Clojure source blocks in Org mode."
-;;   (when (eq major-mode 'org-mode)
-;;     (let* ((context (org-element-context))
-;;            (block-type (org-element-property :language context))
-;;            (block-type-lower (when block-type (downcase block-type)))
-;;            (in-clojure-block (string= block-type-lower "clojure")))
-
-;;       (cond
-;;        ;; Entering a Clojure source block
-;;        ((and in-clojure-block (not cider-mode))
-;;         (cider-mode))
-
-;;        ;; Leaving a Clojure source block
-;;        ((and (not in-clojure-block) cider-mode)
-;;         (cider-mode -1))))))
-
-;; (add-hook 'post-command-hook #'toggle-cider-on-org-src-block)
-;; (remove-hook 'post-command-hook #'toggle-cider-on-org-src-block)
 #+end_src
-
-**** Why not polymode (poly-org)?
-I spent 2 days trying to get polymode with poly-org to work, but it was ultra
-shitty, and broke everything left and right, sometimes silently. I thought had
-found a workaround, but I was wrong. See [[https://github.com/polymode/poly-org/issues/53][issue]].
 
 *** Tangling
 #+begin_src elisp :tangle ./init.el
-;; Tangling can be set to occur automatically on save. This makes things way
-;; simpler. Additionally, we set up todos to be moved to the agenda on save.
-;; This is just to keep things organized if todos are added to project org
-;; files
-
-;; Tangle on save only occurs if the buffer being saved is an Org-Mode file.
-(defun tangle-on-save-org-mode-file ()
-  (when (and (string-match-p
-              (regexp-quote ".org") (message "%s" (current-buffer))))
-    (message
-     "tangle hook, pm-base-buffer-before-save %s" pm-base-buffer-before-save)
-    (message "tangle hook, pm-base-buffer %s" (pm-base-buffer))
-    (message "tangle hook, current buffer %s" (current-buffer))
-    (org-babel-tangle)
-    ))
-(add-hook 'after-save-hook 'tangle-on-save-org-mode-file)
-(remove-hook 'after-save-hook 'tangle-on-save-org-mode-file)
-;; (add-hook 'before-save-hook 'tangle-on-save-org-mode-file)
-;; (remove-hook 'before-save-hook 'tangle-on-save-org-mode-file)
-
-;; disable new buffer pop-up caused by tangling
-(defun org-babel-tangle-no-buffer-pop-up (orig-fun &rest args)
-  (save-excursion
-    (let ((display-buffer-alist
-           '((".*" (display-buffer-no-window) (allow-no-window . t)))))
-      (apply orig-fun args))))
-;; (advice-add 'org-babel-tangle :around 'org-babel-tangle-no-buffer-pop-up)
-(advice-remove 'org-babel-tangle 'org-babel-tangle-no-buffer-pop-up)
-
 ;; override broken fn, which deletes comments from clojure code
 (load "~/.emacs.d/elisp/ob-clojure-fix.el")
 (advice-add 'org-babel-expand-body:clojure
 	    :override #'org-babel-expand-body:clojure_fixed)
-
-
-
-(defvar pm-base-buffer-before-save)
-
-(defun pm-store-base-buffer-before-save (&rest _)
-  ""
-  (setq pm-base-buffer-before-save (pm-base-buffer))
-  (message "pm-base-buffer-before-save %s" pm-base-buffer-before-save))
-
-(advice-add 'save-buffer :before 'pm-store-base-buffer-before-save)
-(advice-remove 'save-buffer 'store-pm-base-buffer-before-save)
-
-(defun pm-move-point-to-start-before-tangle (orig-fun &rest args)
-  ""
-  (let ((orig-buffer (current-buffer)))
-    (message "pm-base-buffer %s" (pm-base-buffer))
-    (switch-to-buffer pm-base-buffer-before-save)
-    (save-excursion
-      (goto-char (point-min))
-      (apply orig-fun args))
-    (switch-to-buffer orig-buffer)))
-
-(advice-add 'org-babel-tangle :around 'pm-move-point-to-start-before-tangle)
-;; (advice-remove 'org-babel-tangle 'pm-move-point-to-start-before-tangle)
-#+end_src
 #+end_src
 
 *** Todo and agenda
