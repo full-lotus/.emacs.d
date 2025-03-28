@@ -2,14 +2,33 @@
 :header-args: :comments both :noweb yes :mkdirp yes
 :END:
 
-* Emacs init.el configuration file
-It's the first Elisp file loaded on Emacs startup
+* Purpose of this Emacs config
+This config aims to maximize Clojure programmer productivity through:
+
+1. /Making Emacs easy to learn on the go/
+   Without modes like <<<which-key>>>, <<<command-log>>>, <<<<ivy>>>>, etc -
+   Emacs is a huge pain for new users.
+
+2. /Short hotkeys for most often used functionality/
+   For example, 'C-o'/'M-o' for ~other-window/other-frame~. Mode <<<keyfreq>>>
+   helps with that.
+
+3. /Being minimalistic/
+   I use Emacs as a tool, not a hobby. I customize things to get them out of
+   the way of reaching meditative concentration, not to enjoy shiny toys.
+
+4. /<<<Literate programming>>> with <<<polymode>>>/
+   To minimize context/abstraction switching overhead. Plus, figuring out
+   *why* code was written is a huge waste of time and mental energy.
+
+5. /Being dead obvious *why* some things were customized/
+   In other words, the config itself is a Literate Program
 
 
 * Customize and custom.el
 ** Sync init.el changes to customize
 I use Emacs Customize GUI, because it's convenient. I want to see actual info
-there, that's why I use this fn instead of =setq=
+there, that's why I use this fn instead of ~setq~
 
 #+begin_src elisp :tangle ./init.el
 (defun setq-mark-as-customized (&rest var-val-pairs)
