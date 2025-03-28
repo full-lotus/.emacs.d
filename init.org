@@ -784,9 +784,6 @@ The defaults are cycled in minibuffer with up/down arrows.
 *** Navigation
 **** General
 #+begin_src elisp :tangle ./init.el
-(global-set-key (kbd "M--") #'org-mark-ring-goto)
-(global-set-key (kbd "M-=") #'org-mark-ring-push)
-
 (setq-mark-as-customized 'org-id-link-to-org-use-id t)
 (define-key org-mode-map (kbd "C-c l") 'org-store-link)
 (define-key org-mode-map (kbd "<f5>") 'org-id-get-create)
