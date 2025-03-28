@@ -750,8 +750,9 @@ The defaults are cycled in minibuffer with up/down arrows.
 (define-key cider-repl-mode-map (kbd "M-<RET>") 'cider-eval-defun-at-point)
 #+end_src
 
-** Literate programming (org-mode)
-*** Initialization
+
+* Org-mode (literate programming)
+** Initialization
 #+begin_src elisp :tangle ./init.el
   ;; (require 'org)
 
@@ -774,7 +775,7 @@ The defaults are cycled in minibuffer with up/down arrows.
    'org-tidy-protect-overlay nil)
 #+end_src
 
-*** Display
+** Display
 #+begin_src elisp :tangle ./init.el
 ;; background colors are changed to be consistent with src-blocks in org-mode
 (setq-mark-as-customized
@@ -784,8 +785,8 @@ The defaults are cycled in minibuffer with up/down arrows.
 			("clojure" (:background "lavender"))))
 #+end_src
 
-*** Navigation
-**** General
+** Navigation
+*** General
 #+begin_src elisp :tangle ./init.el
 (setq-mark-as-customized 'org-id-link-to-org-use-id t)
 (define-key org-mode-map (kbd "C-c l") 'org-store-link)
@@ -823,7 +824,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 (define-key org-mode-map (kbd "C-c h") 'org-collapse-above-level)
 #+end_src
 
-**** Custom :src source block header
+*** Custom :src source block header
 <<<:src>>> is a custom header that I add manually to noref code blocks
 
 #+begin_src elisp :tangle ./init.el
@@ -839,7 +840,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 (define-key org-mode-map (kbd "C-c o") 'org-babel-open-tangle-file)
 #+end_src
 
-*** Editing
+** Editing
 #+begin_src elisp :tangle ./init.el
 (setq-mark-as-customized
  'org-support-shift-select 'always
@@ -870,8 +871,8 @@ The defaults are cycled in minibuffer with up/down arrows.
 (define-key org-mode-map (kbd "M-s") 'org-babel-demarcate-block)
 #+end_src
 
-*** Code execution
-**** Mode switching - polymode (poly-org)
+** Code execution
+*** Mode switching - polymode (poly-org)
 I spent 3 days trying to fix this [[https://github.com/polymode/poly-org/issues/53][issue]]. I couldn't do it, so I decided to just
 drop tangle-on-save hook, and to tangle manually from outside source blocks.
 
@@ -899,7 +900,7 @@ drop tangle-on-save hook, and to tangle manually from outside source blocks.
             :before-while #'flycheck-buffer-not-indirect-p)
 #+end_src
 
-**** Clojure namespace determination
+*** Clojure namespace determination
 I use file from custom :src or :tangle header to determine proper ns for eval
 
 #+begin_src elisp :tangle ./init.el
@@ -928,7 +929,7 @@ Searches for ns in :tangle or :src file, otherwise calls clojure-find-ns."
 ;; (advice-remove 'cider-current-ns 'org-clojure-block-get-ns)
 #+end_src
 
-*** Tangling
+** Tangling
 #+begin_src elisp :tangle ./init.el
 ;; override broken fn, which deletes comments from clojure code
 (load "~/.emacs.d/elisp/ob-clojure-fix.el")
@@ -936,7 +937,7 @@ Searches for ns in :tangle or :src file, otherwise calls clojure-find-ns."
 	    :override #'org-babel-expand-body:clojure_fixed)
 #+end_src
 
-*** Todo and agenda
+** Todo and agenda
 #+begin_src elisp :tangle ./init.el
 (setq-mark-as-customized 'org-agenda-restore-windows-after-quit t)
 
