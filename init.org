@@ -300,23 +300,6 @@ instead of setq, to avoid confusion in Customize interface"
 ;; programming will change contents of files. If the file is open in a buffer,
 ;; I want it to automatically show the change without asking me every time.
 (global-auto-revert-mode t)
-
-
-;; When a file is modified externally, emacs does not show this change
-;; by default. Instead, when you try to edit it will ask you to modify or
-;; revert. Since Tangling files changes src code automatically, it is more
-;; effective to automatically revert any buffers which have src files open.
-;; (defun revert-all-buffers ()
-;;   "Refreshes all open buffers from their respective files."
-;;   (interactive)
-;;   (dolist (buf (buffer-list))
-;;     (with-current-buffer buf
-;;       (when (and (buffer-file-name)
-;; 		 (file-exists-p (buffer-file-name))
-;; 		 (not (buffer-modified-p)))
-;; 	(revert-buffer t t t) )))
-;;   (message "Refreshed open files."))
-;; (add-hook 'after-save-hook 'revert-all-buffers)
 #+end_src
 
 
