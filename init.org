@@ -782,6 +782,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 #+end_src
 
 *** Navigation
+**** General
 #+begin_src elisp :tangle ./init.el
 (global-set-key (kbd "M--") #'org-mark-ring-goto)
 (global-set-key (kbd "M-=") #'org-mark-ring-push)
@@ -819,10 +820,14 @@ The defaults are cycled in minibuffer with up/down arrows.
        (when (and heading-level (> (+ heading-level 1) level))
          (hide-subtree))))
    t 'file))
-
 (define-key org-mode-map (kbd "C-c h") 'org-collapse-above-level)
+#+end_src
 
-;; open the file specified by the :tangle header argument
+**** Custom :src source block header
+<<<:src>>> is a custom header that I add manually to noref code blocks
+
+#+begin_src elisp :tangle ./init.el
+;; open the file specified by :tangle org :src header argument
 (defun org-babel-open-tangle-file ()
   (interactive)
   (let* ((info (org-babel-get-src-block-info))
@@ -894,18 +899,33 @@ drop tangle-on-save hook, and to tangle manually from outside source blocks.
             :before-while #'flycheck-buffer-not-indirect-p)
 #+end_src
 
-**** Clojure namespace detection
-To figure out the namespace of a code block:
-
-1. We create a graph, where edges are noweb refs.
-2. Using the graph, we find root code block, which points to source file
-3. In the source file, we find =(ns ...)= macro, which gets us a namespace.
-   To do that, we =(advice-add 'cider-current-ns)== - if we are
-   inside :noweb-ref block, ns search function is called on the :tangle file
+**** Clojure namespace determination
+I use file from custom :src or :tangle header to determine proper ns for eval
 
 #+begin_src elisp :tangle ./init.el
-;; use Cider REPL to eval Clojure code in org-mode
-(load "~/.emacs.d/elisp/cider-eval-in-org-mode.el")
+(defun org-clojure-block-get-ns (orig-fun &rest args)
+  "Wrap org-cider-current-ns, to enable REPL execution straight from org-mode.
+Searches for ns in :tangle or :src file, otherwise calls clojure-find-ns."
+  (when (org-babel-where-is-src-block-head)
+      (let* ((block-info (org-babel-get-src-block-info 'light))
+             (header-args (nth 2 block-info))
+	     (tangle-value (alist-get :tangle header-args))
+	     (tangle-file (and (not (string= tangle-value "no"))
+			       tangle-value))
+             (ns-file (or tangle-file
+			  (alist-get :src header-args))))
+
+	(if (not (file-exists-p ns-file))
+	    (apply orig-fun args)
+
+	  (with-temp-buffer
+	    (insert-file-contents ns-file)
+	    (goto-char (point-min))
+	    (clojurec-mode)
+	    (clojure-find-ns))))))
+
+(advice-add 'cider-current-ns :around 'org-clojure-block-get-ns)
+;; (advice-remove 'cider-current-ns 'org-clojure-block-get-ns)
 #+end_src
 
 *** Tangling
