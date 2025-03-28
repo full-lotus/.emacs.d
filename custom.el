@@ -41,11 +41,11 @@
  '(org-startup-indented nil)
  '(org-tidy-protect-overlay nil)
  '(package-selected-packages
-   '(ivy counsel smex wgrep ob-clojurescript ob-async async wgrep
-	 openwith org-tidy cider treemacs-all-the-icons treemacs
-	 clojure-mode magit command-log-mode posframe pcre2el
-	 dired-ranger flycheck flycheck-clj-kondo rainbow-delimiters
-	 casual-avy puni poly-org))
+   '(async casual-avy cider clojure-mode command-log-mode counsel
+	   dired-ranger flycheck flycheck-clj-kondo ivy ivy-rich magit
+	   ob-async ob-clojurescript openwith org-tidy pcre2el
+	   poly-org posframe puni rainbow-delimiters smex treemacs
+	   treemacs-all-the-icons wgrep wgrep))
  '(safe-local-variable-values
    '((cider-clojure-cli-parameters . "-M:cider/nrepl:dev")
      (cider-clojure-cli-parameters . "-M:dev")
