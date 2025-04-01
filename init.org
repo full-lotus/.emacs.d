@@ -79,7 +79,7 @@ instead of setq, to avoid confusion in Customize interface"
 ;; add non-default packages that we need
 (custom-set-variables
  '(package-selected-packages
-   '(ivy ivy-rich counsel smex wgrep
+   '(ivy ivy-rich counsel smex keyfreq wgrep
      ob-clojurescript ob-async async wgrep
      openwith org-tidy cider treemacs-all-the-icons treemacs
      clojure-mode magit command-log-mode posframe pcre2el dired-ranger
@@ -490,6 +490,29 @@ Try the repeated popping up to 10 times."
 
 
 * Command/code completion
+** which-key mode
+Shows completion options, after you start pressing hotkeys
+
+#+begin_src elisp :tangle ./init.el
+(which-key-mode 1)
+#+end_src
+
+** keyfreq mode
+Records how much times a command was used. Useful for optimizing hotkeys
+
+#+begin_src elisp :tangle ./init.el
+(keyfreq-mode 1)
+(keyfreq-autosave-mode 1)
+
+(setq-mark-as-customized
+ 'keyfreq-excluded-commands
+ '(self-insert-command
+   forward-char
+   backward-char
+   previous-line
+   next-line))
+#+end_src
+
 ** Enable ivy and counsel modes
 #+begin_src elisp :tangle ./init.el
 ;; use Ivy + Counsel + Swiper for better completion/search
