@@ -521,17 +521,21 @@ Try the repeated popping up to 10 times."
 
 
 * Command/code completion
+#+begin_src elisp :tangle ./init.el
+(load "~/.emacs.d/elisp/command-and-code-completion.tangled.el")
+#+end_src
+
 ** which-key mode
 Shows completion options, after you start pressing hotkeys
 
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/command-and-code-completion.tangled.el
 (which-key-mode 1)
 #+end_src
 
 ** keyfreq mode
 Records how much times a command was used. Useful for optimizing hotkeys
 
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/command-and-code-completion.tangled.el
 (keyfreq-mode 1)
 (keyfreq-autosave-mode 1)
 
@@ -545,7 +549,7 @@ Records how much times a command was used. Useful for optimizing hotkeys
 #+end_src
 
 ** Enable ivy and counsel modes
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/command-and-code-completion.tangled.el
 ;; use Ivy + Counsel + Swiper for better completion/search
 ;; settings taken from here https://github.com/abo-abo/swiper
 (ivy-mode)
@@ -556,7 +560,7 @@ Records how much times a command was used. Useful for optimizing hotkeys
 #+end_src
 
 *** Disable icomplete mode when calling ivy-read, to fix a conflict
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/command-and-code-completion.tangled.el
 ;; disable icomplete to fix error:
 ;; Error in post-command-hook (icomplete-post-command-hook):
 ;; (wrong-number-of-arguments #<subr counsel-ag-function> 3)
@@ -570,7 +574,7 @@ Records how much times a command was used. Useful for optimizing hotkeys
 #+end_src
 
 *** Fix counsel-rg not displaying errors properly
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/command-and-code-completion.tangled.el
 (with-eval-after-load 'counsel
   (advice-add
    'counsel-rg
@@ -584,7 +588,7 @@ Records how much times a command was used. Useful for optimizing hotkeys
 #+end_src
 
 ** Customize ivy matching behavior
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/command-and-code-completion.tangled.el
 ;; Enable orderless matching for execute-extended-command
 (setq-mark-as-customized 'ivy-re-builders-alist
                          '((counsel-M-x . ivy--regex-ignore-order)
@@ -599,7 +603,7 @@ Records how much times a command was used. Useful for optimizing hotkeys
 #+end_src
 
 ** Add commands for searching the current symbol under cursor
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/command-and-code-completion.tangled.el
 (defun regex-fn-ivy-thing-at-point (regex-fn)
   "Run `counsel-git-grep` with ivy-thing-at-point as the initial input."
   (interactive)
@@ -618,9 +622,7 @@ Records how much times a command was used. Useful for optimizing hotkeys
 #+end_src
 
 ** Configure ivy and counsel hotkeys
-
-
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/command-and-code-completion.tangled.el
 ;; some of those hotkeys are redundant because of counsel-mode
 ;; but I'm not sure which I can drop, and to lazy to check one-by-one
 (global-set-key (kbd "C-s") 'swiper)
@@ -646,7 +648,7 @@ Records how much times a command was used. Useful for optimizing hotkeys
 #+end_src
 
 ** Code completion
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/command-and-code-completion.tangled.el
 ;; Always show completions
 (setq-mark-as-customized 'completion-auto-help 'always)
 
