@@ -306,6 +306,10 @@ instead of setq, to avoid confusion in Customize interface"
 (delete-selection-mode 1)
 
 (setq-mark-as-customized
+ ;; save kill-ring between emacs session, up to 20 entries
+ 'savehist-additional-variables '(kill-ring)
+ 'kill-ring-max 20
+
  ;; saves OS clipboard content before kill, to prevent overwriting it
  'save-interprogram-paste-before-kill t
 
