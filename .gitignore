@@ -24,3 +24,4 @@ history
 smex-items
 /init-debug-transient-window.el
 init.el
+**.tangled.*
