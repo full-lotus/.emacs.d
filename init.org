@@ -740,15 +740,19 @@ The defaults are cycled in minibuffer with up/down arrows.
 
 
 * Programming
-** Syntax checking
 #+begin_src elisp :tangle ./init.el
+(load "~/.emacs.d/elisp/programming-settings.tangled.el")
+#+end_src
+
+** Syntax checking
+#+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tangled.el
 ;; check syntax globally
 (global-flycheck-mode)
 #+end_src
 
 ** Parenthesis config
 *** Puni-mode
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tangled.el
 ;; toggle puni-mode manually
 (global-set-key (kbd "M-P") 'puni-mode)
 
@@ -767,7 +771,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 #+end_src
 
 *** Display
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tangled.el
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 ;; always highlight matching paren
@@ -776,7 +780,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 
 ** Clojure
 *** CIDER
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tangled.el
 (setq-mark-as-customized
       'nrepl-hide-special-buffers t
       'cider-repl-clear-help-banner t
