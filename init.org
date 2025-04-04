@@ -38,7 +38,6 @@ there, that's why I use this fn instead of ~setq~
 (defun setq-mark-as-customized (&rest var-val-pairs)
   "Set variable value and make sure Customize registers this change. Use
 instead of setq, to avoid confusion in Customize interface"
-  (message "%s" var-val-pairs)
   (while var-val-pairs
     (let ((var (pop var-val-pairs))
           (val (pop var-val-pairs)))
