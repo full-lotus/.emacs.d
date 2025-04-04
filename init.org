@@ -816,8 +816,12 @@ The defaults are cycled in minibuffer with up/down arrows.
 
 
 * Org-mode (literate programming)
-** Initialization
 #+begin_src elisp :tangle ./init.el
+(load "~/.emacs.d/elisp/org-mode.tangled.el")
+#+end_src
+
+** Initialization
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
   ;; (require 'org)
 
   (eval-after-load 'org
@@ -840,7 +844,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 #+end_src
 
 ** Display
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
 ;; background colors are changed to be consistent with src-blocks in org-mode
 (setq-mark-as-customized
  'org-src-fontify-natively t
@@ -851,7 +855,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 
 ** Navigation
 *** General
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
 ;; links that use header text:
 ;; 1. break easily
 ;; 2. can't link to a header which is a link
@@ -895,7 +899,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 *** Custom :src source block header
 <<<:src>>> is a custom header that I add manually to noref code blocks
 
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
 ;; open the file specified by :tangle org :src header argument
 (defun org-babel-open-tangle-file ()
   (interactive)
@@ -909,7 +913,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 #+end_src
 
 ** Editing
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
 (setq-mark-as-customized
  'org-support-shift-select 'always
  'org-hide-emphasis-markers nil
@@ -944,7 +948,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 I spent 3 days trying to fix this [[https://github.com/polymode/poly-org/issues/53][issue]]. I couldn't do it, so I decided to just
 drop tangle-on-save hook, and to tangle manually from outside source blocks.
 
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
 ;; these supposed to prevent breaking display of source blocks
 (setq-mark-as-customized
  'org-adapt-indentation nil
@@ -971,7 +975,7 @@ drop tangle-on-save hook, and to tangle manually from outside source blocks.
 *** Clojure namespace determination
 I use file from custom :src or :tangle header to determine proper ns for eval
 
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
 (defun org-clojure-block-get-ns (orig-fun &rest args)
   "Wrap org-cider-current-ns, to enable REPL execution straight from org-mode.
 Searches for ns in :tangle or :src file, otherwise calls clojure-find-ns."
@@ -998,7 +1002,7 @@ Searches for ns in :tangle or :src file, otherwise calls clojure-find-ns."
 #+end_src
 
 ** Tangling
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
 ;; override broken fn, which deletes comments from clojure code
 (load "~/.emacs.d/elisp/ob-clojure-fix.el")
 (advice-add 'org-babel-expand-body:clojure
@@ -1006,7 +1010,7 @@ Searches for ns in :tangle or :src file, otherwise calls clojure-find-ns."
 #+end_src
 
 ** Todo and agenda
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
 (setq-mark-as-customized 'org-agenda-restore-windows-after-quit t)
 
 (define-key org-mode-map (kbd "C-c a") 'org-agenda)
