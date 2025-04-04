@@ -60,8 +60,12 @@ instead of setq, to avoid confusion in Customize interface"
 
 
 * Package management
-** Set URLs from which we search and download packages
 #+begin_src elisp :tangle ./init.el
+(load "~/.emacs.d/elisp/package-management.tangled.el")
+#+end_src
+
+** Set URLs from which we search and download packages
+#+begin_src elisp :tangle ~/.emacs.d/elisp/package-management.tangled.el
 (setq-mark-as-customized
  'package-archives
  '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -70,7 +74,7 @@ instead of setq, to avoid confusion in Customize interface"
 #+end_src
 
 ** Init package.el, fetch available packages from URLs
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/package-management.tangled.el
 ;; start package system (package.el, package dirs, available packages cache)
 (package-initialize)
 
@@ -80,7 +84,7 @@ instead of setq, to avoid confusion in Customize interface"
 #+end_src
 
 ** Install and load all non-default packages
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/package-management.tangled.el
 ;; add non-default packages that we need
 (custom-set-variables
  '(package-selected-packages
