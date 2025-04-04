@@ -107,9 +107,13 @@ instead of setq, to avoid confusion in Customize interface"
 #+end_src
 
 
-* General global configuration
-** Emacs startup/exit
+* General global settings
 #+begin_src elisp :tangle ./init.el
+(load "~/.emacs.d/elisp/global-settings.tangled.el")
+#+end_src
+
+** Emacs startup/exit
+#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
 (setq-mark-as-customized
  ;; Don't display load average
  'display-time-default-load-average nil
@@ -126,7 +130,7 @@ instead of setq, to avoid confusion in Customize interface"
 #+end_src
 
 ** Elisp
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
 ;; the dir with elisp files to be loaded
 (add-to-list 'load-path "~/.emacs.d/elisp/")
 
@@ -141,12 +145,12 @@ instead of setq, to avoid confusion in Customize interface"
 #+end_src
 
 ** Use SSH through daemon launched on startup
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
 (setenv "SSH_AUTH_SOCK" (concat (getenv "XDG_RUNTIME_DIR") "/ssh-agent.socket"))
 #+end_src
 
 ** Sound
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
 ;; use screen flash instead of annoying error sound
 (setq-mark-as-customized
  'visible-bell t
@@ -155,7 +159,7 @@ instead of setq, to avoid confusion in Customize interface"
 
 ** Commands
 *** History
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
 ;; save command history, e. g. for execute-extended-command
 (savehist-mode 1)
 ;; use smex to show command history in counsel-M-x
@@ -164,7 +168,7 @@ instead of setq, to avoid confusion in Customize interface"
 #+end_src
 
 *** Command/key press log
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
 (setq dw/command-window-frame nil)
 
 (defun dw/toggle-command-window ()
@@ -194,19 +198,19 @@ instead of setq, to avoid confusion in Customize interface"
 #+end_src
 
 *** Easier yes/no
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
 ;; Replace yes/no prompts with y/n
 (fset 'yes-or-no-p 'y-or-n-p)
 #+end_src
 
 *** Easy (1 button) command repeat
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
 ;; make some multi-chord commands repeatable with 1 key press
 ;; for example - repeat C-x <LEFT> (previous-buffer) with just <LEFT>
 (repeat-mode 1)
 #+end_src
 ** Emacs temporary files
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
 ;; stop creating backup~ files
 (setq-mark-as-customized 'make-backup-files nil)
 
