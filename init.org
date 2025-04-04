@@ -838,6 +838,10 @@ The defaults are cycled in minibuffer with up/down arrows.
 ** Navigation
 *** General
 #+begin_src elisp :tangle ./init.el
+;; links that use header text:
+;; 1. break easily
+;; 2. can't link to a header which is a link
+;; therefore, use org ids for linking
 (setq-mark-as-customized 'org-id-link-to-org-use-id t)
 (define-key org-mode-map (kbd "C-c l") 'org-store-link)
 (define-key org-mode-map (kbd "<f5>") 'org-id-get-create)
