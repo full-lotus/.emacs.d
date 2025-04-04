@@ -26,11 +26,15 @@ This config aims to maximize Clojure programmer productivity through:
 
 
 * Customize and custom.el
+#+begin_src elisp :tangle ./init.el
+  (load "~/.emacs.d/elisp/customization-api-tweaks.tangled.el")
+#+end_src
+
 ** Sync init.el changes to customize
 I use Emacs Customize GUI, because it's convenient. I want to see actual info
 there, that's why I use this fn instead of ~setq~
 
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/customization-api-tweaks.tangled.el
 (defun setq-mark-as-customized (&rest var-val-pairs)
   "Set variable value and make sure Customize registers this change. Use
 instead of setq, to avoid confusion in Customize interface"
@@ -44,13 +48,14 @@ instead of setq, to avoid confusion in Customize interface"
 #+end_src
 
 ** Separate custom.el from init.el
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/customization-api-tweaks.tangled.el
 ;; separate custom-file because it's a mess, with everything in one place
-(setq-mark-as-customized 'custom-file (concat user-emacs-directory "custom.el"))
+(setq-mark-as-customized 'custom-file
+			 "~/.emacs.d/elisp/customizations-generated-by-emacs.el")
 
 ;; we are loading at the top of init.el, to set custom variables nice and
 ;; separate, grouping relevant settings together
-(load custom-file 'noerror)
+(load custom-file)
 #+end_src
 
 
