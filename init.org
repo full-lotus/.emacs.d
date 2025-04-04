@@ -162,6 +162,7 @@ instead of setq, to avoid confusion in Customize interface"
 #+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
 ;; save command history, e. g. for execute-extended-command
 (savehist-mode 1)
+
 ;; use smex to show command history in counsel-M-x
 (smex-initialize)
 (setq-mark-as-customized 'smex-history-use-recent-first t)
@@ -229,8 +230,12 @@ instead of setq, to avoid confusion in Customize interface"
 
 
 * Text
-** Navigation
 #+begin_src elisp :tangle ./init.el
+(load "~/.emacs.d/elisp/text-settings.tangled.el")
+#+end_src
+
+** Navigation
+#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tangled.el
 ;; use avy through Transient menu
 (keymap-global-set "M-g" #'casual-avy-tmenu)
 
@@ -238,7 +243,7 @@ instead of setq, to avoid confusion in Customize interface"
 #+end_src
 
 ** Display
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tangled.el
 ;; blinking cursor is annoying
 (blink-cursor-mode -1)
 
@@ -278,10 +283,25 @@ instead of setq, to avoid confusion in Customize interface"
 (display-line-numbers-type 1)
 
 ** Editing
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tangled.el
 ;; make undo hotkey familiar
 (global-set-key (kbd "C-z") 'undo)
 
+(setq-mark-as-customized
+
+ ;; Stop using tabs to indent
+ 'indent-tabs-mode nil
+
+ ;; End a sentence after a dot and a space
+ 'sentence-end-double-space nil
+ )
+
+;; delete all trailing whitespace
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+end_src
+
+*** Copy/paste
+#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tangled.el
 ;; delete active region on yanking (paste)
 (delete-selection-mode 1)
 
@@ -292,23 +312,13 @@ instead of setq, to avoid confusion in Customize interface"
  ;; sync system's and Emacs' clipboard
  'select-enable-clipboard t
 
- ;; Stop using tabs to indent
- 'indent-tabs-mode nil
-
  ;; Yank at point rather than pointer
  'mouse-yank-at-point t
-
- ;; End a sentence after a dot and a space
- 'sentence-end-double-space nil
  )
-
-
-;; delete all trailing whitespace
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
 #+end_src
 
 ** Syncing with filesystem (reverting)
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tangled.el
 ;; The auto-revert setting is enabled because tangle / detangle for literate
 ;; programming will change contents of files. If the file is open in a buffer,
 ;; I want it to automatically show the change without asking me every time.
