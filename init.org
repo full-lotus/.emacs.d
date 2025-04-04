@@ -663,8 +663,12 @@ Records how much times a command was used. Useful for optimizing hotkeys
 * Improved text replace
 Make search-and-replace across project work as convenient as in VS Code.
 
-** Wgrep
 #+begin_src elisp :tangle ./init.el
+(load "~/.emacs.d/elisp/improved-text-replace.tangled.el")
+#+end_src
+
+** Wgrep
+#+begin_src elisp :tangle ~/.emacs.d/elisp/improved-text-replace.tangled.el
 ;; wgrep allows to convert ivy-occur buffer to editable, to get VS Code-like
 ;; search and replace experience
 (use-package wgrep
@@ -678,7 +682,7 @@ Make search-and-replace across project work as convenient as in VS Code.
 Allows to invoke replace fn with a search regex in the list of defaults.
 The defaults are cycled in minibuffer with up/down arrows.
 
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/improved-text-replace.tangled.el
 (load "~/.emacs.d/elisp/replace+.el")
 
 ;; this prevents replace+ being limited to an active region
@@ -700,7 +704,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 #+end_src
 
 ** Start replace with preview in one keystroke
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/improved-text-replace.tangled.el
 (defun rapid-replace (search-fn)
   "Opens up wgrep buffer with query-replace-regexp started"
   (interactive)
