@@ -1018,8 +1018,12 @@ Searches for ns in :tangle or :src file, otherwise calls clojure-find-ns."
 
 
 * File management
-** Permissions
 #+begin_src elisp :tangle ./init.el
+(load "~/.emacs.d/elisp/file-management.tangled.el")
+#+end_src
+
+** Permissions
+#+begin_src elisp :tangle ~/.emacs.d/elisp/file-management.tangled.el
 ;; trying these setting to be able to edit files as root
 (require 'tramp)
 (setq tramp-default-method "sudoedit")
@@ -1027,7 +1031,7 @@ Searches for ns in :tangle or :src file, otherwise calls clojure-find-ns."
 #+end_src
 
 ** Extensions
-#+begin_src elisp :tangle ./init.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/file-management.tangled.el
 ;; mode that enables choosing program-to-open-with based on file extensions
 (openwith-mode t)
 
