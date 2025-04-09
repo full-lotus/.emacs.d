@@ -975,10 +975,15 @@ drop tangle-on-save hook, and to tangle manually from outside source blocks.
 I use file from custom :src or :tangle header to determine proper ns for eval
 
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
+(defun get-buffer-major-mode (buffer-name)
+  (with-current-buffer buffer-name
+    major-mode))
+
 (defun org-clojure-block-get-ns (orig-fun &rest args)
   "Wrap org-cider-current-ns, to enable REPL execution straight from org-mode.
 Searches for ns in :tangle or :src file, otherwise calls clojure-find-ns."
-  (when (org-babel-where-is-src-block-head)
+  (when (and (bound-and-true-p polymode-mode)
+	     (eq (get-buffer-major-mode (pm-base-buffer)) 'org-mode))
       (let* ((block-info (org-babel-get-src-block-info 'light))
              (header-args (nth 2 block-info))
 	     (tangle-value (alist-get :tangle header-args))
