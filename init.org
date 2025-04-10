@@ -850,7 +850,9 @@ The defaults are cycled in minibuffer with up/down arrows.
  'org-src-fontify-natively t
  'org-src-block-faces '(("elisp" (:background "lavender"))
 			("emacs-lisp" (:background "lavender"))
-			("clojure" (:background "lavender"))))
+			("clojure" (:background "lavender"))
+			("clojurescript" (:background "lavender"))
+			("clojurec" (:background "lavender"))))
 #+end_src
 
 ** Navigation
