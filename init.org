@@ -27,7 +27,7 @@ This config aims to maximize Clojure programmer productivity through:
 
 * Customize and custom.el
 #+begin_src elisp :tangle ./init.el
-  (load "~/.emacs.d/elisp/customization-api-tweaks.tangled.el")
+(load "~/.emacs.d/elisp/customization-api-tweaks.tangled.el")
 #+end_src
 
 ** Sync init.el changes to customize
