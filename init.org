@@ -995,7 +995,7 @@ Searches for ns in :tangle or :src file, otherwise calls clojure-find-ns."
              (ns-file (or tangle-file
 			  (alist-get :src header-args))))
 
-	(if (not (file-exists-p ns-file))
+	(if (or (eq nil ns-file) (not (file-exists-p ns-file)))
 	    (apply orig-fun args)
 
 	  (with-temp-buffer
