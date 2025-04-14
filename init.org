@@ -279,8 +279,6 @@ instead of setq, to avoid confusion in Customize interface"
 (global-display-fill-column-indicator-mode t)
 #+end_src
 
-(display-line-numbers-type 1)
-
 ** Editing
 #+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tangled.el
 ;; make undo hotkey familiar
