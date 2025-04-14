@@ -246,6 +246,8 @@ instead of setq, to avoid confusion in Customize interface"
 ;; blinking cursor is annoying
 (blink-cursor-mode -1)
 
+;; wrap lines at word boundaries, so that they always fit current window
+(global-visual-line-mode 1)
 
 ;; Default to utf-8 encoding
 (set-default-coding-systems 'utf-8)
