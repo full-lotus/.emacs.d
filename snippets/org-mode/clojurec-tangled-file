@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: clojurec tangled file
+# key: <ct
+# --
+
+#+begin_src clojurec :tangle ${1:target-file}_tangled.cljc
+$0
+#+end_src

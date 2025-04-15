@@ -92,7 +92,7 @@ instead of setq, to avoid confusion in Customize interface"
      openwith org-tidy cider treemacs-all-the-icons treemacs
      clojure-mode magit command-log-mode posframe pcre2el dired-ranger
      flycheck flycheck-clj-kondo rainbow-delimiters casual-avy puni
-     poly-org)))
+     poly-org yasnippet)))
 
 ;; install all non-default packages
 (dolist (pkg package-selected-packages)
@@ -657,6 +657,12 @@ Records how much times a command was used. Useful for optimizing hotkeys
 
 ;; Make <TAB> invoke completions list, when code is already idented properly
 (setq-mark-as-customized 'tab-always-indent 'complete)
+#+end_src
+
+** Snippets (yasnippet)
+#+begin_src elisp :tangle ~/.emacs.d/elisp/command-and-code-completion.tangled.el
+(setq-mark-as-customized 'yas-snippet-dirs '("~/.emacs.d/snippets/"))
+(yas-global-mode 1)
 #+end_src
 
 

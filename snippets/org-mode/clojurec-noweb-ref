@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: clojurec noweb ref
+# key: <cr
+# --
+
+#+begin_src clojurec :noweb-ref ${1:ref-name} :src ${2:parent-file}
+$0
+#+end_src

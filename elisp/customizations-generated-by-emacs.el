@@ -42,10 +42,10 @@
  '(org-tidy-protect-overlay nil)
  '(package-selected-packages
    '(ivy ivy-rich counsel smex keyfreq wgrep ob-clojurescript ob-async
-	 async wgrep openwith org-tidy cider treemacs-all-the-icons
-	 treemacs clojure-mode magit command-log-mode posframe pcre2el
+	 async openwith org-tidy cider treemacs-all-the-icons treemacs
+	 clojure-mode magit command-log-mode posframe pcre2el
 	 dired-ranger flycheck flycheck-clj-kondo rainbow-delimiters
-	 casual-avy puni poly-org))
+	 casual-avy puni poly-org yasnippet))
  '(safe-local-variable-values
    '((cider-clojure-cli-parameters . "-M:cider/nrepl:dev")
      (cider-clojure-cli-parameters . "-M:dev")
