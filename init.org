@@ -796,7 +796,11 @@ The defaults are cycled in minibuffer with up/down arrows.
  'cider-repl-use-pretty-printing t
  'cider-repl-pop-to-buffer-on-connect nil
  'cider-repl-display-help-banner nil
- 'cider-use-overlays nil)
+ 'cider-use-overlays nil
+ ;; when using 2 poly-org buffers on the same file, tooltips cause point in
+ ;; non-selected buffer to jump between source blocks
+ 'cider-use-tooltips nil
+ )
 
 ;; Allow cider-repl to be cleared with shortcut
 (add-hook 'cider-repl-mode-hook
