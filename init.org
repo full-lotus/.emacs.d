@@ -788,14 +788,14 @@ The defaults are cycled in minibuffer with up/down arrows.
 *** CIDER
 #+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tangled.el
 (setq-mark-as-customized
-      'nrepl-hide-special-buffers t
-      'cider-repl-clear-help-banner t
-      'cider-font-lock-dynamically '(macro core function var)
-      'cider-popup-stacktraces nil
-      'cider-repl-popup-stacktraces t
-      'cider-repl-use-pretty-printing t
-      'cider-repl-pop-to-buffer-on-connect t
-      'cider-repl-display-help-banner nil)
+ 'nrepl-hide-special-buffers t
+ 'cider-repl-clear-help-banner t
+ 'cider-font-lock-dynamically '(macro core function var)
+ 'cider-popup-stacktraces nil
+ 'cider-repl-popup-stacktraces t
+ 'cider-repl-use-pretty-printing t
+ 'cider-repl-pop-to-buffer-on-connect t
+ 'cider-repl-display-help-banner nil)
 
 ;; Allow cider-repl to be cleared with shortcut
 (add-hook 'cider-repl-mode-hook
