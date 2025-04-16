@@ -794,8 +794,9 @@ The defaults are cycled in minibuffer with up/down arrows.
  'cider-popup-stacktraces nil
  'cider-repl-popup-stacktraces t
  'cider-repl-use-pretty-printing t
- 'cider-repl-pop-to-buffer-on-connect t
- 'cider-repl-display-help-banner nil)
+ 'cider-repl-pop-to-buffer-on-connect nil
+ 'cider-repl-display-help-banner nil
+ 'cider-use-overlays nil)
 
 ;; Allow cider-repl to be cleared with shortcut
 (add-hook 'cider-repl-mode-hook
