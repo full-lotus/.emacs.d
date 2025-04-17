@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: css tangled file
+# key: <css
+# --
+
+#+begin_src css :tangle ${1:target-file}_tangled.css
+$0
+#+end_src
