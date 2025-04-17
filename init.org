@@ -914,8 +914,8 @@ The defaults are cycled in minibuffer with up/down arrows.
 <<<:src>>> is a custom header that I add manually to noref code blocks
 
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
-;; open the file specified by :tangle org :src header argument
 (defun org-babel-open-tangle-file ()
+  "Opens the file specified by :tangle org :src header argument"
   (interactive)
   (let* ((info (org-babel-get-src-block-info))
          (tangle (cdr (assoc :tangle (nth 2 info))))
