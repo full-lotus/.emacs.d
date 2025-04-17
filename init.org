@@ -625,7 +625,8 @@ Records how much times a command was used. Useful for optimizing hotkeys
 #+begin_src elisp :tangle ~/.emacs.d/elisp/command-and-code-completion.tangled.el
 ;; some of those hotkeys are redundant because of counsel-mode
 ;; but I'm not sure which I can drop, and to lazy to check one-by-one
-(global-set-key (kbd "C-s") 'swiper)
+(global-set-key (kbd "C-f") 'swiper)
+(global-set-key (kbd "C-S-f") 'swiper-thing-at-point)
 (global-set-key (kbd "C-c C-r") 'ivy-resume)
 (global-set-key (kbd "<f6>") 'ivy-resume)
 (global-set-key (kbd "M-x") 'counsel-M-x)
