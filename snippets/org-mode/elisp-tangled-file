@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: elisp tangled file
+# key: <elt
+# --
+
+#+begin_src elisp :tangle ~/.emacs.d/elisp/${1:target-file}.tangled.el
+$0
+#+end_src
