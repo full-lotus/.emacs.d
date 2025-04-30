@@ -1003,71 +1003,6 @@ drop tangle-on-save hook, and to tangle manually from outside source blocks.
             :before-while #'flycheck-buffer-not-indirect-p)
 #+end_src
 
-**** Hack for 2 window editing - sync 2 separate buffers
-Poly-org works poorly when you open the same buffer in 2 windows. Point jumps
-around in non-selected window, when you move it in a selected window. I tried
-using clone-indirect-buffer, but it is also problematic, mode switching doesn't
-work in it, which screws up hotkeys and org-babel-tangle.
-
-I decided to hack around the issue, by syncing 2 separate buffers in real-time.
-There is no auto disc saving, just RAM sync.
-
-#+begin_src elisp :tangle :tangle ~/.emacs.d/elisp/org-mode.tangled.el
-(defun poly-org-mode? ()
-  (and (bound-and-true-p polymode-mode)
-       (eq (get-buffer-major-mode (pm-base-buffer)) 'org-mode)))
-
-;; (defun org-sync-buffer (beg end len)
-;;   (when (poly-org-mode?)
-;;     (let* ((sync-file (org-entry-get (point-min) "sync-file-name"))
-;;            (sync-target-buf (get-buffer (file-name-nondirectory sync-file)))
-;; 	   (changed-text (buffer-substring-no-properties beg end)))
-;;       (when (and sync-target-buf (buffer-live-p sync-target-buf))
-;;         (with-current-buffer sync-target-buf
-;;           (let ((inhibit-modification-hooks t))
-;;             (save-excursion
-;;               (goto-char beg)
-;;               (delete-region beg (+ beg len))
-;;               (insert changed-text))))))))
-
-(defun where-to-sync-changes? ()
-  (let ((sync-source (cadar (org-collect-keywords '("sync-source"))))
-	(sync-target (cadar (org-collect-keywords '("sync-target"))))
-	(base-buf (buffer-name (pm-base-buffer))))
-    (pcase base-buf
-      (sync-source sync-target)
-      (sync-target sync-source)
-      (t nil))))
-
-(defun org-sync-buffer (change-beg change-end prev-len)
-  (message "!!!!11111")
-  (when (poly-org-mode?)
-    (message "[sync] change at %d-%d (len %d)" change-beg change-end prev-len)
-    (if-let* ((sync-file (where-to-sync-changes?))
-              (sync-target-buf (get-buffer (file-name-nondirectory sync-file)))
-              (changed-text (buffer-substring-no-properties
-			  change-beg change-end)))
-	(progn
-	  (message "org-collect-keywords"
-		   (cadar (org-collect-keywords '("sync-file-name"))))
-	  (message "[sync] target: %s" sync-file)
-	  (if (and sync-target-buf (buffer-live-p sync-target-buf))
-	      (with-current-buffer sync-target-buf
-		(message "[sync] writing to buffer: %s" (buffer-name))
-		(let ((inhibit-modification-hooks t))
-		  (save-excursion
-                    (goto-char change-beg)
-                    (delete-region change-beg (+ change-beg prev-len))
-                    (insert changed-text)
-                    (message "[sync] done inserting."))))
-            (message "[sync] target buffer not found or dead"))))))
-
-;; (add-hook 'org-mode-hook
-;;           (lambda () (add-hook 'after-change-functions
-;;                                #'org-sync-buffer nil t)))
-;; (remove-hook 'after-change-functions 'org-sync-buffer)
-#+end_src
-
 *** Clojure namespace determination
 I use file from custom :src or :tangle header to determine proper ns for eval
 
@@ -1075,6 +1010,10 @@ I use file from custom :src or :tangle header to determine proper ns for eval
 (defun get-buffer-major-mode (buffer-name)
   (with-current-buffer buffer-name
     major-mode))
+
+(defun poly-org-mode? ()
+  (and (bound-and-true-p polymode-mode)
+       (eq (get-buffer-major-mode (pm-base-buffer)) 'org-mode)))
 
 (defun org-clojure-block-get-ns (orig-fun &rest args)
   "Wrap org-cider-current-ns, to enable REPL execution straight from org-mode.
