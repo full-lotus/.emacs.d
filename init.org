@@ -867,6 +867,29 @@ The defaults are cycled in minibuffer with up/down arrows.
 			("clojurec" (:background "lavender"))))
 #+end_src
 
+*** Heading subtree fold state cycling
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
+(defun org-cycle-current-subtree (orig-fun &rest args)
+  "Cycle fold state of current heading similar to org-shifttab, if org-cycle
+is called with C-u prefix.
+
+Cycles through three states:
+1. folded (content hidden)
+2. children visible (direct subheadings shown)
+3. subtree expanded (everything visible)"
+  (interactive)
+  (if (eq (prefix-numeric-value current-prefix-arg) 4)
+      (save-excursion
+	(save-restriction
+	  (let ((beg (point))
+		(end (org-end-of-subtree t)))
+	    (narrow-to-region beg end)
+	    (org-cycle-internal-global))))
+    (apply orig-fun args)))
+
+(advice-add 'org-cycle :around 'org-cycle-current-subtree)
+#+end_src
+
 ** Navigation
 *** General
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
