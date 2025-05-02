@@ -1036,26 +1036,29 @@ I use file from custom :src or :tangle header to determine proper ns for eval
   (and (bound-and-true-p polymode-mode)
        (eq (get-buffer-major-mode (pm-base-buffer)) 'org-mode)))
 
-(defun org-clojure-block-get-ns (orig-fun &rest args)
-  "Wrap org-cider-current-ns, to enable REPL execution straight from org-mode.
-Searches for ns in :tangle or :src file, otherwise calls clojure-find-ns."
-  (when (poly-org-mode?)
-      (let* ((block-info (org-babel-get-src-block-info 'light))
+(defun org-get-ns-file ()
+  (let* ((block-info (org-babel-get-src-block-info 'light))
              (header-args (nth 2 block-info))
 	     (tangle-value (alist-get :tangle header-args))
 	     (tangle-file (and (not (string= tangle-value "no"))
 			       tangle-value))
              (ns-file (or tangle-file
 			  (alist-get :src header-args))))
+    (if (or (eq nil ns-file) (not (file-exists-p ns-file)))
+	nil
+      ns-file)))
 
-	(if (or (eq nil ns-file) (not (file-exists-p ns-file)))
-	    (apply orig-fun args)
-
-	  (with-temp-buffer
+(defun org-clojure-block-get-ns (orig-fun &rest args)
+  "Wrap org-cider-current-ns, to enable REPL execution straight from org-mode.
+Searches for ns in :tangle or :src file, otherwise calls clojure-find-ns."
+  (if-let ((_ (poly-org-mode?))
+	   (ns-file (org-get-ns-file)))
+      (with-temp-buffer
 	    (insert-file-contents ns-file)
 	    (goto-char (point-min))
 	    (clojurec-mode)
-	    (clojure-find-ns))))))
+	    (clojure-find-ns))
+    (apply orig-fun args)))
 
 (advice-add 'cider-current-ns :around 'org-clojure-block-get-ns)
 ;; (advice-remove 'cider-current-ns 'org-clojure-block-get-ns)
