@@ -165,36 +165,6 @@ instead of setq, to avoid confusion in Customize interface"
 (setq-mark-as-customized 'smex-history-use-recent-first t)
 #+end_src
 
-*** Command/key press log
-#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
-(setq dw/command-window-frame nil)
-
-(defun dw/toggle-command-window ()
-  "Show overlay frame which shows invoked functions and their hotkeys"
-  (interactive)
-  (if dw/command-window-frame
-      (progn
-        (posframe-delete-frame clm/command-log-buffer)
-        (setq dw/command-window-frame nil))
-    (progn
-      (global-command-log-mode t)
-      (with-current-buffer
-          (setq clm/command-log-buffer
-                (get-buffer-create " *command-log*"))
-        (text-scale-set -1))
-      (setq dw/command-window-frame
-            (posframe-show
-             clm/command-log-buffer
-             :position `(,(- (x-display-pixel-width) 450) . 15)
-             :width 38
-             :height 5
-             :min-width 38
-             :min-height 5
-             :internal-border-width 2
-             :internal-border-color "#c792ea"
-             :override-parameters '((parent-frame . nil)))))))
-#+end_src
-
 *** Easier yes/no
 #+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
 ;; Replace yes/no prompts with y/n
