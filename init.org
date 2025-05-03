@@ -795,6 +795,31 @@ The defaults are cycled in minibuffer with up/down arrows.
 (define-key cider-repl-mode-map (kbd "M-<RET>") 'cider-eval-defun-at-point)
 #+end_src
 
+**** Routing expressions to CLJ/CLJS REPL for evaluation
+#+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tangled.el
+(defun eval-last-sexp-in-specific-repl (repl-type)
+  "Evaluate the last expression only in the 'clj or 'cljs REPL."
+  (interactive)
+  (let ((form (cider-last-sexp))
+        (cljs-conn (cider-current-connection repl-type)))
+    (when (and form cljs-conn)
+      (nrepl-request:eval form
+                          (cider-interactive-eval-handler)
+                          cljs-conn))))
+
+(defun eval-last-sexp-in-clj ()
+  "Evaluate the last expression only in the ClojureScript REPL."
+  (interactive)
+  (eval-last-sexp-in-specific-repl 'clj))
+
+(defun eval-last-sexp-in-cljs ()
+  "Evaluate the last expression only in the Clojure (not CLJS) REPL."
+  (interactive)
+  (eval-last-sexp-in-specific-repl 'cljs))
+
+(define-key cider-mode-map (kbd "C-M-<return>") 'eval-last-sexp-in-clj)
+(define-key cider-mode-map (kbd "C-S-<return>") 'eval-last-sexp-in-cljs)
+#+end_src
 
 * Org-mode (literate programming)
 #+begin_src elisp :tangle ./init.el
