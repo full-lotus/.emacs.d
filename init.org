@@ -177,6 +177,7 @@ instead of setq, to avoid confusion in Customize interface"
 ;; for example - repeat C-x <LEFT> (previous-buffer) with just <LEFT>
 (repeat-mode 1)
 #+end_src
+
 ** Emacs temporary files
 #+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
 ;; stop creating backup~ files
