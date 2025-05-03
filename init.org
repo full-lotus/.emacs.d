@@ -878,6 +878,7 @@ Cycles through three states:
   (interactive)
   (if (eq (prefix-numeric-value current-prefix-arg) 4)
       (save-excursion
+	(org-back-to-heading t)
 	(save-restriction
 	  (let ((beg (point))
 		(end (org-end-of-subtree t)))
