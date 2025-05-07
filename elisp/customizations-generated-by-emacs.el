@@ -46,6 +46,9 @@
 	   keyfreq magit ob-async ob-clojurescript openwith org-tidy
 	   pcre2el poly-org posframe puni rainbow-delimiters smex
 	   treemacs treemacs-all-the-icons wgrep yasnippet))
+ '(safe-local-variable-directories
+   '("/mnt/sda2/projects/dev/kombinacija/"
+     "/mnt/sda2/projects/dev/simple-clojure-project/"))
  '(safe-local-variable-values
    '((cider-clojure-cli-parameters . "-M:cider/nrepl:dev")
      (cider-clojure-cli-parameters . "-M:dev")
