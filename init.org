@@ -884,6 +884,7 @@ Cycles through three states:
     (apply orig-fun args)))
 
 (advice-add 'org-cycle :around 'org-cycle-current-subtree)
+;; (advice-remove 'org-cycle 'org-cycle-current-subtree)
 #+end_src
 
 ** Navigation
