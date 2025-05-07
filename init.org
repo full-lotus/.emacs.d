@@ -821,6 +821,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 (define-key cider-mode-map (kbd "C-S-<return>") 'eval-last-sexp-in-cljs)
 #+end_src
 
+
 * Org-mode (literate programming)
 #+begin_src elisp :tangle ./init.el
 (load "~/.emacs.d/elisp/org-mode.tangled.el")
