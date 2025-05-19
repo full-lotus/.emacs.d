@@ -1001,50 +1001,80 @@ Cycles through three states:
 (define-key org-mode-map (kbd "M-s") 'org-babel-demarcate-block)
 #+end_src
 
-** Code execution
-*** Mode switching - polymode (poly-org)
+** Mode switching - polymode (poly-org)
 I spent 3 days trying to fix this [[https://github.com/polymode/poly-org/issues/53][issue]]. I couldn't do it, so I decided to just
 drop tangle-on-save hook, and to tangle manually from outside source blocks.
 
+*** Flycheck fix
+Prevents flycheck from confusing buffers and breaking down. See this [[https://github.com/polymode/poly-org/issues3/][issue]]
+
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
-;; these supposed to prevent breaking display of source blocks
-(setq-mark-as-customized
- 'org-adapt-indentation nil
- 'org-startup-indented nil)
-
-;; polymode ignores faces config for both inner modes and org mode
-(add-hook
- 'polymode-init-inner-hook
- (lambda ()
-   (oset pm/chunkmode adjust-face
-	 '(:background "lavender"
-           :extend t))))
-
-;; prevents flycheck from confusing buffers and breaking down
-;; see issue https://github.com/polymode/poly-org/issues3/
 (defun flycheck-buffer-not-indirect-p (&rest _)
   "Ensure that the current buffer is not indirect."
   (null (buffer-base-buffer)))
 
 (advice-add 'flycheck-may-check-automatically
             :before-while #'flycheck-buffer-not-indirect-p)
-
-(defun get-windows-for-buffer (buffer)
-  "Returns list of windows showing BUFFER or its indirect buffers."
-  (let* ((related-buffer? (lambda (buf)
-			    (eq (buffer-base-buffer buf) buffer)))
-	 (related-buffers (cl-remove-if-not related-buffer? (buffer-list)))
-	 (related-window? (lambda (win)
-			    (memq (window-buffer win) related-buffers)))
-	 (all-windows (window-list-1 (selected-window) nil t)))
-    (cl-remove-if-not related-window? all-windows)))
-
-;; (get-windows-for-buffer (current-buffer))
-
-;; (setq-mark-as-customized 'org-fold-core-style 'text-properties)
-;; (setq-mark-as-customized 'org-fold-core-style 'overlays)
 #+end_src
 
+*** Source blocks display fix
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
+;; polymode ignores background face config for both inner modes and org mode
+(add-hook
+ 'polymode-init-inner-hook
+ (lambda ()
+   (oset pm/chunkmode adjust-face
+	 '(:background "lavender"
+           :extend t))))
+#+end_src
+
+*** Background color fix
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
+;; these supposed to prevent breaking display of source blocks
+(setq-mark-as-customized
+ 'org-adapt-indentation nil
+ 'org-startup-indented nil)
+#+end_src
+
+*** Org-mode fold state bug fix (prevent unfolding)
+The bug occurs when point moves in/out of source code blocks. The reason is
+~move-overlay~ fn, which cuts out overlays from one of the buffers.
+
+The issue can be avoided by setting ~org-fold-core-style 'text-properties~, but
+I read that ~org-fold-core-style 'overlays~, is less buggy with poly-org. So I
+decided to stick with this fix instead of changing the setting.
+
+The fix is still WIP, I haven't worked with it extensively.
+
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
+(defun pm--move-overlays-hack (from-buffer to-buffer)
+  "Delete all overlays in TO-BUFFER, then copy FROM-BUFFER overlays to it."
+  (delete-all-overlays to-buffer)
+;;   (message "\n\n-----------------------------
+;; from-buffer %s to-buffer %s" from-buffer to-buffer)
+  (with-current-buffer from-buffer
+    (let ((overlays (overlays-in 1 (1+ (buffer-size)))))
+      ;; (message "number of overlays %s" (length overlays))
+      (mapc (lambda (o)
+              (unless (or (overlay-get o 'linum-str)
+                          (overlay-get o 'yas--snippet)
+			  (eq (overlay-get o 'face) 'region)
+			  (eq (overlay-get o 'face) 'show-paren-match))
+		;; copying is necessary to preserve folding state in org-mode
+		;; otherwise move-overlay removes overlays in from-buffer
+		(let ((o-copy (copy-overlay o))
+		      (inhibit-redisplay t)
+		      (inhibit-modification-hooks t))
+		  ;; (message "start %s end %s" (overlay-start o) (overlay-end o))
+		  ;; (message "overlay-props %s\n" (overlay-properties o))
+		  (move-overlay o-copy (overlay-start o) (overlay-end o)
+				to-buffer))))
+            overlays))))
+
+(advice-add 'pm--move-overlays :override 'pm--move-overlays-hack)
+#+end_src
+
+** Code execution
 *** Clojure namespace determination
 I use file from custom :src or :tangle header to determine proper ns for eval
 
