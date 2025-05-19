@@ -1028,6 +1028,21 @@ drop tangle-on-save hook, and to tangle manually from outside source blocks.
 
 (advice-add 'flycheck-may-check-automatically
             :before-while #'flycheck-buffer-not-indirect-p)
+
+(defun get-windows-for-buffer (buffer)
+  "Returns list of windows showing BUFFER or its indirect buffers."
+  (let* ((related-buffer? (lambda (buf)
+			    (eq (buffer-base-buffer buf) buffer)))
+	 (related-buffers (cl-remove-if-not related-buffer? (buffer-list)))
+	 (related-window? (lambda (win)
+			    (memq (window-buffer win) related-buffers)))
+	 (all-windows (window-list-1 (selected-window) nil t)))
+    (cl-remove-if-not related-window? all-windows)))
+
+;; (get-windows-for-buffer (current-buffer))
+
+;; (setq-mark-as-customized 'org-fold-core-style 'text-properties)
+;; (setq-mark-as-customized 'org-fold-core-style 'overlays)
 #+end_src
 
 *** Clojure namespace determination
