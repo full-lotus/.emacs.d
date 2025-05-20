@@ -1148,17 +1148,19 @@ conflict with polymode.
   "If we are inside poly-org source block, go to beginning of current buffer,
 switch to org-mode, tangle, go back, and finally switch back to needed mode."
   (interactive)
-  (when (and (poly-org-mode?) (org-in-src-block-p t))
-    (let ((inhibit-redisplay t)
-          (inhibit-modification-hooks t)
-	  ;; we don't need any visuals (overlay switching) for this command
-	  (pm--move-overlays-hack (lambda ()))
-	  (curr-point (point)))
-      (goto-char (point-min))
-      (polymode-post-command)
-      (org-babel-tangle)
-      (goto-char curr-point)
-      (polymode-post-command))))
+  (cond
+   ((not (poly-org-mode?)) nil)
+   ((not (org-in-src-block-p t)) (org-babel-tangle))
+   (t (let ((inhibit-redisplay t)
+         (inhibit-modification-hooks t)
+	 ;; we don't need any visuals (overlay switching) for this command
+	 (pm--move-overlays-hack (lambda ()))
+	 (curr-point (point)))
+     (goto-char (point-min))
+     (polymode-post-command)
+     (org-babel-tangle)
+     (goto-char curr-point)
+     (polymode-post-command)))))
 
 (define-key polymode-mode-map (kbd "C-c C-v C-t")
 	    'pm--tangle-inside-source-block)
