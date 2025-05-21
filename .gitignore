@@ -27,3 +27,4 @@ init.el
 **.tangled.*
 /shortcuts/
 /snippets/org-mode/.yas-compiled-snippets.el
+/projects
