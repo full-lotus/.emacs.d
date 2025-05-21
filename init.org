@@ -466,6 +466,7 @@ instead of setq, to avoid confusion in Customize interface"
 #+end_src
 
 ** Navigation
+*** Window/frame switching, burying, treemacs
 #+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tangled.el
 (global-set-key (kbd "C-o") 'other-window)
 (define-key dired-mode-map (kbd "C-o") 'other-window)
@@ -474,7 +475,10 @@ instead of setq, to avoid confusion in Customize interface"
 (global-set-key (kbd "M-o") 'other-frame)
 (global-set-key (kbd "C-S-b") 'treemacs)
 (global-set-key (kbd "C-x w") 'bury-buffer)
+#+end_src
 
+*** Popping marks
+#+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tangled.el
 (defun modi/multi-pop-to-mark (orig-fun &rest args)
   "Call ORIG-FUN until the cursor moves.
 Try the repeated popping up to 10 times."
@@ -486,6 +490,22 @@ Try the repeated popping up to 10 times."
             #'modi/multi-pop-to-mark)
 
 (setq set-mark-command-repeat-pop t)
+#+end_src
+
+*** Tabs
+Couldn't find desirable tab functionality which would allow me to tab through
+different parts on 1 file, having a set of tabs for each window.
+
+- tab-line-mode/centaur-tabs aren't suitable because of indirect buffer bugs
+  and because they don't open the same buffer in different tabs of the same
+  window
+- tab-bar-mode works, but doesn't have window-specific tabs
+
+#+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tangled.el
+(tab-bar-mode t)
+
+(global-set-key (kbd "C-x C-<left>") 'tab-bar-switch-to-prev-tab)
+(global-set-key (kbd "C-x C-<right>") 'tab-bar-switch-to-next-tab)
 #+end_src
 
 
