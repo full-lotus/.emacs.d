@@ -915,7 +915,8 @@ Cycles through three states:
 	(org-back-to-heading t)
 	(save-restriction
 	  (let ((beg (point))
-		(end (org-end-of-subtree t)))
+		;; -1 is to not hide newline character before the next heading
+		(end (- (org-end-of-subtree t t nil) 1)))
 	    (narrow-to-region beg end)
 	    (org-cycle-internal-global)))))))
 
