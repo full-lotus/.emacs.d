@@ -917,10 +917,6 @@ Cycles through three states:
               (end (progn (org-end-of-subtree t t nil) (end-of-line) (point))))
 	  (save-restriction
 	    (narrow-to-region beg end)
-	    (message "%s"
-		     (buffer-substring-no-properties
-		      (line-beginning-position)
-		      (line-end-position)))
 	    (org-cycle-internal-global)))))))
 
 (advice-add 'org-cycle :around 'org-cycle-current-subtree)
