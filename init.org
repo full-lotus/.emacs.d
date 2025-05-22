@@ -908,15 +908,16 @@ Cycles through three states:
 2. children visible (direct subheadings shown)
 3. subtree expanded (everything visible)"
   (interactive)
-  (if (eq (prefix-numeric-value current-prefix-arg) 4)
-    (apply orig-fun args)
-    (save-excursion
+  (cond
+   ((not (org-at-heading-p)) (apply orig-fun args))
+   ((eq (prefix-numeric-value current-prefix-arg) 4) (apply orig-fun args))
+   (t (save-excursion
 	(org-back-to-heading t)
 	(save-restriction
 	  (let ((beg (point))
 		(end (org-end-of-subtree t)))
 	    (narrow-to-region beg end)
-	    (org-cycle-internal-global))))))
+	    (org-cycle-internal-global)))))))
 
 (advice-add 'org-cycle :around 'org-cycle-current-subtree)
 ;; (advice-remove 'org-cycle 'org-cycle-current-subtree)
