@@ -912,12 +912,15 @@ Cycles through three states:
    ((not (org-at-heading-p)) (apply orig-fun args))
    ((eq (prefix-numeric-value current-prefix-arg) 4) (apply orig-fun args))
    (t (save-excursion
-	(org-back-to-heading t)
-	(save-restriction
-	  (let ((beg (point))
-		;; -1 is to not hide newline character before the next heading
-		(end (- (org-end-of-subtree t t nil) 1)))
+	(let ((beg (progn (org-back-to-heading t) (point)))
+              ;; end manipulation needed to not screw up separator newlines
+              (end (progn (org-end-of-subtree t t nil) (end-of-line) (point))))
+	  (save-restriction
 	    (narrow-to-region beg end)
+	    (message "%s"
+		     (buffer-substring-no-properties
+		      (line-beginning-position)
+		      (line-end-position)))
 	    (org-cycle-internal-global)))))))
 
 (advice-add 'org-cycle :around 'org-cycle-current-subtree)
