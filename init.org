@@ -1145,9 +1145,11 @@ switch to org-mode, tangle, go back, and finally switch back to needed mode."
    ((not (poly-org-mode?)) nil)
    ((not (org-in-src-block-p t)) (org-babel-tangle))
    (t (let ((inhibit-redisplay t)
-         (inhibit-modification-hooks t)
-	 ;; we don't need any visuals (overlay switching) for this command
-	 (curr-point (point)))
+            (inhibit-modification-hooks t)
+	    (post-command-hook nil)
+	    (pm--move-overlays (lambda ()))
+	    ;; we don't need any visuals (overlay switching) for this command
+	    (curr-point (point)))
      (goto-char (point-min))
      (polymode-post-command)
      (org-babel-tangle)
