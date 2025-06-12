@@ -1104,7 +1104,7 @@ Prevents flycheck from confusing buffers and breaking down. See this [[https://g
             :before-while #'flycheck-buffer-not-indirect-p)
 #+end_src
 
-** Source blocks display fix
+** Background color fix
 #+begin_src elisp :tangle ~/.emacs.d/elisp/polymode.tangled.el
 ;; polymode ignores background face config for both inner modes and org mode
 (add-hook
@@ -1115,7 +1115,7 @@ Prevents flycheck from confusing buffers and breaking down. See this [[https://g
            :extend t))))
 #+end_src
 
-** Background color fix
+** Source blocks display fix
 #+begin_src elisp :tangle ~/.emacs.d/elisp/polymode.tangled.el
 ;; these supposed to prevent breaking display of source blocks
 (setq-mark-as-customized
