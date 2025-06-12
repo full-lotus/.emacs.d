@@ -208,6 +208,8 @@ instead of setq, to avoid confusion in Customize interface"
 (keymap-global-set "M-g" #'casual-avy-tmenu)
 
 (keymap-global-set "M-SPC" #'avy-goto-word-0)
+
+(setq-mark-as-customized 'bookmark-save-flag 1)
 #+end_src
 
 ** Display
