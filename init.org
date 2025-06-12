@@ -921,8 +921,8 @@ Cycles through three states:
 	    (narrow-to-region beg end)
 	    (org-cycle-internal-global)))))))
 
-(advice-add 'org-cycle :around 'org-cycle-current-subtree)
-;; (advice-remove 'org-cycle 'org-cycle-current-subtree)
+(advice-add 'org-shifttab :around 'org-cycle-current-subtree)
+;; (advice-remove 'org-shifttab 'org-cycle-current-subtree)
 #+end_src
 
 ** Navigation
