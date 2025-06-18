@@ -1138,23 +1138,31 @@ conflict with polymode.
 
 #+begin_src elisp :tangle ~/.emacs.d/elisp/polymode.tangled.el
 (defun pm--tangle-inside-source-block ()
-  "If we are inside poly-org source block, go to beginning of current buffer,
-switch to org-mode, tangle, go back, and finally switch back to needed mode."
+  "Do tangling in a temporary copy of .org buffer, because
+org-babel-expand-noweb-references explodes polymode. Don't save anything."
   (interactive)
   (cond
    ((not (poly-org-mode?)) nil)
-   ((not (org-in-src-block-p t)) (org-babel-tangle))
-   (t (let ((inhibit-redisplay t)
-            (inhibit-modification-hooks t)
-	    (post-command-hook nil)
-	    (pm--move-overlays (lambda ()))
-	    ;; we don't need any visuals (overlay switching) for this command
-	    (curr-point (point)))
-     (goto-char (point-min))
-     (polymode-post-command)
-     (org-babel-tangle)
-     (goto-char curr-point)
-     (polymode-post-command)))))
+
+   (t (let* ((inhibit-redisplay t)
+             (inhibit-modification-hooks t)
+	     (post-command-hook nil)
+	     ;; we don't need overlay switching for this command
+	     (pm--move-overlays (lambda ()))
+	     (base-buf (pm-base-buffer))
+	     (temp-file-name (concat (buffer-local-value
+				      'buffer-file-name base-buf) "-temp")))
+	(with-temp-buffer
+	  (setq
+	   buffer-file-name temp-file-name
+           default-directory (buffer-local-value 'default-directory base-buf))
+	  (insert-buffer-substring base-buf)
+	  (org-mode)
+	  (cl-letf (((symbol-function 'save-buffer) #'ignore)
+		  ((symbol-function 'basic-save-buffer) #'ignore)
+		  ((symbol-function 'save-some-buffers) #'ignore))
+	    (org-babel-tangle))
+	  (set-buffer-modified-p nil))))))
 
 (define-key polymode-mode-map (kbd "C-c C-v C-t")
 	    'pm--tangle-inside-source-block)
