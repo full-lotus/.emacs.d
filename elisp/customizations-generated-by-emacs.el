@@ -44,8 +44,8 @@
    '(async casual-avy cider clojure-mode command-log-mode counsel
 	   dired-ranger flycheck flycheck-clj-kondo ivy ivy-rich
 	   keyfreq magit ob-async ob-clojurescript openwith org-tidy
-	   pcre2el poly-org posframe puni rainbow-delimiters smex
-	   treemacs treemacs-all-the-icons wgrep yasnippet))
+	   pcre2el poly-org polymode posframe puni rainbow-delimiters
+	   smex treemacs treemacs-all-the-icons wgrep yasnippet))
  '(safe-local-variable-directories
    '("/mnt/sda2/projects/dev/kombinacija/"
      "/mnt/sda2/projects/dev/simple-clojure-project/"))
