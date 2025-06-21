@@ -853,6 +853,10 @@ The defaults are cycled in minibuffer with up/down arrows.
 (define-key cider-mode-map (kbd "C-S-<return>") 'eval-last-sexp-in-cljs)
 #+end_src
 
+** CSS
+#+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tangled.el
+(setq-mark-as-customized 'css-indent-offset 2)
+#+end_src
 
 * Org-mode (literate programming)
 #+begin_src elisp :tangle ./init.el
