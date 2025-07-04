@@ -858,9 +858,16 @@ The defaults are cycled in minibuffer with up/down arrows.
 (setq-mark-as-customized 'css-indent-offset 2)
 #+end_src
 
+
 * Org-mode (literate programming)
 #+begin_src elisp :tangle ./init.el
 (load "~/.emacs.d/elisp/org-mode.tangled.el")
+#+end_src
+
+** Time-tracking
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
+;; closing Emacs/buffers must not stop work clock
+(setq-mark-as-customized 'org-clock-persist 'history)
 #+end_src
 
 ** Single-letter hotkeys
