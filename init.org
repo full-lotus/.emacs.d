@@ -840,12 +840,12 @@ The defaults are cycled in minibuffer with up/down arrows.
                           cljs-conn))))
 
 (defun eval-last-sexp-in-clj ()
-  "Evaluate the last expression only in the ClojureScript REPL."
+  "Evaluate the last expression only in the Clojure (not CLJS) REPL."
   (interactive)
   (eval-last-sexp-in-specific-repl 'clj))
 
 (defun eval-last-sexp-in-cljs ()
-  "Evaluate the last expression only in the Clojure (not CLJS) REPL."
+  "Evaluate the last expression only in the ClojureScript REPL."
   (interactive)
   (eval-last-sexp-in-specific-repl 'cljs))
 
