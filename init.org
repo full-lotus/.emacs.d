@@ -273,7 +273,7 @@ instead of setq, to avoid confusion in Customize interface"
 *** Copy/paste
 #+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tangled.el
 ;; delete active region on yanking (paste)
-(delete-selection-mode 1)
+(cua-mode 1)
 
 (setq-mark-as-customized
  ;; save kill-ring between emacs session, up to 20 entries
