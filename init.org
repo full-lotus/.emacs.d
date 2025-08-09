@@ -825,6 +825,8 @@ The defaults are cycled in minibuffer with up/down arrows.
 (define-key cider-mode-map (kbd "M-<RET>") 'cider-eval-defun-at-point)
 (define-key cider-repl-mode-map [C-return] 'cider-eval-sexp-at-point)
 (define-key cider-repl-mode-map (kbd "M-<RET>") 'cider-eval-defun-at-point)
+;; prevent conflict with CUA-mode
+(define-key cua-global-keymap [C-return] nil)
 #+end_src
 
 **** Routing expressions to CLJ/CLJS REPL for evaluation
