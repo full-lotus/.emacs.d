@@ -868,6 +868,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
 ;; closing Emacs/buffers must not stop work clock
 (setq-mark-as-customized 'org-clock-persist 'history)
+(org-clock-persistence-insinuate)
 #+end_src
 
 ** Single-letter hotkeys
