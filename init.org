@@ -446,6 +446,13 @@ instead of setq, to avoid confusion in Customize interface"
     (inhibit-switch-frame . t))
    )
  )
+
+(defun purge-display-rules-locally ()
+  (setq-local display-buffer-alist '()))
+
+;; my global display-buffer-alist screws up ivy-occur behavior badly
+(add-hook 'ivy-occur-mode-hook 'purge-display-rules-locally)
+(add-hook 'ivy-occur-grep-mode-hook 'purge-display-rules-locally)
 #+end_src
 
 ** Scrolling
