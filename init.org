@@ -805,6 +805,13 @@ The defaults are cycled in minibuffer with up/down arrows.
  'cider-use-tooltips nil
  )
 
+;; enforce simple formatting style
+;; I had issues with clojure-mode bugging out and not detecting macros
+(setq-mark-as-customized
+ 'clojure-indent-style 'always-indent
+ 'clojure-indent-keyword-style 'always-indent
+ 'clojure-enable-indent-specs nil)
+
 ;; Allow cider-repl to be cleared with shortcut
 (add-hook 'cider-repl-mode-hook
       '(lambda () (define-key cider-repl-mode-map (kbd "C-c M-b")
