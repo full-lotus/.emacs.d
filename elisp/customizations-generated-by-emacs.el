@@ -25,10 +25,6 @@
  '(fido-mode t)
  '(global-display-fill-column-indicator-mode t)
  '(openwith-associations '(("\\.\\(doc\\|docx\\)\\'" "libreoffice.writer" (file))))
- '(org-agenda-files
-   '("/home/german/.emacs.d/init.org"
-     "/mnt/sda2/projects/dev/kombinacija/README.org"
-     "/mnt/sda2/projects/dev/form-slap/README.org"))
  '(org-cycle-inline-images-display nil)
  '(org-link-frame-setup
    '((vm . vm-visit-folder-other-frame)
