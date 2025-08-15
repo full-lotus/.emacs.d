@@ -475,7 +475,7 @@ instead of setq, to avoid confusion in Customize interface"
 #+end_src
 
 ** Navigation
-*** Window/frame switching, burying, treemacs
+*** Buffer/window/frame switching, burying, treemacs
 #+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tangled.el
 (global-set-key (kbd "C-o") 'other-window)
 (define-key dired-mode-map (kbd "C-o") 'other-window)
@@ -484,6 +484,9 @@ instead of setq, to avoid confusion in Customize interface"
 (global-set-key (kbd "M-o") 'other-frame)
 (global-set-key (kbd "C-S-b") 'treemacs)
 (global-set-key (kbd "C-x w") 'bury-buffer)
+
+(global-set-key (kbd "s-b") 'my/switch-buffer-here)
+(global-set-key (kbd "s-k") 'kill-buffer)
 #+end_src
 
 *** Popping marks
