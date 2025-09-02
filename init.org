@@ -875,7 +875,8 @@ The defaults are cycled in minibuffer with up/down arrows.
 (org-clock-persistence-insinuate)
 #+end_src
 
-** Single-letter hotkeys
+** Navigation
+*** Single-letter hotkeys
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
 (setq-mark-as-customized 'org-use-speed-commands t)
 #+end_src
@@ -915,6 +916,23 @@ The defaults are cycled in minibuffer with up/down arrows.
 			("clojurec" (:background "lavender"))))
 #+end_src
 
+*** General
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
+(setq-mark-as-customized
+ ;; open src blocks in the same window as parent .org file
+ 'org-src-window-setup 'current-window
+
+ ;; do not display inline images when doing org-cycle
+ 'org-cycle-inline-images-display nil
+
+ 'org-link-frame-setup '((vm . vm-visit-folder-other-frame)
+			 (vm-imap . vm-visit-imap-folder-other-frame)
+			 (gnus . org-gnus-no-new-news)
+			 ;; open file links in another frame
+			 (file . find-file-other-frame)
+			 (wl . wl-other-frame)))
+#+end_src
+
 *** Heading subtree fold state cycling
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
 (defun org-cycle-current-subtree (orig-fun &rest args)
@@ -939,9 +957,30 @@ Cycles through three states:
 
 (advice-add 'org-shifttab :around 'org-cycle-current-subtree)
 ;; (advice-remove 'org-shifttab 'org-cycle-current-subtree)
+
+
+;; Remove the function which causes text to pop around when pressing tab.
+;; This is annoying and confusing.
+(remove-hook 'org-cycle-hook
+             'org-optimize-window-after-visibility-change)
 #+end_src
 
-** Navigation
+*** Folding all headings above ~level~
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
+(defun org-collapse-above-level (level)
+  "Collapse all headings above LEVEL in the current buffer."
+  (interactive "nEnter level to collapse above: ")
+  (org-map-entries
+   (lambda ()
+     (let ((heading-level (org-current-level)))
+       (when (and heading-level (> (+ heading-level 1) level))
+         (hide-subtree))))
+   t 'file))
+
+(define-key org-mode-map (kbd "C-c h") 'org-collapse-above-level)
+#+end_src
+
+** Linking
 *** General
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
 ;; links that use header text:
@@ -952,36 +991,6 @@ Cycles through three states:
 (define-key org-mode-map (kbd "C-c l") 'org-store-link)
 (define-key org-mode-map (kbd "<f5>") 'org-id-get-create)
 (define-key org-mode-map (kbd "<f9>") 'org-id-copy)
-
-(setq-mark-as-customized
- ;; open src blocks in the same window as parent .org file
- 'org-src-window-setup 'current-window
-
- ;; do not display inline images when doing org-cycle
- 'org-cycle-inline-images-display nil
-
- 'org-link-frame-setup '((vm . vm-visit-folder-other-frame)
-			 (vm-imap . vm-visit-imap-folder-other-frame)
-			 (gnus . org-gnus-no-new-news)
-			 ;; open file links in another frame
-			 (file . find-file-other-frame)
-			 (wl . wl-other-frame)))
-
-;; Remove the function which causes text to pop around when pressing tab.
-;; This is annoying and confusing.
-(remove-hook 'org-cycle-hook
-             'org-optimize-window-after-visibility-change)
-
-(defun org-collapse-above-level (level)
-  "Collapse all headings above LEVEL in the current buffer."
-  (interactive "nEnter level to collapse above: ")
-  (org-map-entries
-   (lambda ()
-     (let ((heading-level (org-current-level)))
-       (when (and heading-level (> (+ heading-level 1) level))
-         (hide-subtree))))
-   t 'file))
-(define-key org-mode-map (kbd "C-c h") 'org-collapse-above-level)
 #+end_src
 
 *** Custom :src source block header
