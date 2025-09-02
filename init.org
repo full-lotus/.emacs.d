@@ -384,11 +384,6 @@ instead of setq, to avoid confusion in Customize interface"
     (inhibit-same-window . nil)
     (inhibit-switch-frame . t))
 
-   ;; open *Help* buffers in another window
-   ("\\*Help\\*"
-    (display-buffer-use-least-recent-window)
-    (inhibit-same-window . t))
-
    ;; without this, transient buffer breaks window layout
    ;; it happens because of conflicts with lower settings
    (".*transient.*"
@@ -401,13 +396,6 @@ instead of setq, to avoid confusion in Customize interface"
    ((major-mode . ivy-occur-grep-mode)
     (display-buffer-use-least-recent-window)
     (inhibit-same-window . t)
-    (inhibit-switch-frame . t))
-
-   ;; open scratch buffers in selected frame, existing windows
-   ("\\*.*\\*"
-    (display-buffer-same-window
-     display-buffer-use-some-window)
-    (inhibit-same-window . nil)
     (inhibit-switch-frame . t))
 
    ((major-mode . dired-mode)
@@ -438,7 +426,7 @@ instead of setq, to avoid confusion in Customize interface"
     (inhibit-same-window . nil)
     (inhibit-switch-frame . t))
 
-   ;; prevent all other buffers from opening new windows and switching frames
+   ;; prevent all other buffers using current window and switching frames
    (".*"
     (display-buffer-use-least-recent-window
      display-buffer-some-window)
