@@ -876,6 +876,11 @@ The defaults are cycled in minibuffer with up/down arrows.
 #+end_src
 
 ** Navigation
+*** General
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
+(define-key org-mode-map (kbd "C-c C-j") 'counsel-org-goto)
+#+end_src
+
 *** Single-letter hotkeys
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
 (setq-mark-as-customized 'org-use-speed-commands t)
