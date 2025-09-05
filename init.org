@@ -474,19 +474,15 @@ instead of setq, to avoid confusion in Customize interface"
 (bind-key* (kbd "s-k") 'kill-buffer)
 #+end_src
 
-*** Popping marks
+*** Mark-ring navigation
 #+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tangled.el
-(defun modi/multi-pop-to-mark (orig-fun &rest args)
-  "Call ORIG-FUN until the cursor moves.
-Try the repeated popping up to 10 times."
-  (let ((p (point)))
-    (dotimes (i 10)
-      (when (= p (point))
-        (apply orig-fun args)))))
-(advice-add 'pop-to-mark-command :around
-            #'modi/multi-pop-to-mark)
+(defun clear-local-mark-ring ()
+  (interactive)
+  (setq mark-ring nil)
+  (message "Local mark-ring cleared"))
 
-(setq set-mark-command-repeat-pop t)
+(bind-key* (kbd "M-m") 'counsel-mark-ring)
+(bind-key* (kbd "M-d") 'clear-local-mark-ring)
 #+end_src
 
 *** Tabs
