@@ -1198,15 +1198,8 @@ Prevents flycheck from confusing buffers and breaking down. See this [[https://g
 #+end_src
 
 ** Fix for tangling inside source blocks, when noweb-refs are present
-I spent 3 days trying to fix this [[https://github.com/polymode/poly-org/issues/53][issue]]. After growing my Emacs/poly-org
-understanding by solving other issues, I came up with a solution:
-- Disable rendering
-- Move point to source block declaration
-- Perform tangle
-- Restore point
-
-This hack avoids dealing with all the difficult noweb expansion and its
-conflict with polymode.
+I spent 3 days trying to fix this [[https://github.com/polymode/poly-org/issues/53][issue]]. This hack avoids dealing with all the
+difficult noweb expansion and its conflict with polymode.
 
 #+begin_src elisp :tangle ~/.emacs.d/elisp/polymode.tangled.el
 (defun pm--tangle-inside-source-block ()
