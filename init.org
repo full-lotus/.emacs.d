@@ -476,13 +476,18 @@ instead of setq, to avoid confusion in Customize interface"
 
 *** Mark-ring navigation
 #+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tangled.el
-(defun clear-local-mark-ring ()
+(defun clear-global-mark-ring ()
   (interactive)
-  (setq mark-ring nil)
-  (message "Local mark-ring cleared"))
+  (setq global-mark-ring nil)
+  (message "Global mark-ring cleared"))
 
-(bind-key* (kbd "M-m") 'counsel-mark-ring)
-(bind-key* (kbd "M-d") 'clear-local-mark-ring)
+(defun counsel-global-mark-ring ()
+  (interactive)
+  (let ((mark-ring global-mark-ring))
+    (counsel-mark-ring)))
+
+(bind-key* (kbd "M-m") 'counsel-global-mark-ring)
+(bind-key* (kbd "M-d") 'clear-global-mark-ring)
 #+end_src
 
 *** Tabs
