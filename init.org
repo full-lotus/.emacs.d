@@ -213,6 +213,30 @@ instead of setq, to avoid confusion in Customize interface"
 
 *** Bookmarks (bm package)
 #+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tangled.el
+(declare-function poly-org-mode? "org-mode.tangled")
+
+(defun pm--org-reveal-inside-source-block ()
+  "Temporarily switch back to org-mode, to be able to do proper unfolding"
+  (interactive)
+  (let ((pm? (and (poly-org-mode?) (not (eq 'org-mode major-mode))))
+	(post-command-hook nil)
+	(pm--move-overlays (lambda ()))
+	(curr-point (point)))
+    (when pm?
+      ;; switch to org-mode without breaking polymode
+      (goto-char (point-min))
+      (polymode-post-command)
+      (goto-char curr-point))
+
+    ;; now, in org-mode, properly find parent heading and unfold it
+    (org-up-element)
+    (org-fold-show-subtree)
+
+    ;; go back to original point and restore the major mode
+    (goto-char curr-point)
+    (when pm?
+      (polymode-post-command))))
+
 (use-package bm
   :ensure t
   :demand t
@@ -263,10 +287,20 @@ instead of setq, to avoid confusion in Customize interface"
   ;; Make sure bookmarks is saved before check-in (and revert-buffer)
   (add-hook 'before-revert-hook #'bm-buffer-save)
 
+  ;; org-mode expand the region containing a bookmark
+  ;; (add-hook 'bm-after-goto-hook 'org-bookmark-jump-unhide)
+  (add-hook 'bm-after-goto-hook 'pm--org-reveal-inside-source-block)
 
-  :bind (("<f2>" . bm-next)
-         ("S-<f2>" . bm-previous)
-         ("C-<f2>" . bm-toggle)))
+  ;; the markers on the right fringe instead of the left
+  (setq bm-highlight-style 'bm-highlight-line-and-fringe)
+  (setq bm-marker 'bm-marker-right)
+
+  (bind-key* (kbd "<f2>") 'bm-next)
+  (bind-key* (kbd "S-<f2>") 'bm-previous)
+  (bind-key* (kbd "C-<f2>") 'bm-toggle)
+  (bind-key* (kbd "<left-fringe> <mouse-5>") 'bm-next-mouse)
+  (bind-key* (kbd "<left-fringe> <mouse-4>") 'bm-previous-mouse)
+  (bind-key* (kbd "<left-fringe> <mouse-1>") 'bm-toggle-mouse))
 #+end_src
 
 ** Display
