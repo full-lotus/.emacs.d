@@ -532,6 +532,13 @@ instead of setq, to avoid confusion in Customize interface"
 ;; my global display-buffer-alist screws up ivy-occur behavior badly
 (add-hook 'ivy-occur-mode-hook 'purge-display-rules-locally)
 (add-hook 'ivy-occur-grep-mode-hook 'purge-display-rules-locally)
+
+;; ivy-occur buffer n/p buttons are still messed up, and use current window
+;; to open search results. This bug remains even with my whole init.el removed,
+;; meaning only autoloads work
+;;
+;; I debugged it, and discovered that somehow current-window is mistakenly
+;; changed before display-buffer-use-least-recent-window is called
 #+end_src
 
 ** Scrolling
