@@ -1020,21 +1020,6 @@ Cycles through three states:
              'org-optimize-window-after-visibility-change)
 #+end_src
 
-*** Folding all headings above ~level~
-#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
-(defun org-collapse-above-level (level)
-  "Collapse all headings above LEVEL in the current buffer."
-  (interactive "nEnter level to collapse above: ")
-  (org-map-entries
-   (lambda ()
-     (let ((heading-level (org-current-level)))
-       (when (and heading-level (> (+ heading-level 1) level))
-         (hide-subtree))))
-   t 'file))
-
-(define-key org-mode-map (kbd "C-c h") 'org-collapse-above-level)
-#+end_src
-
 ** Linking
 *** General
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
