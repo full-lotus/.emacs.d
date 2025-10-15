@@ -975,6 +975,8 @@ The defaults are cycled in minibuffer with up/down arrows.
  ;; open src blocks in the same window as parent .org file
  'org-src-window-setup 'current-window
 
+ 'org-hide-leading-stars t
+
  ;; do not display inline images when doing org-cycle
  'org-cycle-inline-images-display nil
 
