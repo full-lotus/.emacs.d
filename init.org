@@ -297,10 +297,7 @@ instead of setq, to avoid confusion in Customize interface"
 
   (bind-key* (kbd "<f2>") 'bm-next)
   (bind-key* (kbd "S-<f2>") 'bm-previous)
-  (bind-key* (kbd "C-<f2>") 'bm-toggle)
-  (bind-key* (kbd "<left-fringe> <mouse-5>") 'bm-next-mouse)
-  (bind-key* (kbd "<left-fringe> <mouse-4>") 'bm-previous-mouse)
-  (bind-key* (kbd "<left-fringe> <mouse-1>") 'bm-toggle-mouse))
+  (bind-key* (kbd "C-<f2>") 'bm-toggle))
 #+end_src
 
 ** Display
