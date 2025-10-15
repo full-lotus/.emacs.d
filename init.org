@@ -527,12 +527,15 @@ instead of setq, to avoid confusion in Customize interface"
    )
  )
 
-(defun purge-display-rules-locally ()
-  (setq-local display-buffer-alist '()))
+(defun no-display-rules (orig-fun &rest args)
+  (let ((display-buffer-alist '((".*"
+				 (display-buffer-use-least-recent-window)
+				 (inhibit-switch-frame . t)))))
+    (apply orig-fun args)))
 
 ;; my global display-buffer-alist screws up ivy-occur behavior badly
-(add-hook 'ivy-occur-mode-hook 'purge-display-rules-locally)
-(add-hook 'ivy-occur-grep-mode-hook 'purge-display-rules-locally)
+(advice-add 'next-error-no-select :around 'no-display-rules)
+(advice-add 'previous-error-no-select :around 'no-display-rules)
 
 ;; ivy-occur buffer n/p buttons are still messed up, and use current window
 ;; to open search results. This bug remains even with my whole init.el removed,
