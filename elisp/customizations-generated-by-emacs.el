@@ -111,6 +111,7 @@
  '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "magenta"))))
  '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "brown"))))
  '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "navajo white"))))
+ '(show-paren-match ((t (:background "gray"))))
  '(tab-bar ((t (:inherit variable-pitch :background "lavender" :foreground "black"))))
  '(tab-bar-tab ((t (:inherit tab-bar :background "MediumPurple1" :foreground "black" :box (:line-width (1 . 1) :style released-button)))))
  '(tab-bar-tab-group-current ((t (:inherit bold :background "MediumPurple1" :foreground "white" :box (:line-width (2 . -2) :color "#ffffff")))))
