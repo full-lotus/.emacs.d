@@ -11,7 +11,7 @@ This config aims to maximize Clojure programmer productivity through:
 
 2. /Short hotkeys for most often used functionality/
    For example, 'C-o'/'M-o' for ~other-window/other-frame~. Mode <<<keyfreq>>>
-   helps with that.
+   helps to find commands which need short hotkeys.
 
 3. /Being minimalistic/
    I use Emacs as a tool, not a hobby. I customize things to get them out of
