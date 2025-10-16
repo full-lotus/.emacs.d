@@ -420,7 +420,7 @@ instead of setq, to avoid confusion in Customize interface"
  ;; Disable vertical window splitting
  'split-height-threshold nil
 
- ;; Disable horizontal window splitting
+ ;; Allow horizontal splitting, if there's at least 1 column in the buffer
  'split-width-threshold 1
 
  ;; Resize windows proportionally
