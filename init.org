@@ -484,23 +484,6 @@ instead of setq, to avoid confusion in Customize interface"
     (inhibit-switch-frame . t))
    )
  )
-
-(defun no-display-rules (orig-fun &rest args)
-  (let ((display-buffer-alist '((".*"
-				 (display-buffer-use-least-recent-window)
-				 (inhibit-switch-frame . t)))))
-    (apply orig-fun args)))
-
-;; my global display-buffer-alist screws up ivy-occur behavior badly
-(advice-add 'next-error-no-select :around 'no-display-rules)
-(advice-add 'previous-error-no-select :around 'no-display-rules)
-
-;; ivy-occur buffer n/p buttons are still messed up, and use current window
-;; to open search results. This bug remains even with my whole init.el removed,
-;; meaning only autoloads work
-;;
-;; I debugged it, and discovered that somehow current-window is mistakenly
-;; changed before display-buffer-use-least-recent-window is called
 #+end_src
 
 ** Scrolling
