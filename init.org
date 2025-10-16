@@ -788,17 +788,6 @@ The defaults are cycled in minibuffer with up/down arrows.
 (global-flycheck-mode)
 #+end_src
 
-** Docs and tooltips
-#+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tangled.el
-;; eldoc causes issues in my setup, sometimes marked region resizes randomly
-;; tried eldoc-box to replace it, but it didn't work most of the time
-;; all this is true for poly-org + clojurec + cider
-
-(global-eldoc-mode -1)
-
-(add-hook 'emacs-lisp-mode-hook (lambda () (eldoc-mode)))
-#+end_src
-
 ** Parenthesis config
 *** Puni-mode
 #+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tangled.el
@@ -1226,6 +1215,16 @@ org-babel-expand-noweb-references explodes polymode. Don't save anything."
 	    'pm--tangle-inside-source-block)
 #+end_src
 
+** Region random resize fix
+#+begin_src elisp :tangle ~/.emacs.d/elisp/polymode.tangled.el
+;; eldoc causes issues in my setup, sometimes marked region resizes randomly
+;; tried eldoc-box to replace it, but it didn't work most of the time
+;; all this is true for poly-org + clojurec + cider
+
+(global-eldoc-mode -1)
+
+(add-hook 'emacs-lisp-mode-hook (lambda () (eldoc-mode)))
+#+end_src
 
 
 * File management
