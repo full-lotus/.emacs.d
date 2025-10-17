@@ -533,20 +533,20 @@ different parts on 1 file, having a set of tabs for each window.
 
 * Command/code completion
 #+begin_src elisp :tangle ./init.el
-(load "~/.emacs.d/elisp/command-and-code-completion.tangled.el")
+(load "~/.emacs.d/elisp/completions.tangled.el")
 #+end_src
 
 ** which-key mode
 Shows completion options, after you start pressing hotkeys
 
-#+begin_src elisp :tangle ~/.emacs.d/elisp/command-and-code-completion.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/completions.tangled.el
 (which-key-mode 1)
 #+end_src
 
 ** keyfreq mode
 Records how much times a command was used. Useful for optimizing hotkeys
 
-#+begin_src elisp :tangle ~/.emacs.d/elisp/command-and-code-completion.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/completions.tangled.el
 (keyfreq-mode 1)
 (keyfreq-autosave-mode 1)
 
@@ -672,7 +672,7 @@ Records how much times a command was used. Useful for optimizing hotkeys
 #+end_src
 
 ** Snippets (yasnippet)
-#+begin_src elisp :tangle ~/.emacs.d/elisp/command-and-code-completion.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/completions.tangled.el
 (setq-mark-as-customized 'yas-snippet-dirs '("~/.emacs.d/snippets/"))
 (yas-global-mode 1)
 #+end_src
