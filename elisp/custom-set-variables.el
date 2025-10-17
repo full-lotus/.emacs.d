@@ -19,12 +19,11 @@
      "21055a064d6d673f666baaed35a69519841134829982cbbb76960575f43424db"
      default))
  '(package-selected-packages
-   '(async bm cape casual-avy cider clojure-mode command-log-mode consult
-	   corfu dired-ranger embark embark-consult flycheck
-	   flycheck-clj-kondo keyfreq magit marginalia ob-async
-	   ob-clojurescript openwith orderless pcre2el poly-org
-	   posframe puni rainbow-delimiters smex treemacs
-	   treemacs-all-the-icons vertico wgrep yasnippet))
+   '(async bm cape casual-avy cider clojure-mode command-log-mode consult corfu
+		   dired-ranger embark embark-consult flycheck flycheck-clj-kondo
+		   keyfreq magit marginalia ob-async ob-clojurescript openwith orderless
+		   pcre2el poly-org posframe puni rainbow-delimiters treemacs
+		   treemacs-all-the-icons vertico wgrep yasnippet))
  '(safe-local-variable-directories
    '("/mnt/sda2/projects/dev/kombinacija/"
      "/mnt/sda2/projects/dev/simple-clojure-project/"))
