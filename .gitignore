@@ -24,7 +24,7 @@ history
 smex-items
 /init-debug-transient-window.el
 init.el
-**.tangled.*
+**.tngl.*
 /shortcuts/
 /snippets/org-mode/.yas-compiled-snippets.el
 /projects
