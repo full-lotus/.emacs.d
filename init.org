@@ -1057,13 +1057,6 @@ Cycles through three states:
   (modify-syntax-entry ?> "w"))
 (add-hook 'org-mode-hook 'my-angle-bracket-fix)
 (remove-hook 'org-mode-hook 'my-angle-bracket-fix)
-
-;; It’s useful to split code blocks to quickly add org-mode text
-;; between the src. The default binding is C-c C-v C-d, which is somewhat
-;; annoying. I think M-s in org-mode should do the trick.
-
-;; Split Org Block using M-s
-(define-key org-mode-map (kbd "M-s") 'org-babel-demarcate-block)
 #+end_src
 
 ** Code execution
