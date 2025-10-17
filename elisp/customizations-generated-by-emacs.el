@@ -36,11 +36,11 @@
  '(org-startup-indented nil)
  '(org-tidy-protect-overlay nil)
  '(package-selected-packages
-   '(async bm casual-avy cider clojure-mode command-log-mode counsel
-	   dired-ranger flycheck flycheck-clj-kondo ivy ivy-rich
-	   keyfreq magit ob-async ob-clojurescript openwith org-tidy
-	   pcre2el poly-org posframe puni rainbow-delimiters smex
-	   treemacs treemacs-all-the-icons wgrep yasnippet))
+   '(async bm cape casual-avy cider clojure-mode command-log-mode consult corfu
+	   dired-ranger embark embark-consult flycheck flycheck-clj-kondo
+	   keyfreq magit marginalia ob-async ob-clojurescript openwith orderless
+	   pcre2el poly-org puni rainbow-delimiters smex treemacs
+	   treemacs-all-the-icons vertico wgrep yasnippet))
  '(safe-local-variable-directories
    '("/mnt/sda2/projects/dev/kombinacija/"
      "/mnt/sda2/projects/dev/simple-clojure-project/"))

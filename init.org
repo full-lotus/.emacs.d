@@ -69,7 +69,8 @@ This config aims to maximize Clojure programmer productivity through:
 ;; add non-default packages that we need
 (custom-set-variables
  '(package-selected-packages
-   '(async bm casual-avy cider clojure-mode command-log-mode counsel
+   '(async bm casual-avy cider clojure-mode command-log-mode
+	   vertico consult orderless embark embark-consult marginalia corfu cape
 	   dired-ranger flycheck flycheck-clj-kondo
 	   keyfreq magit ob-async ob-clojurescript openwith
 	   pcre2el poly-org puni rainbow-delimiters smex
