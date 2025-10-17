@@ -103,7 +103,7 @@ This config aims to maximize Clojure programmer productivity through:
  initial-scratch-message ""
 
  ;; Confirm before exiting Emacs
- confirm-kill-emacs 'yes-or-no-p
+ confirm-kill-emacs 'y-or-n-p
  )
 #+end_src
 
