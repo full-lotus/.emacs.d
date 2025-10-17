@@ -74,16 +74,6 @@ This config aims to maximize Clojure programmer productivity through:
 
 ** Install and load all non-default packages
 #+begin_src elisp :tangle ~/.emacs.d/elisp/package-management.tngl.el
-;; add non-default packages that we need
-(custom-set-variables
- '(package-selected-packages
-   '(async bm casual-avy cider clojure-mode command-log-mode
-	   vertico consult orderless embark embark-consult marginalia corfu cape
-	   dired-ranger flycheck flycheck-clj-kondo
-	   keyfreq magit ob-async ob-clojurescript openwith
-	   pcre2el poly-org puni rainbow-delimiters smex
-	   treemacs treemacs-all-the-icons wgrep yasnippet)))
-
 ;; install all non-default packages
 (dolist (pkg package-selected-packages)
   (unless (package-installed-p pkg)
