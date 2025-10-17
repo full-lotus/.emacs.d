@@ -18,12 +18,13 @@
 	 "21055a064d6d673f666baaed35a69519841134829982cbbb76960575f43424db" default))
  '(openwith-associations '(("\\.\\(doc\\|docx\\)\\'" "libreoffice.writer" (file))))
  '(package-selected-packages
-   '(all-the-icons async beacon bm cape casual-avy cider clojure-mode
-				   command-log-mode consult corfu dired-ranger embark
-				   embark-consult flycheck flycheck-clj-kondo keyfreq magit
-				   marginalia ob-async ob-clojurescript openwith orderless
-				   org-modern pcre2el poly-org posframe puni rainbow-delimiters
-				   treemacs treemacs-all-the-icons undo-fu-session vertico wgrep
+   '(all-the-icons all-the-icons-completion all-the-icons-dired async beacon bm
+				   cape casual-avy cider clojure-mode command-log-mode consult
+				   corfu dired-ranger embark embark-consult flycheck
+				   flycheck-clj-kondo keyfreq magit marginalia ob-async
+				   ob-clojurescript openwith orderless org-modern pcre2el
+				   poly-org posframe puni rainbow-delimiters treemacs
+				   treemacs-all-the-icons undo-fu-session vertico wgrep
 				   yasnippet))
  '(safe-local-variable-directories
    '("/mnt/sda2/projects/dev/kombinacija/"
