@@ -559,108 +559,8 @@ Records how much times a command was used. Useful for optimizing hotkeys
    next-line))
 #+end_src
 
-** Enable ivy and counsel modes
-#+begin_src elisp :tangle ~/.emacs.d/elisp/command-and-code-completion.tangled.el
-;; use Ivy + Counsel + Swiper for better completion/search
-;; settings taken from here https://github.com/abo-abo/swiper
-(ivy-mode)
-(ivy-rich-mode)
-(counsel-mode)
-(setq-mark-as-customized 'ivy-use-virtual-buffers t)
-(setq-mark-as-customized 'enable-recursive-minibuffers t)
-#+end_src
-
-*** Disable icomplete mode when calling ivy-read, to fix a conflict
-#+begin_src elisp :tangle ~/.emacs.d/elisp/command-and-code-completion.tangled.el
-;; disable icomplete to fix error:
-;; Error in post-command-hook (icomplete-post-command-hook):
-;; (wrong-number-of-arguments #<subr counsel-ag-function> 3)
-(defun ivy-icomplete (f &rest r)
-  (icomplete-mode -1)
-  (unwind-protect
-      (apply f r)
-    (icomplete-mode 1)))
-
-(advice-add 'ivy-read :around #'ivy-icomplete)
-#+end_src
-
-*** Fix counsel-rg not displaying errors properly
-#+begin_src elisp :tangle ~/.emacs.d/elisp/command-and-code-completion.tangled.el
-(with-eval-after-load 'counsel
-  (advice-add
-   'counsel-rg
-   :around
-   (lambda (func &rest args)
-     (cl-flet ((filter-func (code) (if (= code 2) 0 code)))
-       (unwind-protect
-           (progn (advice-add 'process-exit-status :filter-return #'filter-func)
-                  (apply func args))
-         (advice-remove 'process-exit-status #'filter-func))))))
-#+end_src
-
-** Customize ivy matching behavior
-#+begin_src elisp :tangle ~/.emacs.d/elisp/command-and-code-completion.tangled.el
-;; Enable orderless matching for execute-extended-command
-(setq-mark-as-customized 'ivy-re-builders-alist
-                         '((counsel-M-x . ivy--regex-ignore-order)
-                           (t . ivy--regex-plus)))
-
-;; Drop beginning-of-string anchor ^ from execute-extended-command
-(with-eval-after-load 'ivy
-  (setcdr (assoc 'counsel-M-x ivy-initial-inputs-alist) ""))
-
-;; allow selecting the prompt itself as command candidate
-(setq-mark-as-customized 'ivy-use-selectable-prompt t)
-#+end_src
-
-** Add commands for searching the current symbol under cursor
-#+begin_src elisp :tangle ~/.emacs.d/elisp/command-and-code-completion.tangled.el
-(defun regex-fn-ivy-thing-at-point (regex-fn)
-  "Run `counsel-git-grep` with ivy-thing-at-point as the initial input."
-  (interactive)
-  (let ((thing (ivy-thing-at-point)))
-    (when (use-region-p)
-      (deactivate-mark))
-    (funcall regex-fn (regexp-quote thing))))
-
-(defun counsel-git-grep-ivy-thing-at-point ()
-  (interactive)
-  (regex-fn-ivy-thing-at-point 'counsel-git-grep))
-
-(defun counsel-rg-ivy-thing-at-point ()
-  (interactive)
-  (regex-fn-ivy-thing-at-point 'counsel-rg))
-#+end_src
-
-** Configure ivy and counsel hotkeys
-#+begin_src elisp :tangle ~/.emacs.d/elisp/command-and-code-completion.tangled.el
-;; some of those hotkeys are redundant because of counsel-mode
-;; but I'm not sure which I can drop, and to lazy to check one-by-one
-(global-set-key (kbd "C-f") 'swiper)
-(global-set-key (kbd "C-S-f") 'swiper-thing-at-point)
-(global-set-key (kbd "C-c C-r") 'ivy-resume)
-(global-set-key (kbd "<f6>") 'ivy-resume)
-(global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
-(global-set-key (kbd "<f1> f") 'counsel-describe-function)
-(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-(global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
-(global-set-key (kbd "<f1> l") 'counsel-find-library)
-(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-(global-set-key (kbd "C-c g") 'counsel-git)
-(global-set-key (kbd "C-c J") 'counsel-git-grep-ivy-thing-at-point)
-(global-set-key (kbd "C-c j") 'counsel-git-grep)
-(global-set-key (kbd "C-c r") 'counsel-rg)
-(global-set-key (kbd "C-c R") 'counsel-rg-ivy-thing-at-point)
-(global-set-key (kbd "C-c k") 'counsel-ag)
-(global-set-key (kbd "C-x l") 'counsel-locate)
-(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-(define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-#+end_src
-
 ** Code completion
-#+begin_src elisp :tangle ~/.emacs.d/elisp/command-and-code-completion.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/completions.tangled.el
 ;; Always show completions
 (setq-mark-as-customized 'completion-auto-help 'always)
 
@@ -675,6 +575,215 @@ Records how much times a command was used. Useful for optimizing hotkeys
 #+begin_src elisp :tangle ~/.emacs.d/elisp/completions.tangled.el
 (setq-mark-as-customized 'yas-snippet-dirs '("~/.emacs.d/snippets/"))
 (yas-global-mode 1)
+#+end_src
+
+** Vertico + Consult + Ordqerless + Embark + Marginalia + Corfu + Cape
+Shamelessly copied from [[https://github.com/jamescherti/minimal-emacs.d][minimal-emacs setup]].
+
+#+begin_src elisp :tangle ~/.emacs.d/elisp/completions.tangled.el
+;; Corfu enhances in-buffer completion by displaying a compact popup with
+;; current candidates, positioned either below or above the point. Candidates
+;; can be selected by navigating up or down.
+(use-package corfu
+  :ensure t
+  :commands (corfu-mode global-corfu-mode)
+
+  :hook ((prog-mode . corfu-mode)
+         (shell-mode . corfu-mode)
+         (eshell-mode . corfu-mode))
+
+  :custom
+  ;; Hide commands in M-x which do not apply to the current mode.
+  (read-extended-command-predicate #'command-completion-default-include-p)
+  ;; Disable Ispell completion function. As an alternative try `cape-dict'.
+  (text-mode-ispell-word-completion nil)
+  (tab-always-indent 'complete)
+
+  ;; Enable Corfu
+  :config
+  (global-corfu-mode))
+
+;; Cape, or Completion At Point Extensions, extends the capabilities of
+;; in-buffer completion. It integrates with Corfu or the default completion UI,
+;; by providing additional backends through completion-at-point-functions.
+(use-package cape
+  :ensure t
+  :commands (cape-dabbrev cape-file cape-elisp-block)
+  :bind ("C-c p" . cape-prefix-map)
+  :init
+  ;; Add to the global default value of `completion-at-point-functions' which is
+  ;; used by `completion-at-point'.
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-elisp-block))
+
+;; Vertico provides a vertical completion interface, making it easier to
+;; navigate and select from completion candidates (e.g., when `M-x` is pressed).
+(use-package vertico
+  ;; (Note: It is recommended to also enable the savehist package.)
+  :ensure t
+  :config
+  (vertico-mode))
+
+;; Vertico leverages Orderless' flexible matching capabilities, allowing users
+;; to input multiple patterns separated by spaces, which Orderless then
+;; matches in any order against the candidates.
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless))
+  (completion-category-defaults nil)
+  (completion-category-overrides '((file (styles partial-completion))
+				   (buffer (styles orderless))
+				   (command (styles orderless))
+				   (symbol (styles orderless))
+				   (function (styles orderless))
+				   (variable (styles orderless))
+				   (consult-location (styles orderless))
+				   (consult-multi (styles orderless))))
+  )
+
+;; Marginalia allows Embark to offer you preconfigured actions in more contexts.
+;; In addition to that, Marginalia also enhances Vertico by adding rich
+;; annotations to the completion candidates displayed in Vertico's interface.
+(use-package marginalia
+  :ensure t
+  :commands (marginalia-mode marginalia-cycle)
+  :hook (after-init . marginalia-mode))
+
+;; Embark integrates with Consult and Vertico to provide context-sensitive
+;; actions and quick access to commands based on the current selection, further
+;; improving user efficiency and workflow within Emacs. Together, they create a
+;; cohesive and powerful environment for managing completions and interactions.
+(use-package embark
+  ;; Embark is an Emacs package that acts like a context menu, allowing
+  ;; users to perform context-sensitive actions on selected items
+  ;; directly from the completion interface.
+  :ensure t
+  :commands (embark-act
+             embark-dwim
+             embark-export
+             embark-collect
+             embark-bindings
+             embark-prefix-help-command)
+  :bind
+  (("C-." . embark-act)         ;; pick some comfortable binding
+   ("C-;" . embark-dwim)        ;; good alternative: M-.
+   ("C-c C-o" . embark-export)  ;; like ivy-occur
+   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+
+  :init
+  (setq prefix-help-command #'embark-prefix-help-command)
+
+  :config
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none))))
+  (setcdr (assq 'consult-location embark-exporters-alist)
+	  'embark-consult-export-location-grep))
+
+(use-package embark-consult
+  :ensure t
+  :hook
+  (embark-collect-mode . consult-preview-point-mode))
+
+;; Consult offers a suite of commands for efficient searching, previewing, and
+;; interacting with buffers, file contents, and more, improving various tasks.
+(use-package consult
+  :ensure t
+  :bind (;; C-c bindings in `mode-specific-map'
+         ("C-c M-x" . consult-mode-command)
+         ("C-c h" . consult-history)
+         ("C-c k" . consult-kmacro)
+         ("C-c m" . consult-man)
+         ("C-c i" . consult-info)
+         ([remap Info-search] . consult-info)
+         ;; C-x bindings in `ctl-x-map'
+         ("C-x M-:" . consult-complex-command)
+         ("C-x b" . consult-buffer)
+         ("C-x 4 b" . consult-buffer-other-window)
+         ("C-x 5 b" . consult-buffer-other-frame)
+         ("C-x t b" . consult-buffer-other-tab)
+         ("C-x r b" . consult-bookmark)
+         ("C-x p b" . consult-project-buffer)
+         ;; Custom M-# bindings for fast register access
+         ("M-#" . consult-register-load)
+         ("M-'" . consult-register-store)
+         ("C-M-#" . consult-register)
+         ;; Other custom bindings
+         ("M-y" . consult-yank-pop)
+         ;; M-g bindings in `goto-map'
+         ("M-g e" . consult-compile-error)
+         ("M-g f" . consult-flymake)
+         ("M-g g" . consult-goto-line)
+         ("M-g M-g" . consult-goto-line)
+         ("M-g o" . consult-outline)
+         ("M-g m" . consult-mark)
+         ("M-g k" . consult-global-mark)
+         ("M-g i" . consult-imenu)
+         ("M-g I" . consult-imenu-multi)
+         ;; M-s bindings in `search-map'
+         ("M-s d" . consult-find)
+         ("M-s c" . consult-locate)
+         ("M-s g" . consult-grep)
+         ("M-s G" . consult-git-grep)
+         ("M-s r" . consult-ripgrep)
+         ("M-s l" . consult-line)
+	 ("C-s" . consult-line)
+	 ("C-f" . consult-line)
+         ("M-s L" . consult-line-multi)
+         ("M-s k" . consult-keep-lines)
+         ("M-s u" . consult-focus-lines)
+         ;; Isearch integration
+         ("M-s e" . consult-isearch-history)
+         :map isearch-mode-map
+         ("M-e" . consult-isearch-history)
+         ("M-s e" . consult-isearch-history)
+         ("M-s l" . consult-line)
+         ("M-s L" . consult-line-multi)
+         ;; Minibuffer history
+         :map minibuffer-local-map
+         ("M-s" . consult-history)
+         ("M-r" . consult-history))
+
+  ;; Enable automatic preview at point in the *Completions* buffer.
+  :hook (completion-list-mode . consult-preview-at-point-mode)
+
+  :init
+  ;; Optionally configure the register formatting. This improves the register
+  (setq register-preview-delay 0.5
+        register-preview-function #'consult-register-format)
+
+  ;; Optionally tweak the register preview window.
+  (advice-add #'register-preview :override #'consult-register-window)
+
+  ;; Use Consult to select xref locations with preview
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
+
+  ;; Aggressive asynchronous that yield instantaneous results. (suitable for
+  ;; high-performance systems.) Note: Minad, the author of Consult, does not
+  ;; recommend aggressive values.
+  ;; Read: https://github.com/minad/consult/discussions/951
+  ;;
+  ;; However, the author of minimal-emacs.d uses these parameters to achieve
+  ;; immediate feedback from Consult.
+  ;; (setq consult-async-input-debounce 0.02
+  ;;       consult-async-input-throttle 0.05
+  ;;       consult-async-refresh-delay 0.02)
+
+  :config
+  (consult-customize
+   consult-theme :preview-key '(:debounce 0.2 any)
+   consult-ripgrep consult-git-grep consult-grep
+   consult-bookmark consult-recent-file consult-xref
+   consult--source-bookmark consult--source-file-register
+   consult--source-recent-file consult--source-project-recent-file
+   ;; :preview-key "M-."
+   :preview-key '(:debounce 0.4 any))
+  (setq consult-narrow-key "<"))
 #+end_src
 
 
@@ -719,41 +828,6 @@ The defaults are cycled in minibuffer with up/down arrows.
           (call-interactively 'query-replace-regexp)
         (fset 'get-initial-input-for-replace original-fn)))
    t))
-#+end_src
-
-** Start replace with preview in one keystroke
-#+begin_src elisp :tangle ~/.emacs.d/elisp/improved-text-replace.tangled.el
-(defun rapid-replace (search-fn)
-  "Opens up wgrep buffer with query-replace-regexp started"
-  (interactive)
-  (eval
-   '(let* ((thing (ivy-thing-at-point))
-           (search-str (read-string "Enter at least 3 chars to replace: " thing)))
-      (run-at-time
-       nil nil
-       (lambda ()
-         (run-at-time
-          nil nil
-          (lambda ()
-            (run-at-time
-             nil nil
-             (lambda ()
-               (query-replace-regexp-with-initial-input search-str)
-               ))
-            (ivy-wgrep-change-to-wgrep-mode)))
-         (ivy-occur)))
-      (funcall search-fn search-str))
-   t))
-
-(defun rapid-replace-in-git-repo ()
-  (interactive)
-  (rapid-replace 'counsel-git-grep))
-
-(defun rapid-replace-ripgrep ()
-  (interactive)
-  (rapid-replace 'counsel-rg))
-
-(global-set-key (kbd "C-S-h") 'rapid-replace-ripgrep)
 #+end_src
 
 
