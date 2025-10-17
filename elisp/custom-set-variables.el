@@ -3,7 +3,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(blink-cursor-mode nil)
  '(cider-font-lock-dynamically '(macro function var core))
  '(counsel-rg-base-command
    '("rg" "--multiline" "--multiline-dotall" "--max-columns" "240"
@@ -19,22 +18,6 @@
      "42b221449475e41bc04c5663164ffc5d1672c53163630d41d57ef27d5a01cca9"
      "21055a064d6d673f666baaed35a69519841134829982cbbb76960575f43424db"
      default))
- '(desktop-save t)
- '(desktop-save-mode t)
- '(display-fill-column-indicator-column 80)
- '(global-display-fill-column-indicator-mode t)
- '(openwith-associations '(("\\.\\(doc\\|docx\\)\\'" "libreoffice.writer" (file))))
- '(org-cycle-inline-images-display nil)
- '(org-link-frame-setup
-   '((vm . vm-visit-folder-other-frame)
-     (vm-imap . vm-visit-imap-folder-other-frame)
-     (gnus . org-gnus-no-new-news) (file . find-file-other-frame)
-     (wl . wl-other-frame)))
- '(org-modules
-   '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus ol-info ol-irc
-	     ol-mhe ol-rmail org-tempo ol-w3m))
- '(org-startup-indented nil)
- '(org-tidy-protect-overlay nil)
  '(package-selected-packages
    '(async bm cape casual-avy cider clojure-mode command-log-mode consult corfu
 	   dired-ranger embark embark-consult flycheck flycheck-clj-kondo
@@ -71,9 +54,7 @@
      (cider-clojure-cli-global-options
       . " -A:dev -X dev/-main --middleware [cider.nrepl/cider-middleware,shadow.cljs.devtools.server.nrepl/middleware]")
      (cider-preferred-build-tool . clj)))
- '(save-interprogram-paste-before-kill t)
- '(savehist-additional-variables '(kill-ring))
- '(winner-mode t))
+ )
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
