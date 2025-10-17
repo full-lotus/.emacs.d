@@ -1011,10 +1011,6 @@ The defaults are cycled in minibuffer with up/down arrows.
                        ("clojurescript" (:background "lavender"))
                        ("clojurec" (:background "lavender"))))
 
-(use-package org-modern
-  :ensure t
-  :hook (org-mode . org-modern-mode))
-
 (setq
  ;; open src blocks in the same window as parent .org file
  org-src-window-setup 'current-window
