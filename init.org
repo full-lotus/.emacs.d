@@ -1037,14 +1037,17 @@ Cycles through three states:
   (interactive)
   (cond
    ((or (not (org-at-heading-p))
-	(eq (prefix-numeric-value current-prefix-arg) 4)) (apply orig-fun args))
-   (t (save-excursion
-	(let ((beg (progn (org-back-to-heading t) (point)))
-              ;; end manipulation needed to not screw up separator newlines
-              (end (progn (org-end-of-subtree t t nil) (end-of-line) (point))))
-	  (save-restriction
-	    (narrow-to-region beg end)
-	    (org-cycle-internal-global)))))))
+				(eq (prefix-numeric-value current-prefix-arg) 4))
+    (apply orig-fun args))
+
+   (t
+    (save-excursion
+      (let ((beg (progn (org-back-to-heading t) (point)))
+            ;; end manipulation needed to not screw up separator newlines
+            (end (progn (org-end-of-subtree t t nil) (end-of-line) (point))))
+			  (save-restriction
+		      (narrow-to-region beg end)
+		      (org-cycle-internal-global)))))))
 
 (advice-add 'org-shifttab :around 'org-cycle-current-subtree)
 ;; (advice-remove 'org-shifttab 'org-cycle-current-subtree)
