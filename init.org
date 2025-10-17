@@ -278,6 +278,11 @@ This config aims to maximize Clojure programmer productivity through:
   (bind-key* (kbd "C-<f2>") 'bm-toggle))
 #+end_src
 
+*** Beacon mode - highlight cursor after jump
+#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tngl.el
+(beacon-mode 1)
+#+end_src
+
 ** Display
 #+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tngl.el
 ;; blinking cursor is annoying
@@ -321,11 +326,18 @@ This config aims to maximize Clojure programmer productivity through:
 (global-display-fill-column-indicator-mode t)
 #+end_src
 
-** Editing
+*** all-the-icons
 #+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tngl.el
-;; make undo hotkey familiar
-(global-set-key (kbd "C-z") 'undo)
+(use-package all-the-icons
+  :ensure t
+  :config
+  (unless (member "all-the-icons" (font-family-list))
+    (all-the-icons-install-fonts t)))
+#+end_src
 
+** Editing
+*** Whitespace
+#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tngl.el
 (setq
 
  ;; Stop using tabs to indent
@@ -337,6 +349,15 @@ This config aims to maximize Clojure programmer productivity through:
 
 ;; delete all trailing whitespace
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+end_src
+
+*** Undo
+#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tngl.el
+;; make undo hotkey familiar
+(global-set-key (kbd "C-z") 'undo)
+
+;; use linear undo, store info between sessions
+(global-undo-fu-session-mode 1)
 #+end_src
 
 *** Copy/paste
@@ -970,6 +991,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 #+end_src
 
 ** Display
+*** General
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 ;; background colors are changed to be consistent with src-blocks in org-mode
 (setq
@@ -979,10 +1001,11 @@ The defaults are cycled in minibuffer with up/down arrows.
                        ("clojure" (:background "lavender"))
                        ("clojurescript" (:background "lavender"))
                        ("clojurec" (:background "lavender"))))
-#+end_src
 
-*** General
-#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
+(use-package org-modern
+  :ensure t
+  :hook (org-mode . org-modern-mode))
+
 (setq
  ;; open src blocks in the same window as parent .org file
  org-src-window-setup 'current-window
