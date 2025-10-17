@@ -408,16 +408,17 @@ This config aims to maximize Clojure programmer productivity through:
 
 *** Creating buffers and choosing how to display them
 #+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tngl.el
+;; record changes in window configuration, to enable reverting them
 (custom-set-variables
  '(winner-mode t))
 
-(defun my/switch-buffer-here ()
+(defun switch-buffer-in-current-window ()
   "Switch buffer in the current window, ignoring `display-buffer-alist`."
   (interactive)
   (let ((display-buffer-alist nil)) ;; Temporarily disable display-buffer-alist
     (call-interactively 'switch-to-buffer)))
 
-(global-set-key (kbd "C-x b") #'my/switch-buffer-here)
+(global-set-key (kbd "C-x b") #'switch-buffer-in-current-window)
 
 (setq
  ;; Uniquify buffer names
