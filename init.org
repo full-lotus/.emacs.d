@@ -286,10 +286,13 @@ This config aims to maximize Clojure programmer productivity through:
 ;; wrap lines at word boundaries, so that they always fit current window
 (global-visual-line-mode 1)
 
+;; display fill-column everywhere
+(global-display-fill-column-indicator-mode 1)
+
 ;; Default to utf-8 encoding
 (set-default-coding-systems 'utf-8)
 
-(setq
+(setq-default
  ;; to see when a line is longer than 80 symbols
  display-fill-column-indicator-column 80
 
