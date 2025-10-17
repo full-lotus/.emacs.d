@@ -88,9 +88,9 @@ instead of setq, to avoid confusion in Customize interface"
 (custom-set-variables
  '(package-selected-packages
    '(async bm casual-avy cider clojure-mode command-log-mode counsel
-	   dired-ranger flycheck flycheck-clj-kondo ivy ivy-rich
-	   keyfreq magit ob-async ob-clojurescript openwith org-tidy
-	   pcre2el poly-org posframe puni rainbow-delimiters smex
+	   dired-ranger flycheck flycheck-clj-kondo
+	   keyfreq magit ob-async ob-clojurescript openwith
+	   pcre2el poly-org puni rainbow-delimiters smex
 	   treemacs treemacs-all-the-icons wgrep yasnippet)))
 
 ;; install all non-default packages
@@ -988,13 +988,9 @@ The defaults are cycled in minibuffer with up/down arrows.
 
   (setq-mark-as-customized
    'org-startup-folded nil
-
-   ;; not sure how/why this variable was set, decided not to mess with it
-   'org-modules '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus
-  			ol-info ol-irc ol-mhe ol-rmail org-tempo ol-w3m)
-
-   ;; protection of overlay messes up editing sometimes
-   'org-tidy-protect-overlay nil)
+ ;; not sure how/why this variable was set, decided not to mess with it
+ 'org-modules '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus
+  			ol-info ol-irc ol-mhe ol-rmail org-tempo ol-w3m))
 #+end_src
 
 ** Display
