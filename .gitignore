@@ -23,6 +23,12 @@ history
 # ignore smex command history
 smex-items
 
+# bookmarks
+bm-repository
+
+# clocks
+org-clock-save.el
+
 /init-debug-transient-window.el
 init.el
 **.tngl.*
