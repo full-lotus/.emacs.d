@@ -469,6 +469,10 @@ This config aims to maximize Clojure programmer productivity through:
 
 ** Save/load frame configuration on exit/start
 #+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tngl.el
+(setq
+ ;; always save window/frame/buffer config
+ desktop-save t)
+
 (desktop-save-mode t)
 #+end_src
 
