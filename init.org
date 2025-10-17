@@ -485,9 +485,6 @@ instead of setq, to avoid confusion in Customize interface"
 
 ** Scrolling
 #+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tangled.el
-(scroll-bar-mode 1) ;; enable vertical scroll bars
-(horizontal-scroll-bar-mode 1) ;; enable horizontal scroll bars
-
 (setq-mark-as-customized
  ;; Lighten vertical scroll
  'auto-window-vscroll nil
