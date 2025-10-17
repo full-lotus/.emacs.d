@@ -22,7 +22,6 @@
  '(desktop-save t)
  '(desktop-save-mode t)
  '(display-fill-column-indicator-column 80)
- '(fido-mode t)
  '(global-display-fill-column-indicator-mode t)
  '(openwith-associations '(("\\.\\(doc\\|docx\\)\\'" "libreoffice.writer" (file))))
  '(org-cycle-inline-images-display nil)
