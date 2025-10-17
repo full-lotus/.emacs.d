@@ -6,8 +6,8 @@
 This config aims to maximize Clojure programmer productivity through:
 
 1. /Making Emacs easy to learn on the go/
-   Without modes like <<<which-key>>>, <<<command-log>>>, <<<<ivy>>>>, etc -
-   Emacs is a huge pain for new users.
+   Meaning lots of visual cues, not forcing user to Google every
+   step for hotkeys and commands.
 
 2. /Short hotkeys for most often used functionality/
    For example, 'C-o'/'M-o' for ~other-window/other-frame~. Mode <<<keyfreq>>>
