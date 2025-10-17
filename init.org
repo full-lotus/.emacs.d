@@ -1170,13 +1170,6 @@ Searches for ns in :tangle or :src file, otherwise calls clojure-find-ns."
 	    :override #'org-babel-expand-body:clojure_fixed)
 #+end_src
 
-** Todo and agenda
-#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
-(setq-mark-as-customized 'org-agenda-restore-windows-after-quit t)
-
-(define-key org-mode-map (kbd "C-c a") 'org-agenda)
-#+end_src
-
 
 * Many major mods in one buffer - polymode (poly-org)
 #+begin_src elisp :tangle ./init.el
