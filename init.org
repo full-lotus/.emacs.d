@@ -30,27 +30,10 @@ This config aims to maximize Clojure programmer productivity through:
 (load "~/.emacs.d/elisp/customization-api-tweaks.tangled.el")
 #+end_src
 
-** Sync init.el changes to customize
-I use Emacs Customize GUI, because it's convenient. I want to see actual info
-there, that's why I use this fn instead of ~setq~
-
-#+begin_src elisp :tangle ~/.emacs.d/elisp/customization-api-tweaks.tangled.el
-(defun setq-mark-as-customized (&rest var-val-pairs)
-  "Set variable value and make sure Customize registers this change. Use
-instead of setq, to avoid confusion in Customize interface"
-  (while var-val-pairs
-    (let ((var (pop var-val-pairs))
-          (val (pop var-val-pairs)))
-      (set var val)
-      (put var 'customized-value
-           (list (custom-quote (symbol-value var)))))))
-#+end_src
-
 ** Separate custom.el from init.el
 #+begin_src elisp :tangle ~/.emacs.d/elisp/customization-api-tweaks.tangled.el
 ;; separate custom-file because it's a mess, with everything in one place
-(setq-mark-as-customized 'custom-file
-			 "~/.emacs.d/elisp/customizations-generated-by-emacs.el")
+(setq custom-file "~/.emacs.d/elisp/customizations-generated-by-emacs.el")
 
 ;; we are loading at the top of init.el, to set custom variables nice and
 ;; separate, grouping relevant settings together
@@ -65,11 +48,10 @@ instead of setq, to avoid confusion in Customize interface"
 
 ** Set URLs from which we search and download packages
 #+begin_src elisp :tangle ~/.emacs.d/elisp/package-management.tangled.el
-(setq-mark-as-customized
- 'package-archives
- '(("gnu" . "http://elpa.gnu.org/packages/")
-   ("non-gnu" . "https://elpa.nongnu.org/nongnu/")
-   ("melpa" . "http://melpa.org/packages/")))
+(setq package-archives
+      '(("gnu" . "http://elpa.gnu.org/packages/")
+	("non-gnu" . "https://elpa.nongnu.org/nongnu/")
+	("melpa" . "http://melpa.org/packages/")))
 #+end_src
 
 ** Init package.el, fetch available packages from URLs
@@ -111,18 +93,18 @@ instead of setq, to avoid confusion in Customize interface"
 
 ** Emacs startup/exit
 #+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
-(setq-mark-as-customized
+(setq
  ;; Don't display load average
- 'display-time-default-load-average nil
+ display-time-default-load-average nil
 
  ;; Disable start-up screen
- 'inhibit-startup-screen t
+ inhibit-startup-screen t
 
  ;; Empty the initial *scratch* buffer
- 'initial-scratch-message ""
+ initial-scratch-message ""
 
  ;; Confirm before exiting Emacs
- 'confirm-kill-emacs 'yes-or-no-p
+ confirm-kill-emacs 'yes-or-no-p
  )
 #+end_src
 
@@ -131,9 +113,9 @@ instead of setq, to avoid confusion in Customize interface"
 ;; the dir with elisp files to be loaded
 (add-to-list 'load-path "~/.emacs.d/elisp/")
 
-(setq-mark-as-customized
+(setq
  ;; Silence warnings for redefinition
- 'ad-redefinition-action 'accept
+ ad-redefinition-action 'accept
  )
 
 (defmacro comment (&rest body)
@@ -149,8 +131,8 @@ instead of setq, to avoid confusion in Customize interface"
 ** Sound
 #+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
 ;; use screen flash instead of annoying error sound
-(setq-mark-as-customized
- 'visible-bell t
+(setq
+ visible-bell t
  )
 #+end_src
 
@@ -162,7 +144,7 @@ instead of setq, to avoid confusion in Customize interface"
 
 ;; use smex to show command history in counsel-M-x
 (smex-initialize)
-(setq-mark-as-customized 'smex-history-use-recent-first t)
+(setq smex-history-use-recent-first t)
 #+end_src
 
 *** Easier yes/no
@@ -181,13 +163,13 @@ instead of setq, to avoid confusion in Customize interface"
 ** Emacs temporary files
 #+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
 ;; stop creating backup~ files
-(setq-mark-as-customized 'make-backup-files nil)
+(setq make-backup-files nil)
 
 ;; stop creating #autosave# files
-(setq-mark-as-customized 'auto-save-default nil)
+(setq auto-save-default nil)
 
 ;; no lockfiles
-(setq-mark-as-customized 'create-lockfiles nil)
+(setq create-lockfiles nil)
 
 ;; Don't clutter main Emacs folder with session. files
 (defun emacs-session-filename (session-id)
@@ -308,30 +290,30 @@ instead of setq, to avoid confusion in Customize interface"
 ;; Default to utf-8 encoding
 (set-default-coding-systems 'utf-8)
 
-(setq-mark-as-customized
+(setq
  ;; to see when a line is longer than 80 symbols
- 'display-fill-column-indicator-column 80
+ display-fill-column-indicator-column 80
 
  ;; set width for automatic line breaks
- 'fill-column 80
+ fill-column 80
 
  ;; Add left and right margins
- 'left-margin-width 1 'right-margin-width 1
+ left-margin-width 1 right-margin-width 1
 
  ;; don't display line numbers at their beginning
  ;; 'display-line-numbers-type nil
 
  ;; show column number in minibuffer
- 'column-number-mode t
+ column-number-mode t
 
  ;; Display trailing whitespaces
- 'show-trailing-whitespace nil
+ show-trailing-whitespace nil
 
  ;; Set width for tabs
- 'tab-width 4
+ tab-width 4
 
  ;; Stretch cursor to the glyph width
- 'x-stretch-cursor t
+ x-stretch-cursor t
  )
 
 (global-display-fill-column-indicator-mode t)
@@ -342,13 +324,13 @@ instead of setq, to avoid confusion in Customize interface"
 ;; make undo hotkey familiar
 (global-set-key (kbd "C-z") 'undo)
 
-(setq-mark-as-customized
+(setq
 
  ;; Stop using tabs to indent
- 'indent-tabs-mode nil
+ indent-tabs-mode nil
 
  ;; End a sentence after a dot and a space
- 'sentence-end-double-space nil
+ sentence-end-double-space nil
  )
 
 ;; delete all trailing whitespace
@@ -360,19 +342,19 @@ instead of setq, to avoid confusion in Customize interface"
 ;; delete active region on yanking (paste)
 (cua-mode 1)
 
-(setq-mark-as-customized
+(setq
  ;; save kill-ring between emacs session, up to 20 entries
- 'savehist-additional-variables '(kill-ring)
- 'kill-ring-max 20
+ savehist-additional-variables '(kill-ring)
+ kill-ring-max 20
 
  ;; saves OS clipboard content before kill, to prevent overwriting it
- 'save-interprogram-paste-before-kill t
+ save-interprogram-paste-before-kill t
 
  ;; sync system's and Emacs' clipboard
- 'select-enable-clipboard t
+ select-enable-clipboard t
 
  ;; Yank at point rather than pointer
- 'mouse-yank-at-point t
+ mouse-yank-at-point t
  )
 #+end_src
 
@@ -402,26 +384,26 @@ instead of setq, to avoid confusion in Customize interface"
 (tool-bar-mode 0)
 (menu-bar-mode 0)
 
-(setq-mark-as-customized
+(setq
  ;; don't display time in frames
- 'display-time-mode 0
+ display-time-mode 0
 
  ;; don't use sRGB colors
- 'ns-use-srgb-colorspace nil
+ ns-use-srgb-colorspace nil
  )
 #+end_src
 
 *** Splitting/resizing
 #+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tangled.el
-(setq-mark-as-customized
+(setq
  ;; Disable vertical window splitting
- 'split-height-threshold nil
+ split-height-threshold nil
 
  ;; Allow horizontal splitting, if there's at least 1 column in the buffer
- 'split-width-threshold 1
+ split-width-threshold 1
 
  ;; Resize windows proportionally
- 'window-combination-resize t
+ window-combination-resize t
  )
 #+end_src
 
@@ -438,17 +420,17 @@ instead of setq, to avoid confusion in Customize interface"
 
 (global-set-key (kbd "C-x b") #'my/switch-buffer-here)
 
-(setq-mark-as-customized
+(setq
  ;; Uniquify buffer names
- 'uniquify-buffer-name-style 'forward
+ uniquify-buffer-name-style 'forward
 
  ;; Focus new help windows when opened
- 'help-window-select t
+ help-window-select t
 
  ;; don't open new buffers when navigating dirs in dired
- 'dired-kill-when-opening-new-dired-buffer t
+ dired-kill-when-opening-new-dired-buffer t
 
- 'display-buffer-alist
+ display-buffer-alist
  '(;; without this, transient buffer breaks window layout
    ;; it happens because of conflicts with lower settings
    (".*transient.*"
@@ -464,20 +446,19 @@ instead of setq, to avoid confusion in Customize interface"
    ((or . ((major-mode . help-mode)
 	   (major-mode . Custom-mode)
 	   (major-mode . dired-mode)
-	   (major-mode . org-mode)
 	   (major-mode . clojure-mode)
 	   (major-mode . cider-repl-mode)
 	   "\\*cider-error.*\\*"
 	   "\\*Org Src.*\\*"))
     (display-buffer-same-window)
+    (display-buffer-reuse-window)
     (inhibit-same-window . nil)
     (inhibit-switch-frame . t))
 
    ;; open in another window - the default behavior
-   ((or . ((major-mode . ivy-occur-grep-mode)
-	   "\\*cider-test-report\\*"
-	   ".*"))
+   (".*"
     (display-buffer-use-least-recent-window)
+    (display-buffer-reuse-window)
     (inhibit-switch-frame . t))
    )
  )
@@ -485,12 +466,12 @@ instead of setq, to avoid confusion in Customize interface"
 
 ** Scrolling
 #+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tangled.el
-(setq-mark-as-customized
+(setq
  ;; Lighten vertical scroll
- 'auto-window-vscroll nil
+ auto-window-vscroll nil
 
- 'scroll-step 1
- 'scroll-conservatively 10000
+ scroll-step 1
+ scroll-conservatively 10000
  )
 #+end_src
 
@@ -547,8 +528,8 @@ Records how much times a command was used. Useful for optimizing hotkeys
 (keyfreq-mode 1)
 (keyfreq-autosave-mode 1)
 
-(setq-mark-as-customized
- 'keyfreq-excluded-commands
+(setq
+ keyfreq-excluded-commands
  '(self-insert-command
    forward-char
    backward-char
@@ -559,18 +540,18 @@ Records how much times a command was used. Useful for optimizing hotkeys
 ** Code completion
 #+begin_src elisp :tangle ~/.emacs.d/elisp/completions.tangled.el
 ;; Always show completions
-(setq-mark-as-customized 'completion-auto-help 'always)
+(setq completion-auto-help 'always)
 
 ;; Auto-select *Completions* buffer
-(setq-mark-as-customized 'completion-auto-select 'second-tab)
+(setq completion-auto-select 'second-tab)
 
 ;; Make <TAB> invoke completions list, when code is already idented properly
-(setq-mark-as-customized 'tab-always-indent 'complete)
+(setq tab-always-indent 'complete)
 #+end_src
 
 ** Snippets (yasnippet)
 #+begin_src elisp :tangle ~/.emacs.d/elisp/completions.tangled.el
-(setq-mark-as-customized 'yas-snippet-dirs '("~/.emacs.d/snippets/"))
+(setq yas-snippet-dirs '("~/.emacs.d/snippets/"))
 (yas-global-mode 1)
 #+end_src
 
@@ -810,12 +791,11 @@ The defaults are cycled in minibuffer with up/down arrows.
 (load "~/.emacs.d/elisp/replace+.el")
 
 ;; this prevents replace+ being limited to an active region
-(setq-mark-as-customized 'search/replace-region-as-default-flag t)
+(setq search/replace-region-as-default-flag t)
 
 (defun get-initial-input-for-replace ()
   nil)
-(setq-mark-as-customized 'search/replace-default-fn
-                         'get-initial-input-for-replace)
+(setq search/replace-default-fn 'get-initial-input-for-replace)
 
 (defun query-replace-regexp-with-initial-input (input)
   (eval
@@ -870,27 +850,27 @@ The defaults are cycled in minibuffer with up/down arrows.
 ** Clojure
 *** CIDER
 #+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tangled.el
-(setq-mark-as-customized
- 'nrepl-hide-special-buffers t
- 'cider-repl-clear-help-banner t
- 'cider-font-lock-dynamically '(macro core function var)
- 'cider-popup-stacktraces nil
- 'cider-repl-popup-stacktraces t
- 'cider-repl-use-pretty-printing t
- 'cider-repl-pop-to-buffer-on-connect nil
- 'cider-repl-display-help-banner nil
- 'cider-use-overlays nil
+(setq
+ nrepl-hide-special-buffers t
+ cider-repl-clear-help-banner t
+ cider-font-lock-dynamically '(macro core function var)
+ cider-popup-stacktraces nil
+ cider-repl-popup-stacktraces t
+ cider-repl-use-pretty-printing t
+ cider-repl-pop-to-buffer-on-connect nil
+ cider-repl-display-help-banner nil
+ cider-use-overlays nil
  ;; when using 2 poly-org buffers on the same file, tooltips cause point in
  ;; non-selected buffer to jump between source blocks
- 'cider-use-tooltips nil
+ cider-use-tooltips nil
  )
 
 ;; enforce simple formatting style
 ;; I had issues with clojure-mode bugging out and not detecting macros
-(setq-mark-as-customized
- 'clojure-indent-style 'always-indent
- 'clojure-indent-keyword-style 'always-indent
- 'clojure-enable-indent-specs nil)
+(setq
+ clojure-indent-style 'always-indent
+ clojure-indent-keyword-style 'always-indent
+ clojure-enable-indent-specs nil)
 
 ;; Allow cider-repl to be cleared with shortcut
 (add-hook 'cider-repl-mode-hook
@@ -904,7 +884,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 (add-hook 'cider-mode-hook #'imenu-add-menubar-index)
 
 ;; I write tests in the same ns as source code, source and tests must be close
-(setq-mark-as-customized 'cider-test-infer-test-ns (lambda (ns) ns))
+(setq cider-test-infer-test-ns (lambda (ns) ns))
 
 ;; use the same hotkeys as in VS Code Calva
 (define-key cider-repl-mode-map [C-return] nil)
@@ -944,7 +924,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 
 ** CSS
 #+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tangled.el
-(setq-mark-as-customized 'css-indent-offset 2)
+(setq css-indent-offset 2)
 #+end_src
 
 
@@ -956,7 +936,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 ** Time-tracking
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
 ;; closing Emacs/buffers must not stop work clock
-(setq-mark-as-customized 'org-clock-persist 'history)
+(setq org-clock-persist 'history)
 (org-clock-persistence-insinuate)
 #+end_src
 
@@ -966,28 +946,27 @@ The defaults are cycled in minibuffer with up/down arrows.
 (bind-key* (kbd "<f8>") 'counsel-org-goto)
 
 ;; deeply nested headings with prefixes don't fit in 1 line
-(setq-mark-as-customized 'ivy-truncate-lines nil)
+(setq ivy-truncate-lines nil)
 #+end_src
 
 *** Single-letter hotkeys
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
-(setq-mark-as-customized 'org-use-speed-commands t)
+(setq org-use-speed-commands t)
 #+end_src
 
 ** Initialization
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
-  ;; (require 'org)
+(eval-after-load 'org
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((clojure . t)
+     (clojurescript . t)
+     (emacs-lisp . t)
+     (shell . t))))
 
-  (eval-after-load 'org
-    (org-babel-do-load-languages
-     'org-babel-load-languages
-     '((clojure . t)
-       (clojurescript . t)
-       (emacs-lisp . t)
-       (shell . t))))
+(setq
+ org-startup-folded nil
 
-  (setq-mark-as-customized
-   'org-startup-folded nil
  ;; not sure how/why this variable was set, decided not to mess with it
  org-modules '(ol-docview ol-doi ol-info org-tempo))
 #+end_src
@@ -995,25 +974,25 @@ The defaults are cycled in minibuffer with up/down arrows.
 ** Display
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
 ;; background colors are changed to be consistent with src-blocks in org-mode
-(setq-mark-as-customized
- 'org-src-fontify-natively t
- 'org-src-block-faces '(("elisp" (:background "lavender"))
-			("emacs-lisp" (:background "lavender"))
-			("clojure" (:background "lavender"))
-			("clojurescript" (:background "lavender"))
-			("clojurec" (:background "lavender"))))
+(setq
+ org-src-fontify-natively t
+ org-src-block-faces '(("elisp" (:background "lavender"))
+                       ("emacs-lisp" (:background "lavender"))
+                       ("clojure" (:background "lavender"))
+                       ("clojurescript" (:background "lavender"))
+                       ("clojurec" (:background "lavender"))))
 #+end_src
 
 *** General
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
-(setq-mark-as-customized
+(setq
  ;; open src blocks in the same window as parent .org file
- 'org-src-window-setup 'current-window
+ org-src-window-setup 'current-window
 
- 'org-hide-leading-stars t
+ org-hide-leading-stars t
 
  ;; do not display inline images when doing org-cycle
- 'org-cycle-inline-images-display nil
+ org-cycle-inline-images-display nil
 
  org-link-frame-setup '(;; open file links in another frame
 			(file . find-file-other-frame)))
@@ -1058,7 +1037,7 @@ Cycles through three states:
 ;; 1. break easily
 ;; 2. can't link to a header which is a link
 ;; therefore, use org ids for linking
-(setq-mark-as-customized 'org-id-link-to-org-use-id t)
+(setq org-id-link-to-org-use-id t)
 (define-key org-mode-map (kbd "C-c l") 'org-store-link)
 (define-key org-mode-map (kbd "<f5>") 'org-id-get-create)
 (define-key org-mode-map (kbd "<f9>") 'org-id-copy)
@@ -1099,14 +1078,14 @@ Cycles through three states:
 
 ** Editing
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
-(setq-mark-as-customized
- 'org-support-shift-select 'always
- 'org-hide-emphasis-markers nil
- 'org-edit-src-content-indentation 0
- 'org-src-tab-acts-natively t
+(setq
+ org-support-shift-select 'always
+ org-hide-emphasis-markers nil
+ org-edit-src-content-indentation 0
+ org-src-tab-acts-natively t
 
  ;; For languages with significant whitespace like Python:
- 'org-src-preserve-indentation t
+ org-src-preserve-indentation t
  )
 
 ;; Trying to fix weird org syntax problems. This just lets Org ignore < and >
@@ -1202,9 +1181,9 @@ Prevents flycheck from confusing buffers and breaking down. See this [[https://g
 ** Source blocks display fix
 #+begin_src elisp :tangle ~/.emacs.d/elisp/polymode.tangled.el
 ;; these supposed to prevent breaking display of source blocks
-(setq-mark-as-customized
- 'org-adapt-indentation nil
- 'org-startup-indented nil)
+(setq
+ org-adapt-indentation nil
+ org-startup-indented nil)
 #+end_src
 
 ** Fix for tangling inside source blocks, when noweb-refs are present
