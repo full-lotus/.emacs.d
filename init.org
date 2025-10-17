@@ -338,6 +338,10 @@ This config aims to maximize Clojure programmer productivity through:
   :ensure t
   :hook (dired-mode . all-the-icons-dired-mode))
 
+(use-package all-the-icons-completion
+  :ensure t
+  :after marginalia
+  :hook (marginalia-mode . all-the-icons-completion-mode))
 #+end_src
 
 ** Editing
