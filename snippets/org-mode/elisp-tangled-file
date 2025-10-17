@@ -3,6 +3,6 @@
 # key: <elt
 # --
 
-#+begin_src elisp :tangle ~/.emacs.d/elisp/${1:target-file}.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/${1:target-file}.tngl.el
 $0
 #+end_src

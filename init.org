@@ -25,29 +25,37 @@ This config aims to maximize Clojure programmer productivity through:
    In other words, the config itself is a Literate Program
 
 
-* Customize and custom.el
+* Emacs initialization
+** Safe load: prevent errors from killing following initialization
 #+begin_src elisp :tangle ./init.el
-(load "~/.emacs.d/elisp/customization-api-tweaks.tangled.el")
+(defun safe-load (file)
+  (condition-case load-err
+      (load file)
+    (error (message "Failed to load %s: %s" file load-err))))
+#+end_src
+
+#+begin_src elisp :tangle ./init.el
+(safe-load "~/.emacs.d/elisp/customization-api-tweaks.tngl.el")
 #+end_src
 
 ** Separate custom.el from init.el
-#+begin_src elisp :tangle ~/.emacs.d/elisp/customization-api-tweaks.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/customization-api-tweaks.tngl.el
 ;; separate custom-file because it's a mess, with everything in one place
-(setq custom-file "~/.emacs.d/elisp/customizations-generated-by-emacs.el")
+(setq custom-file "~/.emacs.d/elisp/custom-set-variables.el")
 
 ;; we are loading at the top of init.el, to set custom variables nice and
 ;; separate, grouping relevant settings together
-(load custom-file)
+(safe-load custom-file)
 #+end_src
 
 
 * Package management
 #+begin_src elisp :tangle ./init.el
-(load "~/.emacs.d/elisp/package-management.tangled.el")
+(safe-load "~/.emacs.d/elisp/package-management.tngl.el")
 #+end_src
 
 ** Set URLs from which we search and download packages
-#+begin_src elisp :tangle ~/.emacs.d/elisp/package-management.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/package-management.tngl.el
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
 	("non-gnu" . "https://elpa.nongnu.org/nongnu/")
@@ -55,7 +63,7 @@ This config aims to maximize Clojure programmer productivity through:
 #+end_src
 
 ** Init package.el, fetch available packages from URLs
-#+begin_src elisp :tangle ~/.emacs.d/elisp/package-management.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/package-management.tngl.el
 ;; start package system (package.el, package dirs, available packages cache)
 (package-initialize)
 
@@ -65,7 +73,7 @@ This config aims to maximize Clojure programmer productivity through:
 #+end_src
 
 ** Install and load all non-default packages
-#+begin_src elisp :tangle ~/.emacs.d/elisp/package-management.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/package-management.tngl.el
 ;; add non-default packages that we need
 (custom-set-variables
  '(package-selected-packages
@@ -89,11 +97,11 @@ This config aims to maximize Clojure programmer productivity through:
 
 * General global settings
 #+begin_src elisp :tangle ./init.el
-(load "~/.emacs.d/elisp/global-settings.tangled.el")
+(safe-load "~/.emacs.d/elisp/global-settings.tngl.el")
 #+end_src
 
 ** Emacs startup/exit
-#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tngl.el
 (setq
  ;; Don't display load average
  display-time-default-load-average nil
@@ -110,7 +118,7 @@ This config aims to maximize Clojure programmer productivity through:
 #+end_src
 
 ** Elisp
-#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tngl.el
 ;; the dir with elisp files to be loaded
 (add-to-list 'load-path "~/.emacs.d/elisp/")
 
@@ -125,12 +133,12 @@ This config aims to maximize Clojure programmer productivity through:
 #+end_src
 
 ** Use SSH through daemon launched on startup
-#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tngl.el
 (setenv "SSH_AUTH_SOCK" (concat (getenv "XDG_RUNTIME_DIR") "/ssh-agent.socket"))
 #+end_src
 
 ** Sound
-#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tngl.el
 ;; use screen flash instead of annoying error sound
 (setq
  visible-bell t
@@ -139,7 +147,7 @@ This config aims to maximize Clojure programmer productivity through:
 
 ** Commands
 *** History
-#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tngl.el
 ;; save command history, e. g. for execute-extended-command
 (savehist-mode 1)
 
@@ -149,20 +157,20 @@ This config aims to maximize Clojure programmer productivity through:
 #+end_src
 
 *** Easier yes/no
-#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tngl.el
 ;; Replace yes/no prompts with y/n
 (fset 'yes-or-no-p 'y-or-n-p)
 #+end_src
 
 *** Easy (1 button) command repeat
-#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tngl.el
 ;; make some multi-chord commands repeatable with 1 key press
 ;; for example - repeat C-x <LEFT> (previous-buffer) with just <LEFT>
 (repeat-mode 1)
 #+end_src
 
 ** Emacs temporary files
-#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tngl.el
 ;; stop creating backup~ files
 (setq make-backup-files nil)
 
@@ -182,17 +190,17 @@ This config aims to maximize Clojure programmer productivity through:
 
 * Text
 #+begin_src elisp :tangle ./init.el
-(load "~/.emacs.d/elisp/text-settings.tangled.el")
+(safe-load "~/.emacs.d/elisp/text-settings.tngl.el")
 #+end_src
 
 ** Navigation
 *** Avy
-#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tngl.el
 (keymap-global-set "M-SPC" #'avy-goto-word-0)
 #+end_src
 
 *** Bookmarks (bm package)
-#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tngl.el
 (declare-function poly-org-mode? "org-mode.tangled")
 
 (defun pm--org-reveal-inside-source-block ()
@@ -281,7 +289,7 @@ This config aims to maximize Clojure programmer productivity through:
 #+end_src
 
 ** Display
-#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tngl.el
 ;; blinking cursor is annoying
 (blink-cursor-mode -1)
 
@@ -321,7 +329,7 @@ This config aims to maximize Clojure programmer productivity through:
 #+end_src
 
 ** Editing
-#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tngl.el
 ;; make undo hotkey familiar
 (global-set-key (kbd "C-z") 'undo)
 
@@ -339,7 +347,7 @@ This config aims to maximize Clojure programmer productivity through:
 #+end_src
 
 *** Copy/paste
-#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tngl.el
 ;; delete active region on yanking (paste)
 (cua-mode 1)
 
@@ -360,7 +368,7 @@ This config aims to maximize Clojure programmer productivity through:
 #+end_src
 
 ** Syncing with filesystem (reverting)
-#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tngl.el
 ;; The auto-revert setting is enabled because tangle / detangle for literate
 ;; programming will change contents of files. If the file is open in a buffer,
 ;; I want it to automatically show the change without asking me every time.
@@ -370,12 +378,12 @@ This config aims to maximize Clojure programmer productivity through:
 
 * Frame/window/buffer configuration
 #+begin_src elisp :tangle ./init.el
-(load "~/.emacs.d/elisp/frame-window-buffer-settings.tangled.el")
+(safe-load "~/.emacs.d/elisp/frame-window-buffer-settings.tngl.el")
 #+end_src
 
 ** Display
 *** Hide
-#+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tngl.el
 ;; hide useless title bar, but allow resizing
 (add-to-list 'default-frame-alist '(undecorated . t))
 (add-to-list 'default-frame-alist '(drag-internal-border . 1))
@@ -395,7 +403,7 @@ This config aims to maximize Clojure programmer productivity through:
 #+end_src
 
 *** Splitting/resizing
-#+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tngl.el
 (setq
  ;; Disable vertical window splitting
  split-height-threshold nil
@@ -409,7 +417,7 @@ This config aims to maximize Clojure programmer productivity through:
 #+end_src
 
 *** Creating buffers and choosing how to display them
-#+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tngl.el
 (custom-set-variables
  '(winner-mode t))
 
@@ -466,7 +474,7 @@ This config aims to maximize Clojure programmer productivity through:
 #+end_src
 
 ** Scrolling
-#+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tngl.el
 (setq
  ;; Lighten vertical scroll
  auto-window-vscroll nil
@@ -477,13 +485,13 @@ This config aims to maximize Clojure programmer productivity through:
 #+end_src
 
 ** Save/load frame configuration on exit/start
-#+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tngl.el
 (desktop-save-mode t)
 #+end_src
 
 ** Navigation
 *** Buffer/window/frame switching, burying, treemacs
-#+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tngl.el
 (bind-key* (kbd "C-o") 'other-window)
 (bind-key* (kbd "M-o") 'other-frame)
 (global-set-key (kbd "C-S-b") 'treemacs)
@@ -502,7 +510,7 @@ different parts on 1 file, having a set of tabs for each window.
   window
 - tab-bar-mode works, but doesn't have window-specific tabs
 
-#+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tngl.el
 (tab-bar-mode t)
 
 (global-set-key (kbd "C-x C-<left>") 'tab-bar-switch-to-prev-tab)
@@ -512,20 +520,20 @@ different parts on 1 file, having a set of tabs for each window.
 
 * Command/code completion
 #+begin_src elisp :tangle ./init.el
-(load "~/.emacs.d/elisp/completions.tangled.el")
+(safe-load "~/.emacs.d/elisp/completions.tngl.el")
 #+end_src
 
 ** which-key mode
 Shows completion options, after you start pressing hotkeys
 
-#+begin_src elisp :tangle ~/.emacs.d/elisp/completions.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/completions.tngl.el
 (which-key-mode 1)
 #+end_src
 
 ** keyfreq mode
 Records how much times a command was used. Useful for optimizing hotkeys
 
-#+begin_src elisp :tangle ~/.emacs.d/elisp/completions.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/completions.tngl.el
 (keyfreq-mode 1)
 (keyfreq-autosave-mode 1)
 
@@ -539,7 +547,7 @@ Records how much times a command was used. Useful for optimizing hotkeys
 #+end_src
 
 ** Code completion
-#+begin_src elisp :tangle ~/.emacs.d/elisp/completions.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/completions.tngl.el
 ;; Always show completions
 (setq completion-auto-help 'always)
 
@@ -551,7 +559,7 @@ Records how much times a command was used. Useful for optimizing hotkeys
 #+end_src
 
 ** Snippets (yasnippet)
-#+begin_src elisp :tangle ~/.emacs.d/elisp/completions.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/completions.tngl.el
 (setq yas-snippet-dirs '("~/.emacs.d/snippets/"))
 (yas-global-mode 1)
 #+end_src
@@ -559,7 +567,7 @@ Records how much times a command was used. Useful for optimizing hotkeys
 ** Vertico + Consult + Ordqerless + Embark + Marginalia + Corfu + Cape
 Shamelessly copied from [[https://github.com/jamescherti/minimal-emacs.d][minimal-emacs setup]].
 
-#+begin_src elisp :tangle ~/.emacs.d/elisp/completions.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/completions.tngl.el
 ;; Corfu enhances in-buffer completion by displaying a compact popup with
 ;; current candidates, positioned either below or above the point. Candidates
 ;; can be selected by navigating up or down.
@@ -770,11 +778,11 @@ Shamelessly copied from [[https://github.com/jamescherti/minimal-emacs.d][minima
 Make search-and-replace across project work as convenient as in VS Code.
 
 #+begin_src elisp :tangle ./init.el
-(load "~/.emacs.d/elisp/improved-text-replace.tangled.el")
+(safe-load "~/.emacs.d/elisp/improved-text-replace.tngl.el")
 #+end_src
 
 ** Wgrep
-#+begin_src elisp :tangle ~/.emacs.d/elisp/improved-text-replace.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/improved-text-replace.tngl.el
 ;; wgrep allows to convert ivy-occur buffer to editable, to get VS Code-like
 ;; search and replace experience
 (use-package wgrep
@@ -788,8 +796,8 @@ Make search-and-replace across project work as convenient as in VS Code.
 Allows to invoke replace fn with a search regex in the list of defaults.
 The defaults are cycled in minibuffer with up/down arrows.
 
-#+begin_src elisp :tangle ~/.emacs.d/elisp/improved-text-replace.tangled.el
-(load "~/.emacs.d/elisp/replace+.el")
+#+begin_src elisp :tangle ~/.emacs.d/elisp/improved-text-replace.tngl.el
+(safe-load "~/.emacs.d/elisp/replace+.el")
 
 ;; this prevents replace+ being limited to an active region
 (setq search/replace-region-as-default-flag t)
@@ -811,18 +819,18 @@ The defaults are cycled in minibuffer with up/down arrows.
 
 * Programming
 #+begin_src elisp :tangle ./init.el
-(load "~/.emacs.d/elisp/programming-settings.tangled.el")
+(safe-load "~/.emacs.d/elisp/programming-settings.tngl.el")
 #+end_src
 
 ** Syntax checking
-#+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tngl.el
 ;; check syntax globally
 (global-flycheck-mode)
 #+end_src
 
 ** Parenthesis config
 *** Puni-mode
-#+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tngl.el
 ;; toggle puni-mode manually
 (global-set-key (kbd "M-P") 'puni-mode)
 
@@ -841,7 +849,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 #+end_src
 
 *** Display
-#+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tngl.el
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 ;; always highlight matching paren
@@ -850,7 +858,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 
 ** Clojure
 *** CIDER
-#+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tngl.el
 (setq
  nrepl-hide-special-buffers t
  cider-repl-clear-help-banner t
@@ -898,7 +906,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 #+end_src
 
 **** Routing expressions to CLJ/CLJS REPL for evaluation
-#+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tngl.el
 (defun eval-last-sexp-in-specific-repl (repl-type)
   "Evaluate the last expression only in the 'clj or 'cljs REPL."
   (interactive)
@@ -924,18 +932,18 @@ The defaults are cycled in minibuffer with up/down arrows.
 #+end_src
 
 ** CSS
-#+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tngl.el
 (setq css-indent-offset 2)
 #+end_src
 
 
 * Org-mode (literate programming)
 #+begin_src elisp :tangle ./init.el
-(load "~/.emacs.d/elisp/org-mode.tangled.el")
+(safe-load "~/.emacs.d/elisp/org-mode.tngl.el")
 #+end_src
 
 ** Time-tracking
-#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 ;; closing Emacs/buffers must not stop work clock
 (setq org-clock-persist 'history)
 (org-clock-persistence-insinuate)
@@ -943,7 +951,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 
 ** Navigation
 *** General
-#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 (bind-key* (kbd "<f8>") 'counsel-org-goto)
 
 ;; deeply nested headings with prefixes don't fit in 1 line
@@ -951,12 +959,12 @@ The defaults are cycled in minibuffer with up/down arrows.
 #+end_src
 
 *** Single-letter hotkeys
-#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 (setq org-use-speed-commands t)
 #+end_src
 
 ** Initialization
-#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 (eval-after-load 'org
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -973,7 +981,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 #+end_src
 
 ** Display
-#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 ;; background colors are changed to be consistent with src-blocks in org-mode
 (setq
  org-src-fontify-natively t
@@ -985,7 +993,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 #+end_src
 
 *** General
-#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 (setq
  ;; open src blocks in the same window as parent .org file
  org-src-window-setup 'current-window
@@ -1000,7 +1008,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 #+end_src
 
 *** Heading subtree fold state cycling
-#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 (defun org-cycle-current-subtree (orig-fun &rest args)
   "Cycle fold state of current heading similar to org-shifttab, if org-cycle
 is called with without C-u prefix.
@@ -1033,7 +1041,7 @@ Cycles through three states:
 
 ** Linking
 *** General
-#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 ;; links that use header text:
 ;; 1. break easily
 ;; 2. can't link to a header which is a link
@@ -1047,7 +1055,7 @@ Cycles through three states:
 *** Custom :src source block header
 <<<:src>>> is a custom header that I add manually to noref code blocks
 
-#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 (defun org-babel-open-tangle-file ()
   "Opens the file specified by :tangle org :src header argument"
   (interactive)
@@ -1061,7 +1069,7 @@ Cycles through three states:
 #+end_src
 
 *** Noweb references
-#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el :noweb no
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el :noweb no
 (defun swiper-noweb-ref-at-point (orig-fn &rest args)
   "Wraps swiper-thing-at-point to correctly search for org-mode noweb-refs"
   (interactive)
@@ -1078,7 +1086,7 @@ Cycles through three states:
 #+end_src
 
 ** Editing
-#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 (setq
  org-support-shift-select 'always
  org-hide-emphasis-markers nil
@@ -1105,7 +1113,7 @@ Cycles through three states:
 *** Clojure namespace determination
 I use file from custom :src or :tangle header to determine proper ns for eval
 
-#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 (defun get-buffer-major-mode (buffer-name)
   (with-current-buffer buffer-name
     major-mode))
@@ -1143,9 +1151,9 @@ Searches for ns in :tangle or :src file, otherwise calls clojure-find-ns."
 #+end_src
 
 ** Tangling
-#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 ;; override broken fn, which deletes comments from clojure code
-(load "~/.emacs.d/elisp/ob-clojure-fix.el")
+(safe-load "~/.emacs.d/elisp/ob-clojure-fix.el")
 (advice-add 'org-babel-expand-body:clojure
 	    :override #'org-babel-expand-body:clojure_fixed)
 #+end_src
@@ -1153,13 +1161,13 @@ Searches for ns in :tangle or :src file, otherwise calls clojure-find-ns."
 
 * Many major mods in one buffer - polymode (poly-org)
 #+begin_src elisp :tangle ./init.el
-(load "~/.emacs.d/elisp/polymode.tangled.el")
+(safe-load "~/.emacs.d/elisp/polymode.tngl.el")
 #+end_src
 
 ** Flycheck fix
 Prevents flycheck from confusing buffers and breaking down. See this [[https://github.com/polymode/poly-org/issues3/][issue]]
 
-#+begin_src elisp :tangle ~/.emacs.d/elisp/polymode.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/polymode.tngl.el
 (defun flycheck-buffer-not-indirect-p (&rest _)
   "Ensure that the current buffer is not indirect."
   (null (buffer-base-buffer)))
@@ -1169,7 +1177,7 @@ Prevents flycheck from confusing buffers and breaking down. See this [[https://g
 #+end_src
 
 ** Background color fix
-#+begin_src elisp :tangle ~/.emacs.d/elisp/polymode.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/polymode.tngl.el
 ;; polymode ignores background face config for both inner modes and org mode
 (add-hook
  'polymode-init-inner-hook
@@ -1180,7 +1188,7 @@ Prevents flycheck from confusing buffers and breaking down. See this [[https://g
 #+end_src
 
 ** Source blocks display fix
-#+begin_src elisp :tangle ~/.emacs.d/elisp/polymode.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/polymode.tngl.el
 ;; these supposed to prevent breaking display of source blocks
 (setq
  org-adapt-indentation nil
@@ -1191,7 +1199,7 @@ Prevents flycheck from confusing buffers and breaking down. See this [[https://g
 I spent 3 days trying to fix this [[https://github.com/polymode/poly-org/issues/53][issue]]. This hack avoids dealing with all the
 difficult noweb expansion and its conflict with polymode.
 
-#+begin_src elisp :tangle ~/.emacs.d/elisp/polymode.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/polymode.tngl.el
 (defun pm--tangle-inside-source-block ()
   "Do tangling in a temporary copy of .org buffer, because
 org-babel-expand-noweb-references explodes polymode. Don't save anything."
@@ -1224,7 +1232,7 @@ org-babel-expand-noweb-references explodes polymode. Don't save anything."
 #+end_src
 
 ** Region random resize fix
-#+begin_src elisp :tangle ~/.emacs.d/elisp/polymode.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/polymode.tngl.el
 ;; eldoc causes issues in my setup, sometimes marked region resizes randomly
 ;; tried eldoc-box to replace it, but it didn't work most of the time
 ;; all this is true for poly-org + clojurec + cider
@@ -1237,11 +1245,11 @@ org-babel-expand-noweb-references explodes polymode. Don't save anything."
 
 * File management
 #+begin_src elisp :tangle ./init.el
-(load "~/.emacs.d/elisp/file-management.tangled.el")
+(safe-load "~/.emacs.d/elisp/file-management.tngl.el")
 #+end_src
 
 ** Permissions
-#+begin_src elisp :tangle ~/.emacs.d/elisp/file-management.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/file-management.tngl.el
 ;; trying these setting to be able to edit files as root
 (require 'tramp)
 (setq tramp-default-method "sudoedit")
@@ -1249,7 +1257,7 @@ org-babel-expand-noweb-references explodes polymode. Don't save anything."
 #+end_src
 
 ** Extensions
-#+begin_src elisp :tangle ~/.emacs.d/elisp/file-management.tangled.el
+#+begin_src elisp :tangle ~/.emacs.d/elisp/file-management.tngl.el
 ;; mode that enables choosing program-to-open-with based on file extensions
 (openwith-mode t)
 
