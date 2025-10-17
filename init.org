@@ -777,7 +777,7 @@ Make search-and-replace across project work as convenient as in VS Code.
 
 ** Wgrep
 #+begin_src elisp :tangle ~/.emacs.d/elisp/improved-text-replace.tngl.el
-;; wgrep allows to convert ivy-occur buffer to editable, to get VS Code-like
+;; wgrep allows to convert grep buffers to editable, to get VS Code-like
 ;; search and replace experience
 (use-package wgrep
   :ensure t
@@ -944,14 +944,6 @@ The defaults are cycled in minibuffer with up/down arrows.
 #+end_src
 
 ** Navigation
-*** General
-#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
-(bind-key* (kbd "<f8>") 'counsel-org-goto)
-
-;; deeply nested headings with prefixes don't fit in 1 line
-(setq ivy-truncate-lines nil)
-#+end_src
-
 *** Single-letter hotkeys
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 (setq org-use-speed-commands t)
@@ -1060,23 +1052,6 @@ Cycles through three states:
 	(find-file tangle)
       (when src (find-file src)))))
 (define-key org-mode-map (kbd "C-c o") 'org-babel-open-tangle-file)
-#+end_src
-
-*** Noweb references
-#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el :noweb no
-(defun swiper-noweb-ref-at-point (orig-fn &rest args)
-  "Wraps swiper-thing-at-point to correctly search for org-mode noweb-refs"
-  (interactive)
-  (if-let* ((poly-org-mode? (and (bound-and-true-p polymode-mode)
-				(eq (get-buffer-major-mode (pm-base-buffer))
-				    'org-mode)))
-	    (str (ivy-thing-at-point))
-	    (noweb-ref (and (string-match "<<\\(.*?\\)>>" str)
-			    (match-string 0 str))))
-      (swiper noweb-ref)
-    (apply orig-fn args)))
-
-(advice-add 'swiper-thing-at-point :around 'swiper-noweb-ref-at-point)
 #+end_src
 
 ** Editing
