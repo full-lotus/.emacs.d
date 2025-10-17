@@ -331,7 +331,7 @@ This config aims to maximize Clojure programmer productivity through:
  ;; Stop using tabs to indent
  indent-tabs-mode nil
 
- ;; End a sentence after a dot and a space
+ ;; do not auto-end sentences
  sentence-end-double-space nil
  )
 
