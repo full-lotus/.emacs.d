@@ -22,6 +22,7 @@ history
 
 # ignore smex command history
 smex-items
+
 /init-debug-transient-window.el
 init.el
 **.tngl.*
@@ -29,3 +30,4 @@ init.el
 /snippets/org-mode/.yas-compiled-snippets.el
 /projects
 /bookmarks
+undo-fu-session
