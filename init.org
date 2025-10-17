@@ -317,7 +317,7 @@ This config aims to maximize Clojure programmer productivity through:
  show-trailing-whitespace nil
 
  ;; Set width for tabs
- tab-width 4
+ tab-width 2
 
  ;; Stretch cursor to the glyph width
  x-stretch-cursor t
