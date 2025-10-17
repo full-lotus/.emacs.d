@@ -205,9 +205,6 @@ instead of setq, to avoid confusion in Customize interface"
 ** Navigation
 *** Avy
 #+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tangled.el
-;; use avy through Transient menu
-(keymap-global-set "M-g" #'casual-avy-tmenu)
-
 (keymap-global-set "M-SPC" #'avy-goto-word-0)
 #+end_src
 
