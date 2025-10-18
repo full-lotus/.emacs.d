@@ -521,7 +521,7 @@ This config aims to maximize Clojure programmer productivity through:
   "Switch buffer in the current window, ignoring `display-buffer-alist`."
   (interactive)
   (let ((display-buffer-alist nil)) ;; Temporarily disable display-buffer-alist
-    (call-interactively 'switch-to-buffer)))
+    (call-interactively 'consult-buffer)))
 
 (global-set-key (kbd "C-x b") #'switch-buffer-in-current-window)
 (bind-key* (kbd "s-b") 'switch-buffer-in-current-window)
