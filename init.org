@@ -544,6 +544,11 @@ different parts on 1 file, having a set of tabs for each window.
 (global-set-key (kbd "C-x C-<right>") 'tab-bar-switch-to-next-tab)
 #+end_src
 
+** Minibuffer
+#+begin_src elisp :tangle ~/.emacs.d/elisp/frame-window-buffer-settings.tngl.el
+(setq enable-recursive-minibuffers t)
+#+end_src
+
 
 * Command/code completion
 #+begin_src elisp :tangle ./init.el
