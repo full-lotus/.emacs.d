@@ -873,6 +873,10 @@ The defaults are cycled in minibuffer with up/down arrows.
 (define-key puni-mode-map (kbd "C-M-,") 'puni-barf-forward)
 (define-key puni-mode-map (kbd "C-M->") 'puni-barf-backward)
 (define-key puni-mode-map (kbd "C-M-<") 'puni-slurp-backward)
+
+;; puni conflicts with read-only text sometimes
+;; e. g. deletion of consult-buffer narrowing prefixes
+(add-hook 'minibuffer-setup-hook (lambda () (puni-mode -1)))
 #+end_src
 
 *** Display
