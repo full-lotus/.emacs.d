@@ -141,6 +141,9 @@ This config aims to maximize Clojure programmer productivity through:
 ;; save command history, e. g. for execute-extended-command
 (savehist-mode 1)
 
+;; keep a list of recently opened files
+(recentf-mode 1)
+
 ;; use smex to show command history in counsel-M-x
 (smex-initialize)
 (setq smex-history-use-recent-first t)
