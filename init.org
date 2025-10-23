@@ -153,6 +153,7 @@ This config aims to maximize Clojure programmer productivity through:
 #+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tngl.el
 ;; Replace yes/no prompts with y/n
 (fset 'yes-or-no-p 'y-or-n-p)
+(setq use-short-answers t)
 #+end_src
 
 *** Easy (1 button) command repeat
