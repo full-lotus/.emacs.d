@@ -704,8 +704,7 @@ Shamelessly copied from [[https://github.com/jamescherti/minimal-emacs.d][minima
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
                  (window-parameters (mode-line-format . none))))
-  (setcdr (assq 'consult-location embark-exporters-alist)
-	  'embark-consult-export-location-grep))
+  )
 
 (use-package embark-consult
   :ensure t
