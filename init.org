@@ -1,5 +1,5 @@
 :PROPERTIES:
-:header-args: :comments both :noweb yes :mkdirp yes
+:header-args: :comments no :noweb yes :mkdirp yes
 :END:
 
 * Purpose of this Emacs config
