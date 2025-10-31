@@ -351,6 +351,11 @@ This config aims to maximize Clojure programmer productivity through:
 #+end_src
 
 ** Editing
+*** Highlight symbol occurrences / multiple edits
+#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tngl.el
+(global-set-key (kbd "C-;") 'iedit-mode)
+#+end_src
+
 *** Whitespace
 #+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tngl.el
 (setq

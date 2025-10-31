@@ -21,7 +21,7 @@
 	 '(all-the-icons all-the-icons-completion all-the-icons-dired async beacon bm
 									 cape casual-avy cider clojure-mode command-log-mode consult
 									 corfu dired-ranger embark embark-consult flycheck
-									 flycheck-clj-kondo keyfreq magit marginalia ob-async
+									 flycheck-clj-kondo iedit keyfreq magit marginalia ob-async
 									 ob-clojurescript openwith orderless pcre2el poly-org posframe
 									 puni rainbow-delimiters treemacs treemacs-all-the-icons
 									 undo-fu-session vertico wgrep yasnippet))
