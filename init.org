@@ -200,24 +200,26 @@ This config aims to maximize Clojure programmer productivity through:
 (defun pm--org-reveal-inside-source-block ()
   "Temporarily switch back to org-mode, to be able to do proper unfolding"
   (interactive)
-  (let ((pm? (and (poly-org-mode?) (not (eq 'org-mode major-mode))))
-	(post-command-hook nil)
-	(pm--move-overlays (lambda ()))
-	(curr-point (point)))
-    (when pm?
-      ;; switch to org-mode without breaking polymode
-      (goto-char (point-min))
-      (polymode-post-command)
-      (goto-char curr-point))
+  (let* ((org? (eq 'org-mode major-mode))
+				 (pm? (and (poly-org-mode?) (not org?))))
+		(when org?
+		  (let ((post-command-hook nil)
+	    (pm--move-overlays (lambda ()))
+			    (curr-point (point)))
+	(when pm?
+				  ;; switch to org-mode without breaking polymode
+				  (goto-char (point-min))
+				  (polymode-post-command)
+				  (goto-char curr-point))
 
-    ;; now, in org-mode, properly find parent heading and unfold it
-    (org-up-element)
-    (org-fold-show-subtree)
+	;; now, in org-mode, properly find parent heading and unfold it
+	(org-up-element)
+	(org-fold-show-subtree)
 
-    ;; go back to original point and restore the major mode
-    (goto-char curr-point)
-    (when pm?
-      (polymode-post-command))))
+	;; go back to original point and restore the major mode
+	(goto-char curr-point)
+	(when pm?
+				  (polymode-post-command))))))
 
 (use-package bm
   :ensure t
@@ -475,7 +477,7 @@ This config aims to maximize Clojure programmer productivity through:
    ((or . ((major-mode . help-mode)
 	   (major-mode . Custom-mode)
 	   (major-mode . dired-mode)
-	   (major-mode . clojure-mode)
+;;	   (major-mode . clojure-mode)
 	   (major-mode . cider-repl-mode)
 	   "\\*cider-error.*\\*"
 	   "\\*Org Src.*\\*"))
