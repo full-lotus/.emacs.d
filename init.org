@@ -980,6 +980,10 @@ The defaults are cycled in minibuffer with up/down arrows.
 
 
 * Org-mode (literate programming)
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
+(require 'org)
+#+end_src
+
 #+begin_src elisp :tangle ./init.el
 (safe-load "~/.emacs.d/elisp/org-mode.tngl.el")
 #+end_src
