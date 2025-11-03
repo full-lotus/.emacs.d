@@ -143,10 +143,6 @@ This config aims to maximize Clojure programmer productivity through:
 
 ;; keep a list of recently opened files
 (recentf-mode 1)
-
-;; use smex to show command history in counsel-M-x
-(smex-initialize)
-(setq smex-history-use-recent-first t)
 #+end_src
 
 *** Easier yes/no
