@@ -285,6 +285,12 @@ This config aims to maximize Clojure programmer productivity through:
 (beacon-mode 1)
 #+end_src
 
+*** Narrowing
+#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tngl.el
+;; enable narrowing command, I use it with iedit often
+(put 'narrow-to-region 'disabled nil)
+#+end_src
+
 ** Display
 #+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tngl.el
 ;; blinking cursor is annoying
