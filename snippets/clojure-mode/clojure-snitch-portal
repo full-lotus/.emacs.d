@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# name: clojure snitch and portal
+# key: <clj-snitch
+# --
+
+(comment
+  (require '[snitch.core :refer [defn* defmethod* *fn *let]]) $0
+
+  (require '[portal.api :as p])
+  (def p (portal.api/open))
+  (add-tap #'portal.api/submit) ; Add portal as a tap> target
+
+  (tap> :hello) ; Start tapping out values
+  (portal.api/clear) ; Clear all values
+  (tap> :world) ; Tap out more values
+  (prn @p) ; bring selected value back into repl
+
+  (remove-tap #'portal.api/submit) ; Remove portal from tap> targetset
+  (portal.api/close) ; Close the inspector when done
+  )
