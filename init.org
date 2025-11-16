@@ -1007,6 +1007,42 @@ The defaults are cycled in minibuffer with up/down arrows.
 (setq org-use-speed-commands t)
 #+end_src
 
+*** Heading subtree fold state cycling
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
+(defun org-cycle-current-subtree (orig-fun &rest args)
+  "Cycle fold state of current heading similar to org-shifttab, if org-cycle
+is called with without C-u prefix.
+
+Cycles through three states:
+1. folded (content hidden)
+2. children visible (direct subheadings shown)
+3. subtree expanded (everything visible)"
+  (interactive)
+  (cond
+   ((or (not (org-at-heading-p))
+				(eq (prefix-numeric-value current-prefix-arg) 4))
+    (apply orig-fun args))
+
+   (t
+    (save-excursion
+      (let ((beg (progn (org-back-to-heading t) (point)))
+            ;; end manipulation needed to not screw up separator newlines
+            (end (progn (org-end-of-subtree t t nil) (end-of-line) (point))))
+			  (save-restriction
+		      (narrow-to-region beg end)
+		      (org-cycle-internal-global)))))))
+
+(advice-add 'org-shifttab :around 'org-cycle-current-subtree)
+;; (advice-remove 'org-shifttab 'org-cycle-current-subtree)
+
+
+;; Remove the function which causes text to pop around when pressing tab.
+;; This is annoying and confusing.
+(remove-hook 'org-cycle-hook
+             'org-optimize-window-after-visibility-change)
+#+end_src
+
+
 ** Initialization
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 (eval-after-load 'org
@@ -1047,41 +1083,6 @@ The defaults are cycled in minibuffer with up/down arrows.
 
  org-link-frame-setup '(;; open file links in another frame
 			(file . find-file-other-frame)))
-#+end_src
-
-*** Heading subtree fold state cycling
-#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
-(defun org-cycle-current-subtree (orig-fun &rest args)
-  "Cycle fold state of current heading similar to org-shifttab, if org-cycle
-is called with without C-u prefix.
-
-Cycles through three states:
-1. folded (content hidden)
-2. children visible (direct subheadings shown)
-3. subtree expanded (everything visible)"
-  (interactive)
-  (cond
-   ((or (not (org-at-heading-p))
-				(eq (prefix-numeric-value current-prefix-arg) 4))
-    (apply orig-fun args))
-
-   (t
-    (save-excursion
-      (let ((beg (progn (org-back-to-heading t) (point)))
-            ;; end manipulation needed to not screw up separator newlines
-            (end (progn (org-end-of-subtree t t nil) (end-of-line) (point))))
-			  (save-restriction
-		      (narrow-to-region beg end)
-		      (org-cycle-internal-global)))))))
-
-(advice-add 'org-shifttab :around 'org-cycle-current-subtree)
-;; (advice-remove 'org-shifttab 'org-cycle-current-subtree)
-
-
-;; Remove the function which causes text to pop around when pressing tab.
-;; This is annoying and confusing.
-(remove-hook 'org-cycle-hook
-             'org-optimize-window-after-visibility-change)
 #+end_src
 
 ** Linking
