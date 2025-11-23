@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: clojure snitch and portal
-# key: <clj-snitch
+# name: introspection tools
+# key: <intro
 # --
 
 (comment

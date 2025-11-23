@@ -1,0 +1,34 @@
+# -*- mode: snippet -*-
+# name: timestamps code, mostly Java interop
+# key: <time
+# --
+
+
+(comment
+  (defn add
+    "Add the given amount of units to the timestamp
+   Usage: (add 1630925574504 :hours 10)"
+    [ts unit value]
+    (-> ^java.time.Instant (java.time.Instant/ofEpochMilli ts)
+      (.plus ^Long value ^java.time.temporal.TemporalUnit
+        (get chrono-units unit))
+      .toEpochMilli))
+
+  (defn subtract
+    "Subtract the given amount of units from the timestamp
+   Usage: (subtract 1630925574504 :days 100)"
+    [ts unit value]
+    (-> ^java.time.Instant (java.time.Instant/ofEpochMilli ts)
+      (.minus ^Long value ^java.time.temporal.TemporalUnit
+        (get chrono-units unit))
+      .toEpochMilli))
+
+  (defn seconds-to-format
+    "Converts time in seconds to format like 'yyyy-MM-dd', given timezone."
+    ([seconds format-str]
+     (seconds-to-format seconds format-str "UTC"))
+
+    ([seconds format-str timezone]
+     (.format (java.time.format.DateTimeFormatter/ofPattern format-str)
+       (-> (java.time.Instant/ofEpochSecond seconds)
+         (java.time.ZonedDateTime/ofInstant (java.time.ZoneId/of timezone)))))))

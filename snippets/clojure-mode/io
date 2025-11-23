@@ -1,0 +1,35 @@
+# -*- mode: snippet -*-
+# name: Java file input / output
+# key: <io
+# --
+
+(comment
+  (def tmp-dir
+    (.toString
+      (java.nio.file.Files/createTempDirectory "some-prefix-"
+        (into-array java.nio.file.attribute.FileAttribute []))))
+
+  (def temp-excel-file (java.io.File/createTempFile "temp-" ".xlsx"))
+
+  (System/getProperty "java.io.tmpdir")
+
+  (def jpeg-files
+    (->> tmp-dir java.io.File. file-seq (drop 1)
+      (sort-by #(.getName %))))
+
+  (with-open [out (jio/output-stream temp-excel-file)]
+    (.write out (byte-array 0)))
+
+  (with-open [in (jio/input-stream temp-excel-file)]
+                  (.readAllBytes in))
+
+  (-> "some-file"
+    clojure.java.io/resource
+    .toURI
+    java.io.File.
+    clojure.java.io/input-stream)
+
+  (-> (Thread/currentThread)
+    .getContextClassLoader
+    (.getResources "")
+    enumeration-seq))
