@@ -20,13 +20,14 @@
  '(org-agenda-files
 	 '("/mnt/sda2/projects/_self/monitoring/personal-journaling/notes.org"))
  '(package-selected-packages
-	 '(all-the-icons all-the-icons-completion all-the-icons-dired async beacon bm
-									 cape casual-avy cider clojure-mode command-log-mode consult
-									 corfu dired-ranger embark embark-consult flycheck
-									 flycheck-clj-kondo iedit keyfreq magit marginalia ob-async
-									 ob-clojurescript openwith orderless pcre2el poly-org posframe
-									 puni rainbow-delimiters treemacs treemacs-all-the-icons
-									 undo-fu-session vertico wgrep yasnippet))
+	 '(all-the-icons-completion all-the-icons-dired async beacon bm cape casual-avy
+															cider clojure-mode command-log-mode consult corfu
+															dired-ranger embark embark-consult flycheck
+															flycheck-clj-kondo iedit keyfreq magit marginalia
+															ob-async ob-clojurescript openwith orderless
+															pcre2el poly-org posframe puni rainbow-delimiters
+															treemacs treemacs-all-the-icons undo-fu-session
+															vertico wgrep yasnippet))
  '(safe-local-variable-directories
 	 '("/mnt/sda2/projects/dev/kombinacija/"
 		 "/mnt/sda2/projects/dev/simple-clojure-project/"))
