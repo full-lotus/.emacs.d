@@ -2,6 +2,8 @@
 :header-args: :comments no :noweb yes :mkdirp yes
 :END:
 
+#+SEQ_TODO: TODO(t) IN_PROGRESS(i) PAUSED (p) | DONE(d) OBSOLETE(o)
+
 * Emacs config for Literate Programming in Clojure
 ** Purpose of the config
 This config aims to maximize Clojure programmer productivity through:
