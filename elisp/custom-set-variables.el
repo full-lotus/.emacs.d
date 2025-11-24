@@ -17,7 +17,8 @@
 		 "42b221449475e41bc04c5663164ffc5d1672c53163630d41d57ef27d5a01cca9"
 		 "21055a064d6d673f666baaed35a69519841134829982cbbb76960575f43424db" default))
  '(openwith-associations '(("\\.\\(doc\\|docx\\)\\'" "libreoffice.writer" (file))))
- '(org-agenda-files '("/mnt/sda2/projects/dev/kombinacija/kombinacija.org"))
+ '(org-agenda-files
+	 '("/mnt/sda2/projects/_self/monitoring/personal-journaling/notes.org"))
  '(package-selected-packages
 	 '(all-the-icons all-the-icons-completion all-the-icons-dired async beacon bm
 									 cape casual-avy cider clojure-mode command-log-mode consult
