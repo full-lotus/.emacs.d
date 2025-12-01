@@ -1084,7 +1084,13 @@ Cycles through three states:
  org-cycle-inline-images-display nil
 
  org-link-frame-setup '(;; open file links in another frame
-			(file . find-file-other-frame)))
+						(file . find-file-other-frame)))
+
+;; customize custom task status markers
+(setq org-todo-keyword-faces
+      '(("PAUSED" . (:foreground "gold" :weight bold))
+				("OBSOLETE" . (:foreground "grey" :weight bold))
+				("NOT_PLANNED" . (:foreground "grey" :weight bold))))
 #+end_src
 
 *** Linking
