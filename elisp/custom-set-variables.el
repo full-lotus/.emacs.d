@@ -29,7 +29,7 @@
 															treemacs treemacs-all-the-icons undo-fu-session
 															vertico wgrep yasnippet))
  '(safe-local-variable-directories
-	 '("/mnt/sda2/projects/dev/kombinacija/"
+	 '("/mnt/sda2/projects/dev/kombinacija/code"
 		 "/mnt/sda2/projects/dev/simple-clojure-project/"))
  '(safe-local-variable-values
 	 '((cider-clojure-cli-parameters . "-M:cider/nrepl:dev")
