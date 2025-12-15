@@ -6,9 +6,10 @@
 (comment
   (require '[snitch.core :refer [defn* defmethod* *fn *let]]) $0
 
-  (require '[portal.api :as p])
-  (def p (portal.api/open))
-  (add-tap #'portal.api/submit) ; Add portal as a tap> target
+  (do
+    (require '[portal.api :as p])
+    (def p (portal.api/open))
+    (add-tap #'portal.api/submit)) ; Add portal as a tap> target
 
   (tap> :hello) ; Start tapping out values
   (portal.api/clear) ; Clear all values
