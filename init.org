@@ -1045,6 +1045,103 @@ Cycles through three states:
              'org-optimize-window-after-visibility-change)
 #+end_src
 
+**** Mouse wheel unfolding
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
+;; Define some helper functions
+(defun my-org-unfold ()
+  (interactive)
+  (org-back-to-heading t)
+  (org-shifttab))
+
+(defun my-org-fold ()
+  "Do the global cycling action backwards."
+  (interactive)
+  (org-back-to-heading t)
+  (setq prefix-arg 2)
+  (universal-argument--mode)
+  (org-shifttab))
+#+end_src
+
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
+;;single wheel is too sensetive, need double.
+
+(define-key org-mode-map (kbd "C-<wheel-up>") 'my-org-unfold)
+(define-key org-mode-map (kbd "C-<wheel-down>") 'my-org-fold)
+#+end_src
+
+**** Custom fold/unfold
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
+(require 'timeout)
+#+end_src
+
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
+(defvar my-org-fold-state 0)
+(defvar my-org-fold-remember t)
+
+;; Function here for cleanness.
+(defun my-org-folded ()
+	(let* ((eoh (save-excursion (outline-end-of-heading) (point)))
+	 (eos (save-excursion
+		    (org-end-of-subtree t t)
+		    (unless (eobp) (forward-char -1))
+		    (point))))
+   ;; Default action: hide the subtree.
+   (run-hook-with-args 'org-cycle-pre-hook 'folded)
+   (org-fold-region eoh eos t 'outline)
+   (org-unlogged-message "FOLDED")
+   (setq org-cycle-subtree-status 'folded)
+   (unless (org-before-first-heading-p)
+     (run-hook-with-args 'org-cycle-hook 'folded))))
+
+(defun my-org-custom-fold (&optional arg)
+  (interactive "P")
+  (org-back-to-heading)
+  (unless (or my-org-fold-remember
+			        (eq this-command last-command))
+    (setq my-org-fold-state 0))
+
+  (unless (integerp arg)
+    (setq arg 1))
+  (let ((cycle-arg (if (= arg 1) nil (ceiling (/ arg 2.0))))
+		(inc (lambda ()
+	             (setq my-org-fold-state (mod (+ my-org-fold-state
+									       (if (and cycle-arg (evenp cycle-arg))
+										   -1 1)) 4)))))
+    (case my-org-fold-state
+      (0
+       (my-org-folded)
+       (funcall inc)
+       (message "FOLD"))
+      (1
+       ;; Children
+       (org-cycle cycle-arg)
+       (funcall inc)
+       (message "CHILD"))
+      (2
+       ;; Subtree
+       (org-shifttab cycle-arg)
+       (funcall inc)
+       (message "SUB"))
+      (3
+       ;; Show All
+       (org-shifttab cycle-arg)
+       (funcall inc)
+       (message "ALL")))))
+
+(defun my-org-custom-fold-backwards (&optional arg)
+  (interactive "P")
+  (setq this-command 'my-org-custom-fold)
+  (my-org-custom-fold (if (integerp arg)
+			  (* arg 4)
+			  4)))
+#+end_src
+
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
+(define-key org-mode-map (kbd "C-S-<wheel-up>") 'my-org-custom-fold)
+(define-key org-mode-map (kbd "C-S-<wheel-down>") 'my-org-custom-fold-backwards)
+(timeout-throttle 'my-org-custom-fold 0.2)
+#+end_src
+
 *** Initialization
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 (eval-after-load 'org
