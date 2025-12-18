@@ -27,7 +27,7 @@
 															ob-async ob-clojurescript openwith orderless
 															pcre2el poly-org posframe puni rainbow-delimiters
 															transient treemacs treemacs-all-the-icons
-															undo-fu-session vertico wgrep yasnippet))
+															undo-tree vertico wgrep yasnippet))
  '(safe-local-variable-directories
 	 '("/mnt/sda2/projects/dev/kombinacija/code"
 		 "/mnt/sda2/projects/dev/simple-clojure-project/"))

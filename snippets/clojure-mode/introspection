@@ -5,6 +5,8 @@
 
 (comment
 	(require '[playback.preload])
+	(defn clear-playback-var [sym]
+    (ns-unmap *ns* (symbol (str (name sym) "__playback_core__"))))
 
   (do
     (require '[portal.api :as p])
