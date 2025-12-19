@@ -380,9 +380,6 @@ This config aims to maximize Clojure programmer productivity through:
 #+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tngl.el
 ;; make undo hotkey familiar
 (global-set-key (kbd "C-z") 'undo)
-
-;; use linear undo, store info between sessions
-(global-undo-fu-session-mode 1)
 #+end_src
 
 **** Copy/paste
