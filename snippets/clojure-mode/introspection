@@ -4,11 +4,15 @@
 # --
 
 (comment
-  (require '[snitch.core :refer [defn* defmethod* *fn *let]]) $0
+	(require '[playback.preload])
+	(defn clear-playback-var [sym]
+    (ns-unmap *ns* (symbol (str (name sym) "__playback_core__"))))
 
-  (require '[portal.api :as p])
-  (def p (portal.api/open))
-  (add-tap #'portal.api/submit) ; Add portal as a tap> target
+  (do
+    (require '[portal.api :as p])
+    (def p (portal.api/open))
+		; Add portal as a tap> target
+    (add-tap #'portal.api/submit)) $0
 
   (tap> :hello) ; Start tapping out values
   (portal.api/clear) ; Clear all values

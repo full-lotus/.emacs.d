@@ -12,10 +12,10 @@
 												"Java file input / output" nil nil nil
 												"/home/german/.emacs.d/snippets/clojure-mode/io" nil nil)
 											 ("<intro"
-												"(comment\n  (require '[snitch.core :refer [defn* defmethod* *fn *let]]) $0\n\n  (require '[portal.api :as p])\n  (def p (portal.api/open))\n  (add-tap #'portal.api/submit) ; Add portal as a tap> target\n\n  (tap> :hello) ; Start tapping out values\n  (portal.api/clear) ; Clear all values\n  (tap> :world) ; Tap out more values\n  (prn @p) ; bring selected value back into repl\n\n  (remove-tap #'portal.api/submit) ; Remove portal from tap> targetset\n  (portal.api/close) ; Close the inspector when done\n  )\n"
+												"(comment\n	(require '[playback.preload])\n	(defn clear-playback-var [sym]\n    (ns-unmap *ns* (symbol (str (name sym) \"__playback_core__\"))))\n\n  (do\n    (require '[portal.api :as p])\n    (def p (portal.api/open))\n		; Add portal as a tap> target\n    (add-tap #'portal.api/submit)) $0\n\n  (tap> :hello) ; Start tapping out values\n  (portal.api/clear) ; Clear all values\n  (tap> :world) ; Tap out more values\n  (prn @p) ; bring selected value back into repl\n\n  (remove-tap #'portal.api/submit) ; Remove portal from tap> targetset\n  (portal.api/close) ; Close the inspector when done\n  )\n"
 												"introspection tools" nil nil nil
 												"/home/german/.emacs.d/snippets/clojure-mode/introspection"
 												nil nil)))
 
 
-;;; Do not edit! File generated at Sun Nov 23 15:04:41 2025
+;;; Do not edit! File generated at Thu Dec 18 13:50:49 2025
