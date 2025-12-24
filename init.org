@@ -1073,7 +1073,7 @@ Cycles through three states:
 
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 (defvar my-org-fold-state 0)
-(defvar my-org-fold-remember t)
+(defvar my-org-fold-remember nil)
 
 ;; Function here for cleanness.
 (defun my-org-folded ()
@@ -1100,28 +1100,32 @@ Cycles through three states:
   (unless (integerp arg)
     (setq arg 1))
   (let ((cycle-arg (if (= arg 1) nil (ceiling (/ arg 2.0))))
-		(inc (lambda ()
+				(inc (lambda ()
 	             (setq my-org-fold-state (mod (+ my-org-fold-state
-									       (if (and cycle-arg (evenp cycle-arg))
-										   -1 1)) 4)))))
+														       (if (and cycle-arg
+													(evenp cycle-arg))
+																	   -1 1)) 4))))
+		(next (save-excursion (org-next-visible-heading 1)
+								  (goto-char (1- (point))))))
+    (my-org-folded)
     (case my-org-fold-state
-      (0
-       (my-org-folded)
+      ;; Descriptions assume going forwards
+      (0 ;; at ALL or uninitialized
        (funcall inc)
        (message "FOLD"))
-      (1
+      (1 ;; at FOLD
        ;; Children
-       (org-cycle cycle-arg)
+       (org-cycle)
        (funcall inc)
        (message "CHILD"))
-      (2
-       ;; Subtree
-       (org-shifttab cycle-arg)
+      (2 ;; at CHILD
+       ;; Contents
+       (org-show-children)
        (funcall inc)
-       (message "SUB"))
-      (3
+       (message "CON"))
+      (3 ;; at CON
        ;; Show All
-       (org-shifttab cycle-arg)
+       (org-fold-region (point) next nil '(block drawer headline))
        (funcall inc)
        (message "ALL")))))
 
