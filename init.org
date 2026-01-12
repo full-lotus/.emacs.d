@@ -938,8 +938,6 @@ The defaults are cycled in minibuffer with up/down arrows.
 (add-hook 'clojure-mode-hook #'cider-mode)
 (add-hook 'clojurescript-mode-hook #'cider-mode)
 
-(add-hook 'cider-mode-hook #'imenu-add-menubar-index)
-
 ;; I write tests in the same ns as source code, source and tests must be close
 (setq cider-test-infer-test-ns (lambda (ns) ns))
 
