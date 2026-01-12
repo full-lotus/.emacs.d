@@ -32,7 +32,7 @@ This config aims to maximize Clojure programmer productivity through:
 *** Safe load: prevent errors from killing following initialization
 #+begin_src elisp :tangle ./init.el
 (defun safe-load (file)
-  (condition-case load-err
+  (condition-case-unless-debug load-err
       (load file)
     (error (message "Failed to load %s: %s" file load-err))))
 #+end_src
