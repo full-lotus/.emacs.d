@@ -906,6 +906,7 @@ The defaults are cycled in minibuffer with up/down arrows.
 
 *** Clojure
 **** CIDER
+***** General
 #+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tngl.el
 (setq
  nrepl-hide-special-buffers t
