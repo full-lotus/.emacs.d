@@ -202,9 +202,11 @@ This config aims to maximize Clojure programmer productivity through:
   (save-excursion
     (let* ((post-command-hook nil)
            (pm--move-overlays (lambda ())))
+      (unless (eq major-mode 'org-mode)
+				(polymode-prev-chunk)
+				(pm-switch-to-buffer))
       ;; now, in org-mode, properly find parent heading and unfold it
       (org-back-to-heading)
-      (pm-switch-to-buffer)
       (let ((prev (point))
 		        (cond t))
 				(while cond
