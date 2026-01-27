@@ -1064,42 +1064,43 @@ Cycles through three states:
 
 (defun my-org-custom-fold (&optional arg)
   (interactive "P")
-  (org-back-to-heading)
-  (unless (or my-org-fold-remember
-			        (eq this-command last-command))
-    (setq my-org-fold-state 0))
+  (save-excursion
+    (org-back-to-heading)
+    (unless (or my-org-fold-remember
+							  (eq this-command last-command))
+      (setq my-org-fold-state 0))
 
-  (unless (integerp arg)
-    (setq arg 1))
-  (let ((cycle-arg (if (= arg 1) nil (ceiling (/ arg 2.0))))
-				(inc (lambda ()
-	             (setq my-org-fold-state (mod (+ my-org-fold-state
-														       (if (and cycle-arg
-													(evenp cycle-arg))
-																	   -1 1)) 4))))
-		(next (save-excursion (org-next-visible-heading 1)
-								  (goto-char (1- (point))))))
-    (my-org-folded)
-    (case my-org-fold-state
-      ;; Descriptions assume going forwards
-      (0 ;; at ALL or uninitialized
-       (funcall inc)
-       (message "FOLD"))
-      (1 ;; at FOLD
-       ;; Children
-       (org-cycle)
-       (funcall inc)
-       (message "CHILD"))
-      (2 ;; at CHILD
-       ;; Contents
-       (org-show-children)
-       (funcall inc)
-       (message "CON"))
-      (3 ;; at CON
-       ;; Show All
-       (org-fold-region (point) next nil '(block drawer headline))
-       (funcall inc)
-       (message "ALL")))))
+    (unless (integerp arg)
+      (setq arg 1))
+    (let ((cycle-arg (if (= arg 1) nil (ceiling (/ arg 2.0))))
+          (inc (lambda ()
+					 (setq my-org-fold-state (mod (+ my-org-fold-state
+                                                 (if (and cycle-arg
+																									  (evenp cycle-arg))
+                                                     -1 1)) 4))))
+				  (next (save-excursion (org-next-visible-heading 1)
+														    (goto-char (1- (point))))))
+      (my-org-folded)
+      (case my-org-fold-state
+		;; Descriptions assume going forwards
+		(0 ;; at ALL or uninitialized
+		 (funcall inc)
+		 (message "FOLD"))
+		(1 ;; at FOLD
+		 ;; Children
+		 (org-cycle)
+		 (funcall inc)
+		 (message "CHILDREN"))
+		(2 ;; at CHILDREN
+		 ;; Contents
+		 (org-show-children)
+		 (funcall inc)
+		 (message "CONTENTS"))
+		(3 ;; at CONTENTS
+		 ;; Show All
+		 (org-fold-region (point) next nil '(block drawer headline))
+		 (funcall inc)
+		 (message "ALL"))))))
 
 (defun my-org-custom-fold-backwards (&optional arg)
   (interactive "P")
