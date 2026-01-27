@@ -205,7 +205,7 @@ This config aims to maximize Clojure programmer productivity through:
       (if (eq major-mode 'org-mode)
 	      (org-back-to-heading)
 				;; switch to org mode, brings cursor into heading like above
-				(polymode-prev-chunk)
+				(polymode-previous-chunk)
 				(next-line)
 				(pm-switch-to-buffer))
       ;; now, in org-mode, properly find parent heading and unfold it
