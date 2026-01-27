@@ -1038,30 +1038,6 @@ Cycles through three states:
              'org-optimize-window-after-visibility-change)
 #+end_src
 
-**** Mouse wheel unfolding
-#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
-;; Define some helper functions
-(defun my-org-unfold ()
-  (interactive)
-  (org-back-to-heading t)
-  (org-shifttab))
-
-(defun my-org-fold ()
-  "Do the global cycling action backwards."
-  (interactive)
-  (org-back-to-heading t)
-  (setq prefix-arg 2)
-  (universal-argument--mode)
-  (org-shifttab))
-#+end_src
-
-#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
-;;single wheel is too sensetive, need double.
-
-(define-key org-mode-map (kbd "C-<wheel-up>") 'my-org-unfold)
-(define-key org-mode-map (kbd "C-<wheel-down>") 'my-org-fold)
-#+end_src
-
 **** Custom fold/unfold
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 (require 'timeout)
@@ -1134,8 +1110,8 @@ Cycles through three states:
 #+end_src
 
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
-(define-key org-mode-map (kbd "C-S-<wheel-up>") 'my-org-custom-fold)
-(define-key org-mode-map (kbd "C-S-<wheel-down>") 'my-org-custom-fold-backwards)
+(define-key org-mode-map (kbd "C-<wheel-up>") 'my-org-custom-fold)
+(define-key org-mode-map (kbd "C-<wheel-down>") 'my-org-custom-fold-backwards)
 (timeout-throttle 'my-org-custom-fold 0.2)
 #+end_src
 
