@@ -9,7 +9,9 @@
 		 "--with-filename" "--no-heading" "--line-number" "--color" "never" "%s"))
  '(custom-enabled-themes nil)
  '(custom-safe-themes
-	 '("9ab9441566f7c3b059a205a7c5fad32a58422c2695815436d8cc087860b8c2e5"
+	 '("ed42d501617e7297d48a38c060fcf187e4318d253ed2636c8584239f512ca6ff"
+		 "c5e34ad9f324e74b8e66796381694c35709e5b8abfd83a6ce709d1cf04bdb31b"
+		 "9ab9441566f7c3b059a205a7c5fad32a58422c2695815436d8cc087860b8c2e5"
 		 "7613ef56a3aebbec29618a689e47876a72023bbd1b8393efc51c38f5ed3f33d1"
 		 "703a3469ae4d2a83fd5648cac0058d57ca215d0fea7541fb852205e4fae94983"
 		 "c7a926ad0e1ca4272c90fce2e1ffa7760494083356f6bb6d72481b879afce1f2"
@@ -62,46 +64,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(font-lock-comment-face ((t (:foreground "dark green"))))
- '(font-lock-constant-face ((t (:foreground "saddle brown"))))
- '(font-lock-doc-face ((t (:inherit font-lock-comment-face))))
- '(font-lock-keyword-face ((t (:foreground "violet red"))))
- '(font-lock-string-face ((t (:foreground "dark violet"))))
- '(font-lock-type-face ((t (:foreground "dark orange"))))
- '(font-lock-variable-name-face ((t (:foreground "blue1"))))
- '(link ((t (:foreground "dark cyan" :underline t))))
- '(mode-line ((t (:background "lavender" :foreground "black" :box (:line-width (1 . -1) :style released-button)))))
- '(mode-line-inactive ((t (:inherit mode-line :background "lavender" :foreground "black" :box (1 . -1) :weight light))))
- '(org-block ((t (:extend t :background "lavender" :foreground "black"))))
- '(org-block-begin-line ((t (:extend t :foreground "dim gray" :slant oblique))))
- '(org-block-end-line ((t (:inherit org-block-begin-line :extend t))))
- '(org-level-1 ((t (:extend nil :foreground "black" :height 1.7))))
- '(org-level-2 ((t (:extend nil :foreground "violet red" :height 1.5))))
- '(org-level-3 ((t (:extend nil :foreground "dark violet" :height 1.3))))
- '(org-level-4 ((t (:extend nil :foreground "blue" :height 1.2))))
- '(org-level-5 ((t (:extend nil :foreground "medium aquamarine" :height 1.1))))
- '(org-level-6 ((t (:extend nil :foreground "dark khaki" :height 1.0))))
- '(org-level-7 ((t (:extend nil :foreground "dark salmon" :height 0.9))))
- '(org-level-8 ((t (:extend nil :foreground "indian red" :height 0.8))))
- '(org-meta-line ((t (:foreground "dim gray" :slant oblique))))
- '(rainbow-delimiters-base-error-face ((t (:inherit rainbow-delimiters-base-face :foreground "red"))))
- '(rainbow-delimiters-depth-1-face ((t (:inherit rainbow-delimiters-base-face :foreground "orange"))))
- '(rainbow-delimiters-depth-2-face ((t (:inherit rainbow-delimiters-base-face :foreground "khaki3"))))
- '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "forest green"))))
- '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "blue"))))
- '(rainbow-delimiters-depth-5-face ((t (:inherit rainbow-delimiters-base-face :foreground "dark violet"))))
- '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "magenta"))))
- '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "brown"))))
- '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "navajo white"))))
- '(show-paren-match ((t (:background "gray"))))
- '(tab-bar ((t (:inherit variable-pitch :background "lavender" :foreground "black"))))
- '(tab-bar-tab ((t (:inherit tab-bar :background "MediumPurple1" :foreground "black" :box (:line-width (1 . 1) :style released-button)))))
- '(tab-bar-tab-group-current ((t (:inherit bold :background "MediumPurple1" :foreground "white" :box (:line-width (2 . -2) :color "#ffffff")))))
- '(tab-bar-tab-group-inactive ((t (:background "lavender" :foreground "#193668" :box (:line-width (2 . -2) :color "lavender")))))
- '(tab-bar-tab-inactive ((t (:inherit tab-bar-tab :background "lavender"))))
- '(tab-line ((t (:inherit variable-pitch :background "lavender" :foreground "black" :height 0.9))))
- '(tab-line-highlight ((t (:background "MediumPurple1" :foreground "white" :box (:line-width (1 . 1) :style released-button)))))
- '(tab-line-tab ((t (:inherit tab-line :box (:line-width (1 . 1) :style released-button)))))
- '(tab-line-tab-current ((t (:inherit tab-line-tab :background "MediumPurple1" :foreground "white"))))
- '(tab-line-tab-inactive ((t (:inherit tab-line-tab :background "lavender"))))
- '(tab-line-tab-inactive-alternate ((t (:inherit tab-line-tab-inactive :background "lavender")))))
+ )
