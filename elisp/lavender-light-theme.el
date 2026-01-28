@@ -1,8 +1,8 @@
-(deftheme theme3
+(deftheme lavender-light
   "Created 2026-01-29.")
 
 (custom-theme-set-faces
- 'theme3
+ 'lavender-light
  '(default ((t (:family "Hack" :foundry "SRC" :width normal :height 98 :weight regular :slant normal :underline nil :overline nil :extend nil :strike-through nil :box nil :inverse-video nil :foreground "black" :background "white" :stipple nil :inherit nil))))
  '(cursor ((((background light)) (:background "black")) (((background dark)) (:background "white"))))
  '(fixed-pitch ((t (:family "Monospace"))))
