@@ -93,4 +93,4 @@
  '(tab-line-tab-inactive ((t (:inherit tab-line-tab :background "lavender"))))
  '(tab-line-tab-inactive-alternate ((t (:inherit tab-line-tab-inactive :background "lavender")))))
 
-(provide-theme 'theme3)
+(provide-theme 'lavender-light)
