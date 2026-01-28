@@ -9,7 +9,9 @@
 		 "--with-filename" "--no-heading" "--line-number" "--color" "never" "%s"))
  '(custom-enabled-themes nil)
  '(custom-safe-themes
-	 '("9ab9441566f7c3b059a205a7c5fad32a58422c2695815436d8cc087860b8c2e5"
+	 '("ed42d501617e7297d48a38c060fcf187e4318d253ed2636c8584239f512ca6ff"
+		 "c5e34ad9f324e74b8e66796381694c35709e5b8abfd83a6ce709d1cf04bdb31b"
+		 "9ab9441566f7c3b059a205a7c5fad32a58422c2695815436d8cc087860b8c2e5"
 		 "7613ef56a3aebbec29618a689e47876a72023bbd1b8393efc51c38f5ed3f33d1"
 		 "703a3469ae4d2a83fd5648cac0058d57ca215d0fea7541fb852205e4fae94983"
 		 "c7a926ad0e1ca4272c90fce2e1ffa7760494083356f6bb6d72481b879afce1f2"
@@ -57,3 +59,9 @@
 			. " -A:dev -X dev/-main --middleware [cider.nrepl/cider-middleware,shadow.cljs.devtools.server.nrepl/middleware]")
 		 (cider-preferred-build-tool . clj)))
  '(winner-mode t))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
