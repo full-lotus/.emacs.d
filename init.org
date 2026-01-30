@@ -1073,7 +1073,7 @@ Cycles through three states:
     (unless (integerp arg)
       (setq arg 1))
 
-    (my-org-folded)
+    (my-org-folded) ;; Common state to unfold from
     (let ((cycle-arg (if (= arg 1) nil (ceiling (/ arg 2.0))))
           (inc (lambda ()
 					 (setq my-org-fold-state (mod (+ my-org-fold-state
