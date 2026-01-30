@@ -1072,6 +1072,8 @@ Cycles through three states:
 
     (unless (integerp arg)
       (setq arg 1))
+
+    (my-org-folded)
     (let ((cycle-arg (if (= arg 1) nil (ceiling (/ arg 2.0))))
           (inc (lambda ()
 					 (setq my-org-fold-state (mod (+ my-org-fold-state
@@ -1080,7 +1082,6 @@ Cycles through three states:
                                                      -1 1)) 4))))
 				  (next (save-excursion (org-next-visible-heading 1)
 														    (goto-char (1- (point))))))
-      (my-org-folded)
       (case my-org-fold-state
 		;; Descriptions assume going forwards
 		(0 ;; at ALL or uninitialized
