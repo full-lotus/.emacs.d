@@ -356,6 +356,11 @@ This config aims to maximize Clojure programmer productivity through:
   :hook (marginalia-mode . all-the-icons-completion-mode))
 #+end_src
 
+**** custom theme
+#+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tngl.el
+;simple face customization, comment if unwanted
+(load-theme 'lavender-light)
+#+end_src
 *** Editing
 **** Highlight symbol occurrences / multiple edits
 #+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tngl.el
