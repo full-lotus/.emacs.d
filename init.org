@@ -220,7 +220,7 @@ This config aims to maximize Clojure programmer productivity through:
                (new-line old-line))
 			    (previous-line)
 			    (setq new-line (line-number-at-pos))
-	        (while (not (= old-line (1- new-line))) ;; Parent heading is folded
+	        (while (> 1 (- old-line new-line)) ;; Parent heading is folded
 		        (next-line)
 		        (org-show-children) ;; Same as folding to CONTENTS
 		        (setq old-line (line-number-at-pos))
