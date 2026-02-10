@@ -199,27 +199,38 @@ This config aims to maximize Clojure programmer productivity through:
 (defun pm--org-reveal-inside-source-block ()
   "Temporarily switch back to org-mode, to be able to do proper unfolding"
   (interactive)
-  (save-excursion
-    (let* ((post-command-hook nil)
-           (pm--move-overlays (lambda ())))
-      (if (eq major-mode 'org-mode)
-	      (org-back-to-heading)
-				;; switch to org mode, brings cursor into heading like above
-				(polymode-previous-chunk)
-				(next-line)
-				(pm-switch-to-buffer))
-      ;; now, in org-mode, properly find parent heading and unfold it
-      (let ((prev (point))
-		        (cond t))
-				(while cond
-				  (org-up-element)
-	  	  (org-show-children)
-			    (forward-char)
-			    (if (eq (char-after) 32)
-	            (setq cond nil)))
-				(goto-char prev))
-      (org-fold-show-subtree)))
-  (pm-switch-to-buffer))
+  (let* ((org? (eq 'org-mode major-mode))
+				 (pm? (and (poly-org-mode?) (not org?))))
+		(when org?
+		  (let ((post-command-hook nil)
+		        (pm--move-overlays (lambda ()))
+			      (curr-point (point)))
+				(when pm?
+				  ;; switch to org-mode without breaking polymode
+				  (goto-char (point-min))
+				  (polymode-post-command)
+				  (goto-char curr-point))
+
+				;; now, in org-mode, properly find parent heading and unfold it
+				(org-up-element)
+				(org-fold-show-subtree)
+
+				;; Unfold parent headings if they're folded
+				(let* ((old-line (line-number-at-pos))
+               (new-line old-line))
+			    (previous-line)
+			    (setq new-line (line-number-at-pos))
+	        (while (not (= old-line (1- new-line))) ;; Parent heading is folded
+		        (next-line)
+		        (org-show-children) ;; Same as folding to CONTENTS
+		        (setq old-line (line-number-at-pos))
+		        (previous-line)
+		        (setq new-line (line-number-at-pos))))
+
+				;; go back to original point and restore the major mode
+				(goto-char curr-point)
+				(when pm?
+		  	  (polymode-post-command))))))
 
 (use-package bm
   :ensure t
