@@ -212,24 +212,7 @@ This config aims to maximize Clojure programmer productivity through:
 				  (goto-char curr-point))
 
 				;; now, in org-mode, properly find parent heading and unfold it
-				(org-up-element)
-				(org-fold-show-subtree)
-
-				;; Unfold parent headings if they're folded
-				(let* ((old-line (line-number-at-pos))
-               (new-line old-line))
-			    (previous-line)
-			    (setq new-line (line-number-at-pos))
-
-	  ;; Parent heading is folded if previous-line skips lines
-	  ;; FIXME: not actually correct
-	  ;; It gives false-positives on sibling headings
-	        (while (> 1 (- old-line new-line))
-		        (next-line)
-		        (org-show-children) ;; Same as folding to CONTENTS
-		        (setq old-line (line-number-at-pos))
-		        (previous-line)
-		        (setq new-line (line-number-at-pos))))
+				(org-fold-show-context 'isearch)
 
 				;; go back to original point and restore the major mode
 				(goto-char curr-point)
