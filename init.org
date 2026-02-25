@@ -219,6 +219,36 @@ This config aims to maximize Clojure programmer productivity through:
 				(when pm?
 		  	  (polymode-post-command))))))
 
+(defun pm--org-pre-bookmark-jump ()
+  "switch to org mode before bm-next/previous"
+  (let* ((org? (eq 'org-mode major-mode))
+				 (pm? (and (poly-org-mode?) (not org?))))
+		(when org?
+		  (let ((post-command-hook nil)
+		        (pm--move-overlays (lambda ()))
+			      ;; (curr-point (point))
+	    )
+				(when pm?
+				  ;; switch to org-mode without breaking polymode
+				  (goto-char (point-min))
+				  (polymode-post-command)
+				  ;; (goto-char curr-point)
+	  )))))
+
+(defun pm--org-bm-next ()
+  "hooked version of bm-next"
+  (interactive)
+  (pm--org-pre-bookmark-jump)
+  (call-interactively 'bm-next))
+(defun pm--org-bm-previous ()
+  "hooked version of bm-next"
+  (interactive)
+  (pm--org-pre-bookmark-jump)
+  (call-interactively 'bm-previous))
+
+(define-key poly-org-mode-map (kbd "<f2>") 'pm--org-bm-next)
+(define-key poly-org-mode-map (kbd "S-<f2>") 'pm--org-bm-previous)
+
 (use-package bm
   :ensure t
   :demand t
