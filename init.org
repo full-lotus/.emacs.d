@@ -37,6 +37,12 @@ This config aims to maximize Clojure programmer productivity through:
     (error (message "Failed to load %s: %s" file load-err))))
 #+end_src
 
+*** Start Emacs server
+#+begin_src elisp :tangle ./init.el
+(server-start)
+#+end_src
+
+** Emacs customization API
 #+begin_src elisp :tangle ./init.el
 (safe-load "~/.emacs.d/elisp/customization-api-tweaks.tngl.el")
 #+end_src
