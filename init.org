@@ -186,6 +186,46 @@ This config aims to maximize Clojure programmer productivity through:
                     "~/.emacs.d/sessions/"))
 #+end_src
 
+*** Runtime performance optimizations [LLM generated]
+#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tngl.el
+;; Optimize for maximum runtime speed (not load time)
+
+;; Garbage collection optimizations
+(setq gc-cons-threshold 100000000       ;; 100MB - GC less frequently
+      gc-cons-percentage 0.1)            ;; Low threshold for when to trigger GC
+
+;; Font locking optimizations
+(setq font-lock-maximum-decoration 2     ;; Reduce font-lock complexity
+      jit-lock-defer-time 0.05           ;; Slight delay before font-locking
+      jit-lock-context-time 0.5)          ;; Delay context font-locking
+
+;; Don't recompute expensive properties on long lines
+(setq bidi-inhibit-bpa t)
+
+;; Reduce redisplay overhead
+(setq redisplay-skip-fontification-on-input t
+      fast-but-imprecise-scrolling t)
+
+;; Don't compact font caches during operation
+(setq inhibit-compacting-font-caches t)
+
+;; Optimize flycheck - don't check on every keystroke
+(setq flycheck-idle-change-delay 1.0      ;; Wait 1 second before checking
+      flycheck-buffer-switch-check-delay 1.0)
+
+;; Disable expensive features in large buffers
+(defun my-disable-expensive-features-in-large-buffers ()
+  (when (> (buffer-size) 100000)
+    (setq-local jit-lock-contextually nil)
+    (setq-local font-lock-multiline nil)))
+
+(add-hook 'prog-mode-hook #'my-disable-expensive-features-in-large-buffers)
+
+;; Reduce line number computation if using display-line-numbers
+(when (boundp 'display-line-numbers-width)
+  (setq display-line-numbers-width 2))
+#+end_src
+
 
 ** Text
 #+begin_src elisp :tangle ./init.el
