@@ -186,7 +186,7 @@ This config aims to maximize Clojure programmer productivity through:
                     "~/.emacs.d/sessions/"))
 #+end_src
 
-*** Runtime performance optimizations [LLM]
+*** Runtime performance optimizations
 #+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tngl.el
 ;; Optimize for maximum runtime speed (not load time)
 
@@ -376,7 +376,7 @@ This config aims to maximize Clojure programmer productivity through:
  )
 #+end_src
 
-**** Lightweight 80-char indicator with whitespace-mode [LLM]
+**** Lightweight 80-char indicator with whitespace-mode
 #+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tngl.el
 ;; Use whitespace-mode for 80-char indicator - lighter than fill-column-indicator
 ;; Only highlights lines that exceed 80 characters
@@ -1361,7 +1361,7 @@ Prevents flycheck from confusing buffers and breaking down. See this [[https://g
            :extend t))))
 #+end_src
 
-*** 80-char indicator in polymode code blocks [LLM]
+*** 80-char indicator in polymode code blocks
 #+begin_src elisp :tangle ~/.emacs.d/elisp/polymode.tngl.el
 ;; Enable fill-column indicator in polymode inner buffers (code blocks)
 (add-hook
