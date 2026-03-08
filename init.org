@@ -227,6 +227,25 @@ This config aims to maximize Clojure programmer productivity through:
 #+end_src
 
 
+** File system
+#+begin_src elisp :tangle ./init.el
+(safe-load "~/.emacs.d/elisp/file-system.tngl.el")
+#+end_src
+
+*** Dired
+#+begin_src elisp :tangle ~/.emacs.d/elisp/file-system.tngl.el
+;; dired-subtree uses really dark background color, makes dirs unreadable
+(dotimes (i 6)
+  (set-face-background
+   (intern (format "dired-subtree-depth-%d-face" (1+ i)))
+   nil))
+
+(with-eval-after-load 'dired
+  (define-key dired-mode-map (kbd "TAB") #'dired-subtree-toggle)
+  (define-key dired-mode-map (kbd "<backtab>") #'dired-subtree-cycle))
+#+end_src
+
+
 ** Text
 #+begin_src elisp :tangle ./init.el
 (safe-load "~/.emacs.d/elisp/text-settings.tngl.el")

@@ -24,12 +24,13 @@
  '(package-selected-packages
 	 '(all-the-icons-completion all-the-icons-dired async beacon bm cape casual-avy
 															cider clojure-mode command-log-mode consult corfu
-															dired-ranger embark embark-consult flycheck
-															flycheck-clj-kondo iedit keyfreq magit marginalia
-															markdown-mode ob-async ob-clojurescript openwith
-															orderless pcre2el poly-org posframe puni
-															rainbow-delimiters timeout transient treemacs
-															treemacs-all-the-icons vertico wgrep yasnippet))
+															dired-ranger dired-subtree embark embark-consult
+															envrc flycheck flycheck-clj-kondo iedit keyfreq
+															magit marginalia markdown-mode ob-async
+															ob-clojurescript openwith orderless pcre2el
+															poly-org posframe puni rainbow-delimiters timeout
+															transient treemacs treemacs-all-the-icons vertico
+															wgrep yasnippet))
  '(safe-local-variable-directories
 	 '("/mnt/sda2/projects/dev/kombinacija/code"
 		 "/mnt/sda2/projects/dev/simple-clojure-project/"))
