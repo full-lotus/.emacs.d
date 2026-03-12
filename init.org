@@ -199,25 +199,25 @@ This config aims to maximize Clojure programmer productivity through:
 (defun pm--org-reveal-inside-source-block ()
   "Temporarily switch back to org-mode, to be able to do proper unfolding"
   (interactive)
-  (let* ((org? (eq 'org-mode major-mode))
-				 (pm? (and (poly-org-mode?) (not org?))))
-		(when org?
-		  (let ((post-command-hook nil)
-		        (pm--move-overlays (lambda ()))
-			      (curr-point (point)))
-				(when pm?
-				  ;; switch to org-mode without breaking polymode
-				  (goto-char (point-min))
-				  (polymode-post-command)
-				  (goto-char curr-point))
+  (when (poly-org-mode?)
+    (let* ((post-command-hook nil)
+           (pm--move-overlays (lambda ()))
+           (curr-point (point))
+           (base-mode (buffer-local-value 'major-mode (pm-base-buffer)))
+           (inner-chunk (not (eq major-mode base-mode))))
+      (when inner-chunk
+        ;; switch to org-mode without breaking polymode
+        (goto-char (point-min))
+        (polymode-post-command)
+        (goto-char curr-point))
 
-				;; now, in org-mode, properly find parent heading and unfold it
-				(org-fold-show-context 'isearch)
+      ;; now, in org-mode, properly find parent heading and unfold it
+      (org-fold-show-context 'isearch)
 
-				;; go back to original point and restore the major mode
-				(goto-char curr-point)
-				(when pm?
-		  	  (polymode-post-command))))))
+      ;; go back to original point and restore the major mode
+      (goto-char curr-point)
+      (when inner-chunk
+        (polymode-post-command)))))
 
 (use-package bm
   :ensure t
