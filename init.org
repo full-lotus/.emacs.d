@@ -101,6 +101,12 @@ This config aims to maximize Clojure programmer productivity through:
 (safe-load "~/.emacs.d/elisp/global-settings.tngl.el")
 #+end_src
 
+*** Use .envrc everywhere
+#+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tngl.el
+(use-package envrc
+  :hook (after-init . envrc-global-mode))
+#+end_src
+
 *** Emacs startup/exit
 #+begin_src elisp :tangle ~/.emacs.d/elisp/global-settings.tngl.el
 (setq
