@@ -5,6 +5,7 @@
 #+SEQ_TODO: TODO(t) IN_PROGRESS(i) PAUSED (p) | DONE(d) OBSOLETE(o)
 
 * Emacs config for Literate Programming in Clojure
+
 ** Purpose of the config
 This config aims to maximize Clojure programmer productivity through:
 
@@ -41,6 +42,7 @@ This config aims to maximize Clojure programmer productivity through:
 #+begin_src elisp :tangle ./init.el
 (server-start)
 #+end_src
+
 
 ** Emacs customization API
 #+begin_src elisp :tangle ./init.el
