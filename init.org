@@ -343,7 +343,6 @@ This config aims to maximize Clojure programmer productivity through:
   (add-hook 'before-revert-hook #'bm-buffer-save)
 
   ;; org-mode expand the region containing a bookmark
-  ;; (add-hook 'bm-after-goto-hook 'org-bookmark-jump-unhide)
   (add-hook 'bm-after-goto-hook 'pm--org-reveal-inside-source-block)
 
   ;; the markers on the right fringe instead of the left
