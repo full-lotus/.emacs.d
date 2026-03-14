@@ -270,7 +270,7 @@ This config aims to maximize Clojure programmer productivity through:
 (declare-function poly-org-mode? "org-mode.tangled")
 
 (defun pm--org-reveal-inside-source-block ()
-  "Temporarily switch back to org-mode, to be able to do proper unfolding"
+  "Reveals only the parent header of a current org-mode source block"
   (interactive)
   (when (poly-org-mode?)
     (let* ((post-command-hook nil)
