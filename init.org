@@ -1153,6 +1153,10 @@ Cycles through three states:
 
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 (defvar my-org-fold-state 0)
+(defcustom custom-unfold-contents-level 2
+  "how many levels of headings to see from unfolding to CONTENTS"
+  :type 'integer
+  :group 'org-cycle)
 
 (defun my-org-folded ()
   "Fold the current heading"
@@ -1247,7 +1251,7 @@ Cycles through three states:
 				 (message "CHILDREN"))
 				(2 ;; at CHILDREN
 				 ;; Contents
-				 (org-show-children 2)
+				 (org-show-children custom-unfold-contents-level)
 				 (inc)
 				 (message "CONTENTS"))
 				(3 ;; at CONTENTS
