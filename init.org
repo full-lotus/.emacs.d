@@ -1151,6 +1151,9 @@ Cycles through three states:
 (require 'timeout)
 #+end_src
 
+This function follows org-cycle rules but in the order FOLD -> CHILDREN -> CONTENTS -> ALL -> FOLD
+
+Variables:
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 (defvar my-org-fold-state 0)
 (defcustom custom-unfold-contents-level 2
@@ -1159,6 +1162,7 @@ Cycles through three states:
   :group 'org-cycle)
 #+end_src
 
+Utility functions (for cleanness):
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 ;; Utility functions
 (defun my-org-folded ()
@@ -1227,6 +1231,7 @@ Cycles through three states:
       nil)))
 #+end_src
 
+The actual function:
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 (defun my-org-custom-fold (&optional arg)
   (interactive)
@@ -1243,7 +1248,7 @@ Cycles through three states:
 							    (if (> arg 0) 1 3)
 								0)))
 
-      (my-org-folded) ;; Common state to unfold from(
+      (my-org-folded) ;; Common state to unfold from
       (case my-org-fold-state
 				;; Descriptions assume going forwards
 				(0 ;; at ALL or uninitialized
