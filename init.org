@@ -1157,7 +1157,10 @@ Cycles through three states:
   "how many levels of headings to see from unfolding to CONTENTS"
   :type 'integer
   :group 'org-cycle)
+#+end_src
 
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
+;; Utility functions
 (defun my-org-folded ()
   "Fold the current heading"
 	(let* ((eoh (save-excursion (outline-end-of-heading) (point)))
@@ -1222,7 +1225,9 @@ Cycles through three states:
 	;; Entire subtree is hidden in one line
 	t
       nil)))
+#+end_src
 
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 (defun my-org-custom-fold (&optional arg)
   (interactive)
   (unless (number-or-marker-p arg)
