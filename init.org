@@ -1279,6 +1279,7 @@ The actual function:
   (my-org-custom-fold -1))
 #+end_src
 
+Keybinds:
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 (define-key org-mode-map (kbd "C-<wheel-up>") 'my-org-custom-fold)
 (define-key org-mode-map (kbd "C-<wheel-down>") 'my-org-custom-fold-backwards)
