@@ -1151,12 +1151,22 @@ Cycles through three states:
 (require 'timeout)
 #+end_src
 
+This function follows org-cycle rules but in the order FOLD -> CHILDREN -> CONTENTS -> ALL -> FOLD
+
+Variables:
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 (defvar my-org-fold-state 0)
-(defvar my-org-fold-remember nil)
+(defcustom custom-unfold-contents-level 2
+  "how many levels of headings to see from unfolding to CONTENTS"
+  :type 'integer
+  :group 'org-cycle)
+#+end_src
 
-;; Function here for cleanness.
+Utility functions (for cleanness):
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
+;; Utility functions
 (defun my-org-folded ()
+  "Fold the current heading"
 	(let* ((eoh (save-excursion (outline-end-of-heading) (point)))
 	 (eos (save-excursion
 		    (org-end-of-subtree t t)
@@ -1170,55 +1180,106 @@ Cycles through three states:
    (unless (org-before-first-heading-p)
      (run-hook-with-args 'org-cycle-hook 'folded))))
 
-(defun my-org-custom-fold (&optional arg)
-  (interactive "P")
-  (save-excursion
-    (org-back-to-heading)
-    (unless (or my-org-fold-remember
-							  (eq this-command last-command))
-      (setq my-org-fold-state 0))
+(defun my-org-foldp ()
+  "Copied org-cycle-internal-local for properly detecting fold state."
+  (let ((goal-column 0) eoh eol eos has-children children-skipped struct)
+    ;; First, determine end of headline (EOH), end of subtree or item
+    ;; (EOS), and if item or heading has children (HAS-CHILDREN).
 
-    (unless (integerp arg)
-      (setq arg 1))
+    (save-excursion
+      (if (org-at-item-p)
+	  (progn
+	    (forward-line 0)
+	    (setq struct (org-list-struct))
+	    (setq eoh (line-end-position))
+	    (setq eos (org-list-get-item-end-before-blank (point) struct))
+	    (setq has-children (org-list-has-child-p (point) struct)))
+	(org-back-to-heading)
+	(setq eoh (save-excursion (outline-end-of-heading) (point)))
+	(setq eos (save-excursion
+		    (org-end-of-subtree t t)
+		    (unless (eobp) (forward-char -1))
+		    (point)))
+	(setq has-children
+	      (or
+	       (save-excursion
+		 (let ((level (funcall outline-level)))
+		   (outline-next-heading)
+		   (and (org-at-heading-p)
+			(> (funcall outline-level) level))))
+	       (and (eq org-cycle-include-plain-lists 'integrate)
+		    (save-excursion
+		      (org-list-search-forward (org-item-beginning-re) eos t))))))
+      ;; Determine end invisible part of buffer (EOL)
+      (forward-line 1)
+      (if (eq org-fold-core-style 'text-properties)
+          (while (and (not (eobp))		;this is like `next-line'
+		      (org-fold-folded-p (1- (point))))
+	    (goto-char (org-fold-next-visibility-change nil nil t))
+	    (and (eolp) (forward-line 1)))
+        (while (and (not (eobp))		;this is like `next-line'
+		    (get-char-property (1- (point)) 'invisible))
+	  (goto-char (next-single-char-property-change (point) 'invisible))
+	  (and (eolp) (forward-line 1))))
+      (setq eol (point)))
 
-    (my-org-folded) ;; Common state to unfold from
-    (let ((cycle-arg (if (= arg 1) nil (ceiling (/ arg 2.0))))
-          (inc (lambda ()
-					 (setq my-org-fold-state (mod (+ my-org-fold-state
-                                                 (if (and cycle-arg
-																									  (evenp cycle-arg))
-                                                     -1 1)) 4))))
-				  (next (save-excursion (org-next-visible-heading 1)
-														    (goto-char (1- (point))))))
-      (case my-org-fold-state
-		;; Descriptions assume going forwards
-		(0 ;; at ALL or uninitialized
-		 (funcall inc)
-		 (message "FOLD"))
-		(1 ;; at FOLD
-		 ;; Children
-		 (org-cycle)
-		 (funcall inc)
-		 (message "CHILDREN"))
-		(2 ;; at CHILDREN
-		 ;; Contents
-		 (org-show-children)
-		 (funcall inc)
-		 (message "CONTENTS"))
-		(3 ;; at CONTENTS
-		 ;; Show All
-		 (org-fold-region (point) next nil '(block drawer headline))
-		 (funcall inc)
-		 (message "ALL"))))))
-
-(defun my-org-custom-fold-backwards (&optional arg)
-  (interactive "P")
-  (setq this-command 'my-org-custom-fold)
-  (my-org-custom-fold (if (integerp arg)
-			  (* arg 4)
-			  4)))
+    (if (and (or (>= eol eos)
+		 (save-excursion (goto-char eol) (skip-chars-forward "[:space:]" eos) (= (point) eos)))
+	     has-children)
+	;; Entire subtree is hidden in one line
+	t
+      nil)))
 #+end_src
 
+The actual function:
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
+(defun my-org-custom-fold (&optional arg)
+  (interactive)
+  (unless (number-or-marker-p arg)
+		(setq arg 1))
+  (save-excursion
+    (labels ((inc () (setq my-org-fold-state (mod
+																	      (+ my-org-fold-state arg)
+																	      4))))
+      (org-back-to-heading)
+      (unless (eq this-command last-command)
+				(setq my-org-fold-state
+	            (if (my-org-foldp)
+							    (if (> arg 0) 1 3)
+								0)))
+
+      (my-org-folded) ;; Common state to unfold from
+      (case my-org-fold-state
+				;; Descriptions assume going forwards
+				(0 ;; at ALL or uninitialized
+				 (inc)
+				 (message "FOLD"))
+				(1 ;; at FOLD
+				 ;; Children
+				 (org-cycle)
+				 (inc)
+				 (message "CHILDREN"))
+				(2 ;; at CHILDREN
+				 ;; Contents
+				 (org-show-children custom-unfold-contents-level)
+				 (inc)
+				 (message "CONTENTS"))
+				(3 ;; at CONTENTS
+				 ;; Show All
+				 (org-fold-region (point)
+											    (save-excursion (org-next-visible-heading 1)
+																			    (goto-char (1- (point))))
+											    nil '(block drawer headline))
+				 (inc)
+				 (message "ALL"))))))
+
+(defun my-org-custom-fold-backwards ()
+  (interactive)
+  (setq this-command 'my-org-custom-fold)
+  (my-org-custom-fold -1))
+#+end_src
+
+Keybinds:
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 (define-key org-mode-map (kbd "C-<wheel-up>") 'my-org-custom-fold)
 (define-key org-mode-map (kbd "C-<wheel-down>") 'my-org-custom-fold-backwards)
