@@ -1064,9 +1064,10 @@ The defaults are cycled in minibuffer with up/down arrows.
 (define-key cider-mode-map (kbd "C-S-<return>") 'eval-last-sexp-in-cljs)
 #+end_src
 
-*** CSS
+*** CSS/JSON
 #+begin_src elisp :tangle ~/.emacs.d/elisp/programming-settings.tngl.el
-(setq css-indent-offset 2)
+(setq css-indent-offset 2
+      js-indent-level 2)
 #+end_src
 
 *** Markdown
