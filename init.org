@@ -400,22 +400,9 @@ This config aims to maximize Clojure programmer productivity through:
  )
 #+end_src
 
-**** Lightweight 80-char indicator with whitespace-mode
+**** 80-char indicator with fill-column-indicator
 #+begin_src elisp :tangle ~/.emacs.d/elisp/text-settings.tngl.el
-;; Use whitespace-mode for 80-char indicator - lighter than fill-column-indicator
-;; Only highlights lines that exceed 80 characters
-(use-package whitespace
-  :config
-  ;; Only visualize long lines (lines > 80 chars)
-  (setq whitespace-style '(lines-tail))
-  (setq whitespace-line-column 80)
-
-  ;; Only highlight long lines, don't show spaces/tabs
-  (setq whitespace-display-mappings
-        '((lines-tail ?\u2192 nil nil)))  ;; Show arrow at column 80
-
-  ;; Enable in programming modes
-  (add-hook 'prog-mode-hook #'whitespace-mode))
+(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 #+end_src
 
 **** all-the-icons
