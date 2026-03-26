@@ -40,7 +40,8 @@ This config aims to maximize Clojure programmer productivity through:
 
 *** Start Emacs server
 #+begin_src elisp :tangle ./init.el
-(server-start)
+(require 'server)
+(unless (server-running-p) (server-start))
 #+end_src
 
 
