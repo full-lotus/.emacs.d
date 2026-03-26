@@ -1425,10 +1425,9 @@ Searches for ns in :tangle or :src file, otherwise calls clojure-find-ns."
 	    (clojure-find-ns))
     (apply orig-fun args)))
 
-(advice-add 'cider-current-ns :around 'org-clojure-block-get-ns)
+;; (advice-add 'cider-current-ns :around 'org-clojure-block-get-ns)
 ;; (advice-remove 'cider-current-ns 'org-clojure-block-get-ns)
 #+end_src
-
 *** Tangling
 #+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
 ;; override broken fn, which deletes comments from clojure code
