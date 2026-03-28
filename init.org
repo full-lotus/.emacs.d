@@ -1319,8 +1319,9 @@ Keybinds:
 ;; customize custom task status markers
 (setq org-todo-keyword-faces
       '(("PAUSED" . (:foreground "gold" :weight bold))
-				("OBSOLETE" . (:foreground "grey" :weight bold))
-				("NOT_PLANNED" . (:foreground "grey" :weight bold))))
+	("OBSOLETE" . (:foreground "grey" :weight bold))
+	("ABANDONED" . (:foreground "grey" :weight bold))
+	("NOT_PLANNED" . (:foreground "grey" :weight bold))))
 #+end_src
 
 *** Linking
