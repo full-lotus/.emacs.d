@@ -1337,6 +1337,40 @@ Keybinds:
 (define-key org-mode-map (kbd "<f9>") 'org-id-copy)
 #+end_src
 
+**** Clojure defn search
+Plain org-mode file links find the first occurrence of the
+search text anywhere in the file.  This causes links like
+=[[file:my.clj::multiply-two]]= to land on docstrings or
+comments mentioning the function name instead of the
+=\(defn multiply-two ...)= definition.
+
+This hook intercepts org file link searches for =.clj=,
+=.cljs=, and =.cljc= files, finding the exact =\(defn=
+or =\(defn-= form at the start of a line.  The regex uses
+symbol-boundary matching so =add-two= does not match
+=add-two-old=.  Falls through to default org search if no
+=defn= is found, for file types other than Clojure, or for
+function names not at top-level =defn=/=defn-= forms.
+
+#+begin_src elisp :tangle ~/.emacs.d/elisp/org-mode.tngl.el
+(defun org-clj-defn-search (search-string)
+  "Handle org file links to Clojure defn definitions.
+When opened file is .clj/.cljs/.cljc, search for a top-level
+\(defn, \(defn-, \(e/defn, or \(e/defn- form using symbol-boundary
+matching.  Returns non-nil on success, nil to fallthrough."
+  (let ((filename (buffer-file-name)))
+    (when (and filename (string-match-p "\\.clj[sc]?\\'" filename))
+      (let ((regex (concat "^\\((defn-?\\|(e/defn-?\\)[[:space:]]+"
+                           (regexp-quote search-string)
+                           "\\_>")))
+        (goto-char (point-min))
+        (when (re-search-forward regex nil t)
+          (beginning-of-line)
+          t)))))
+
+(add-hook 'org-execute-file-search-functions #'org-clj-defn-search)
+#+end_src
+
 **** Custom :src source block header
 <<<:src>>> is a custom header that I add manually to noref code blocks
 
